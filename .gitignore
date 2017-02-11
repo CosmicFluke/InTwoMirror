@@ -18,6 +18,7 @@ ExportedObj/
 *.pidb
 *.booproj
 *.svd
+*.pdb
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -29,5 +30,3 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-# visual studio stuff
-.vs

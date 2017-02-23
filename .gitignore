@@ -35,3 +35,15 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+Assets/Crystal3.mat.meta
+Assets/Materials.meta
+Assets/No Name.mat.meta
+Assets/Prefabs.meta
+Assets/Materials/Capsule Material.mat.meta
+Assets/Materials/Crystal Material.mat.meta
+Assets/Materials/Crystal2.mat.meta
+Assets/Materials/player1mat.mat.meta
+Assets/Prefabs/Capsule 1.prefab.meta
+Assets/Prefabs/CrystalCluster.FBX.meta
+Assets/Prefabs/CrystalCluster3_triangular.FBX.meta
+Assets/Prefabs/CrystalCluster4_Pointy.FBX.meta

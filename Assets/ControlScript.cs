@@ -8,6 +8,7 @@ public class ControlScript : MonoBehaviour {
     public Text uiText;
     public Text mouseYText;
     public AudioSource sound;
+    public Image wheelNeedle;
     public AudioClip[] tones;
 
     AudioSource audioSource;
@@ -17,11 +18,11 @@ public class ControlScript : MonoBehaviour {
 
     string[] toneLabels = {"A", "B", "C#", "D", "E", "F#", "G"};
     int numTones = 7;
-    int currTone = 0;
-    float innerPos = 0f;
-    int selectionCooldown = 10;
-    int cooldownCounter = -1;
 
+    /** The current tone rotation value (in degrees) */
+    float toneRotation = 0f;
+
+    /** Values for procedural sound (not used) */
     float baseFreq = 440f;
     float semitoneMultiplier = 1.059463094359f;
 
@@ -31,20 +32,14 @@ public class ControlScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButton("Fire2") && cooldownCounter == -1) {
-            float mouseY = Input.GetAxis("Mouse Y");
-            mouseYText.text = mouseY.ToString();
-            innerPos += mouseY;
-            if (innerPos > 10) {
-                currTone = (numTones + currTone + 1) % numTones;
-                sound.clip = tones[currTone];
-                cooldownCounter = selectionCooldown;
-            } else if (innerPos < -10) {
-                currTone = (numTones + currTone - 1) % numTones;
-                sound.clip = tones[currTone];
-                cooldownCounter = selectionCooldown;
-            }
-            uiText.text = toneLabels[currTone];
+        if (Input.GetButton("Fire2")){
+            Vector2 toneVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            
+            //mouseYText.text = angleDegrees.ToString();
+            //int currTone = (int) Mathf.Min(Mathf.Floor(angleDegrees) / 51.42f, 6);
+            //sound.clip = tones[currTone];
+            
+            //uiText.text = toneLabels[currTone];
         }
         if (Input.GetButtonDown("Fire1"))
         {
@@ -53,8 +48,6 @@ public class ControlScript : MonoBehaviour {
         if (Input.GetButtonUp("Fire1")) {
             sound.Stop();
         }
-
-        if (cooldownCounter > -1) cooldownCounter--;
 
 	}
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour {
+public class CharacterControl : MonoBehaviour {
 
     public float movementSpeed = 5f;
     // max distance player must be to interact with object

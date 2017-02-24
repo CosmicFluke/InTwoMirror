@@ -22,6 +22,11 @@ ExportedObj/
 
 # Unity3D generated meta files
 *.pidb.meta
+Assets/Prefabs.meta
+Assets/Plugins.meta
+Assets/Materials.meta
+Assets/Plugins/x64.meta
+Assets/Plugins/x64/ObeliskVoice_v1.004.unity.macos.x64.meta
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
@@ -30,3 +35,15 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+Assets/Crystal3.mat.meta
+Assets/Materials.meta
+Assets/No Name.mat.meta
+Assets/Prefabs.meta
+Assets/Materials/Capsule Material.mat.meta
+Assets/Materials/Crystal Material.mat.meta
+Assets/Materials/Crystal2.mat.meta
+Assets/Materials/player1mat.mat.meta
+Assets/Prefabs/Capsule 1.prefab.meta
+Assets/Prefabs/CrystalCluster.FBX.meta
+Assets/Prefabs/CrystalCluster3_triangular.FBX.meta
+Assets/Prefabs/CrystalCluster4_Pointy.FBX.meta

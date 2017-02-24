@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiText: {fileID: 1555701888}
-  mouseYText: {fileID: 1627179529}
+  toneAngleText: {fileID: 1627179529}
   sound: {fileID: 774845205}
   wheelNeedle: {fileID: 1041756187}
   tones:
@@ -486,6 +486,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 81a53a6d834db6c44b38490db5066204, type: 3}
   - {fileID: 8300000, guid: 81b8fdb40ab2f5f468b6e8b6cfbfe46a, type: 3}
   - {fileID: 8300000, guid: d48db8398c2d30140a77d8704a9ab2b7, type: 3}
+  toneVectorThreshold: 0.1
+  useController: 0
 --- !u!224 &865676646
 RectTransform:
   m_ObjectHideFlags: 0
@@ -727,7 +729,7 @@ GameObject:
   - component: {fileID: 1627179530}
   - component: {fileID: 1627179529}
   m_Layer: 5
-  m_Name: MouseY Text
+  m_Name: ToneAngle Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

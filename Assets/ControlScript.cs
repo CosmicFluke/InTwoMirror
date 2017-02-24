@@ -6,24 +6,26 @@ using UnityEngine.UI;
 public class ControlScript : MonoBehaviour {
 
     public Text uiText;
-    public Text mouseYText;
+    public Text toneAngleText;
     public AudioSource sound;
     public Image wheelNeedle;
     public AudioClip[] tones;
+    public float toneVectorThreshold = 0.01f;
+    public bool useController = true;
 
     AudioSource audioSource;
-    int position = 0;
-    int sampleRate = 0;
-    float frequency = 0;
+    bool playingSound = false;
+    float currPitch = 1f;
+    int currVolume = 1;
 
-    string[] toneLabels = {"A", "B", "C#", "D", "E", "F#", "G"};
+    string[] toneLabels = {"A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#"};
     int numTones = 7;
 
     /** The current tone rotation value (in degrees) */
-    float toneRotation = 0f;
+    //float toneRotation = 0f;
 
     /** Values for procedural sound (not used) */
-    float baseFreq = 440f;
+    //float baseFreq = 440f;
     float semitoneMultiplier = 1.059463094359f;
 
     // Use this for initialization
@@ -31,39 +33,60 @@ public class ControlScript : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-        if (Input.GetButton("Fire2")){
-            Vector2 toneVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            
-            //mouseYText.text = angleDegrees.ToString();
-            //int currTone = (int) Mathf.Min(Mathf.Floor(angleDegrees) / 51.42f, 6);
-            //sound.clip = tones[currTone];
-            
-            //uiText.text = toneLabels[currTone];
+	void FixedUpdate () {
+        Vector2 toneVector = useController ? getJoystickInput() : getMouseInput();
+        if (toneVector.magnitude > toneVectorThreshold){
+            toneVector.Normalize();
+            float toneAngle = Mathf.Rad2Deg * Mathf.Atan2(toneVector.y, toneVector.x);
+            if (toneAngle < 0) {
+                toneAngle += 360;
+            }
+            toneAngleText.text = toneAngle.ToString();
+            float newPitch = 1 + toneAngle / 360;
+            newPitch = Mathf.Pow(semitoneMultiplier, Mathf.Floor(Mathf.Log(newPitch, semitoneMultiplier)));
+            if (currPitch != newPitch) {
+                currPitch = newPitch;
+                uiText.text = toneLabels[Mathf.FloorToInt(Mathf.Log(currPitch, semitoneMultiplier))];
+                sound.pitch = newPitch;
+            }
         }
-        if (Input.GetButtonDown("Fire1"))
+        float soundVol = Input.GetAxis("MakeSound");
+        if (!playingSound && soundVol > 0)
         {
-            sound.Play();
+            startSound();
+
         }
-        if (Input.GetButtonUp("Fire1")) {
-            sound.Stop();
+        if (soundVol == 0) {
+            stopSound();
         }
 
 	}
 
-    void OnAudioRead(float[] data)
-    {
-        for (int i = 0; i < data.Length; i++)
-        {
-            
-            data[i] = (Mathf.PingPong(frequency * position / sampleRate, 0.5f));
-            position++;
-        }
+    Vector2 getJoystickInput() {
+        return new Vector2(-Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
     }
 
-    void OnAudioSetPosition(int newPosition)
-    {
-        position = newPosition;
+    Vector2 getMouseInput() {
+        float wheelVal = Input.GetAxis("Mouse ScrollWheel");
+        float toneAngleRad = ((Mathf.Abs(wheelVal) > 0 ? currPitch * (10 * wheelVal) : currPitch) - 1) * 2 * Mathf.PI;
+        Vector2 vector = new Vector2(Mathf.Cos(toneAngleRad), Mathf.Sin(toneAngleRad));
+        Debug.Log(vector);
+        return vector;
+    }
+
+    void startSound() {
+        sound.volume = 0;
+        sound.Play();
+        playingSound = true;
+        for (int i = 1; i <= 1000; i++)
+            sound.volume = currVolume * i / 1000;
+    }
+
+    void stopSound() {
+        for (int i = 999; i >= 0; i--)
+            sound.volume = currVolume * i / 1000;
+        sound.Stop();
+        playingSound = false;
     }
 
 }

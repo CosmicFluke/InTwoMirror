@@ -24,6 +24,8 @@ public class CharacterControl : MonoBehaviour {
     private int currCamelot;
     private List<AudioClip> camelotList;
 
+	public Transform player1;
+	public Transform player2;
 
 
     // Use this for initialization
@@ -45,20 +47,41 @@ public class CharacterControl : MonoBehaviour {
     void Update () {
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
+			player1.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
+			player1.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
+			player1.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
+			player1.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
         }
+
+
+
+		if (Input.GetKey(KeyCode.I))
+		{
+			player2.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
+		}
+		if (Input.GetKey(KeyCode.J))
+		{
+			player2.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
+		}
+		if (Input.GetKey(KeyCode.K))
+		{
+			player2.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
+		}
+		if (Input.GetKey(KeyCode.L))
+		{
+			player2.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
+		}
+
+
         if (Input.GetKeyDown(KeyCode.DownArrow)) // select lower camelot sound
         {
             Debug.Log("Lower camelot to " + currCamelot);

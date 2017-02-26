@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterControl : MonoBehaviour {
+public class CharacterControl : MonoBehaviour
+{
 
     public float movementSpeed = 5f;
     // max distance player must be to interact with object
@@ -24,12 +25,9 @@ public class CharacterControl : MonoBehaviour {
     private int currCamelot;
     private List<AudioClip> camelotList;
 
-	public Transform player1;
-	public Transform player2;
-
-
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         actionable = null;
         audio = GetComponent<AudioSource>();
         currCamelot = 2;
@@ -44,48 +42,51 @@ public class CharacterControl : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-        if (Input.GetKey(KeyCode.W))
+    void Update()
+    {
+        if (name == "Player1")
         {
-			player1.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
+            if (Input.GetKey(KeyCode.W))
+            {
+                transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                transform.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
+            }
         }
-        if (Input.GetKey(KeyCode.A))
-        {
-			player1.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
+        else
+        {   // Player2
+            if (Input.GetKey(KeyCode.I))
+            {
+                transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
+            }
+            if (Input.GetKey(KeyCode.J))
+            {
+                transform.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
+            }
+            if (Input.GetKey(KeyCode.K))
+            {
+                transform.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
+            }
+            if (Input.GetKey(KeyCode.L))
+            {
+                transform.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
+            }
         }
-        if (Input.GetKey(KeyCode.S))
-        {
-			player1.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-			player1.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
-        }
-
-
-
-		if (Input.GetKey(KeyCode.I))
-		{
-			player2.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
-		}
-		if (Input.GetKey(KeyCode.J))
-		{
-			player2.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
-		}
-		if (Input.GetKey(KeyCode.K))
-		{
-			player2.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
-		}
-		if (Input.GetKey(KeyCode.L))
-		{
-			player2.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
-		}
-
 
         if (Input.GetKeyDown(KeyCode.DownArrow)) // select lower camelot sound
         {
             Debug.Log("Lower camelot to " + currCamelot);
-            if(currCamelot > 0)
+            if (currCamelot > 0)
                 currCamelot--;
         }
         if (Input.GetKeyDown(KeyCode.UpArrow)) // select higher camelot sound
@@ -111,12 +112,12 @@ public class CharacterControl : MonoBehaviour {
             audio.Stop();
         }
 
-         // Object interaction
+        // Object interaction
         actionable = FindClosestInteractive();
-        if(actionable != null)
+        if (actionable != null)
         {
             // Do something with the actionable object!
-            Debug.Log("Closest actionable: " +  actionable.name);
+            Debug.Log("Closest actionable: " + actionable.name);
 
             // Pressing F plays audio
             if (Input.GetKeyUp(KeyCode.F))

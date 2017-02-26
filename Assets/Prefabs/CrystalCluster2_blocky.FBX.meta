@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 6ddea2cd4f4274ba0b810aae3a941b92
-timeCreated: 1487806674
+guid: 728b987807eb14a7a960b30b0e2b7f3c
+timeCreated: 1488073042
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: CrystalCluster4
+    4300000: CrystalCluster2
   materials:
     importMaterials: 1
     materialName: 0

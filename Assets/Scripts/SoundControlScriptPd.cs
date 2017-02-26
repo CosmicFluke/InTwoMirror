@@ -8,13 +8,11 @@ public enum Keys { Chromatic, AMajor, AMinor, DMajor, FSharpMinor, CMajor, EMino
 public class SoundControlScriptPd : MonoBehaviour {
 
     // Required
-    public AudioClip tone; // tones[0] required as base tone for pitch adjustment
+    public AudioClip tone; // tone not required, not currently used
     public Image wheelNeedle;
     
     public float toneVectorThreshold = 0.25f;
     public bool useController = true;
-
-    public GameObject dependencies;
 
     AudioSource sound;
     GameObject soundProducer;
@@ -38,7 +36,7 @@ public class SoundControlScriptPd : MonoBehaviour {
     // Use this for initialization
     void Start () {
         sound = GetComponent<AudioSource>();
-        sound.clip = tone;
+        if (tone != null) sound.clip = tone;
     }
 	
 	// Update is called once per frame
@@ -48,8 +46,10 @@ public class SoundControlScriptPd : MonoBehaviour {
         int keyAdjust = DPadButtons.right ? 1 : DPadButtons.left ? -1 : 0;
         Vector2 offsetVector = useController ? getJoystickInput() : getMouseInput();
 
-        if (DPadButtons.up) {
+        if (Input.GetButtonDown("ToggleOctave")) {
             currOctave = Mathf.Abs(currOctave - 1);
+            ParticleSystem.MainModule parts = GetComponent<ParticleSystem>().main;
+            parts.startColor = new ParticleSystem.MinMaxGradient(currOctave == 0 ? Color.blue : Color.white);
             // TODO: GUI Adjust
         }
 
@@ -120,11 +120,13 @@ public class SoundControlScriptPd : MonoBehaviour {
         sound.volume = 0;
         sound.Play();
         playingSound = true;
+        GetComponent<ParticleSystem>().Play();
     }
 
     void stopSound() {
         sound.Stop();
         playingSound = false;
+        GetComponent<ParticleSystem>().Stop();
     }
 
 }

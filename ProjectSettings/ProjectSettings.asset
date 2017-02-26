@@ -461,6 +461,10 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Build: 0
+    Collab: 0
+    ErrorHub: 0
+    Hub: 0
     UNet: 1
   cloudProjectId: 1c89805d-c64a-4121-93d2-6cfaf2a84c9c
   projectName: InTwo (1)

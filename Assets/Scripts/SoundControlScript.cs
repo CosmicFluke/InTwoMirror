@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ControlScript : MonoBehaviour {
+public class SoundControlScript : MonoBehaviour {
 
+    // Required
     public Text uiText;
     public Text toneAngleText;
     public AudioSource sound;
+    public AudioClip[] tones; // tones[0] required as base tone for pitch adjustment
+
+    public GameObject soundProducer;
+
     public Image wheelNeedle;
-    public AudioClip[] tones;
+    
     public float toneVectorThreshold = 0.01f;
     public bool useController = true;
 
@@ -38,6 +43,8 @@ public class ControlScript : MonoBehaviour {
         if (toneVector.magnitude > toneVectorThreshold){
             toneVector.Normalize();
             float toneAngle = Mathf.Rad2Deg * Mathf.Atan2(toneVector.y, toneVector.x);
+            if (wheelNeedle != null)
+                wheelNeedle.transform.rotation = Quaternion.AngleAxis(-toneAngle, Vector3.forward);
             if (toneAngle < 0) {
                 toneAngle += 360;
             }
@@ -78,13 +85,9 @@ public class ControlScript : MonoBehaviour {
         sound.volume = 0;
         sound.Play();
         playingSound = true;
-        for (int i = 1; i <= 1000; i++)
-            sound.volume = currVolume * i / 1000;
     }
 
     void stopSound() {
-        for (int i = 999; i >= 0; i--)
-            sound.volume = currVolume * i / 1000;
         sound.Stop();
         playingSound = false;
     }

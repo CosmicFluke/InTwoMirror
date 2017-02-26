@@ -39,6 +39,7 @@ public class CharacterControl : MonoBehaviour {
         camelotList.Add(CamelotTone2);
         camelotList.Add(CamelotTone3);
         camelotList.Add(CamelotTone4);
+        audio.clip = camelotList[0];
     }
 
     // Update is called once per frame
@@ -79,7 +80,6 @@ public class CharacterControl : MonoBehaviour {
         {
             Debug.Log("currest camelot: " + currCamelot);
             Debug.Log("Play camelot!");
-            audio.clip = camelotList[currCamelot];
             audio.Play();
         }
         if (Input.GetKeyUp(KeyCode.E)) // Stop camelot sound

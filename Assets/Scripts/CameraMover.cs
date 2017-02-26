@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// SMD note: this class copied from http://answers.unity3d.com/questions/912621/make-a-camera-to-follow-two-players.html
+// it may need to be replaced to meet academic requirements
+
 public class CameraMover : MonoBehaviour{
 
-	public static CameraMover cTrack; //cFollow
+	// SMD commented out as not required for InTwo public static CameraMover cTrack; //cFollow
 	public float dampTime = 0.15f; //figure out what this is
 	private Vector3 velocity = Vector3.zero;
 	public Transform target;
@@ -27,7 +31,7 @@ public class CameraMover : MonoBehaviour{
 
 
 	void Awake(){ //Startup of the game
-	
+	/*  SMD commented out as unnecessary for InTwo
 		if (cTrack == null) {
 			DontDestroyOnLoad (gameObject);
 			cTrack = this;
@@ -35,6 +39,7 @@ public class CameraMover : MonoBehaviour{
 		} else if (cTrack != this) {
 			Destroy (gameObject);
 		}
+        */
 	}
 
 

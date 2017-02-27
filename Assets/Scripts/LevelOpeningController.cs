@@ -71,14 +71,22 @@ public class LevelOpeningController : MonoBehaviour
         panel.GetComponent<Graphic>().CrossFadeAlpha(0f, FadeInDuration, false);
     }
 
-    public void fadeOutCamera(string nextSceneName)
+    public void fadeOutCamera()
     {
         Color color = panel.GetComponent<Image>().color;
         color.a = 1f;
         panel.GetComponent<Image>().color = color;
         panel.GetComponent<Image>().CrossFadeColor(Color.black, FadeOutDuration, false, true);
-        while (panel.GetComponent<Image>().color.a > 0) ;
+    }
+
+    public IEnumerator loadScene(string sceneName) {
+        fadeOutCamera();
+        yield return WaitForSeconds(FadeOutDuration);
         SceneManager.LoadScene(nextSceneName);
+        fadeInCamera();
+        yield return WaitForSeconds(FadeInDuration);
+        // TODO: destroy panel on sceneLoad
+        // while (panel.GetComponent<Image>().color.a > 0) ;
         //Destroy(panel);
     }
 }

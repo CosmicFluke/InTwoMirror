@@ -27,7 +27,7 @@ public class Level1Controller : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.B))
         {
             Debug.Log("Fade out camera...");
-            Instance.fadeOutCamera("ClosingScene");
+            Instance.loadScene("ClosingScene");
         }
 
     }

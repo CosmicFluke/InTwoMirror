@@ -46,7 +46,7 @@ public class SoundControlScriptPd : MonoBehaviour {
         Hv_ObeliskVoice_v1_AudioLib selfVoice = GetComponent<Hv_ObeliskVoice_v1_AudioLib>();
 
         int keyAdjust = DPadButtons.right ? 1 : DPadButtons.left ? -1 : 0;
-        Vector2 offsetVector = useController ? getJoystickInput() : getOneAxisPitchInput();
+        Vector2 offsetVector = useController ? getJoystickInput() : player == PlayerID.P1 ? getTwoButtonPitchInput() : getOneAxisPitchInput();
 
         if (Input.GetButtonDown(player.ToString() + "ToggleOctave")) {
             currOctave = Mathf.Abs(currOctave - 1);
@@ -81,12 +81,27 @@ public class SoundControlScriptPd : MonoBehaviour {
         return new Vector2(-Input.GetAxis(player.ToString() + "PitchX"), Input.GetAxis(player.ToString() + "PitchY"));
     }
 
+    /** Calculate a pitch vector from button input when controller is not enabled.  Currently used only for Player 1 since Player 2 has the mouse scroll wheel. */
+    Vector2 getTwoButtonPitchInput() {
+        int change = Input.GetButtonDown(player.ToString() + "PitchUp") ? 1 : Input.GetButtonDown(player.ToString() + "PitchDown") ? -1 : 0;
+        return toneAngleToPitchVector(offsetToAngle(currNoteOffset + change));
+    }
+
+    /** Calculate a pitch vector from a single-axis input when controller is not enabled.  Currently used only with the mouse scroll wheel for Player 2. */
     Vector2 getOneAxisPitchInput() {
-        float pitchModifier = Input.GetAxis(player.ToString() + "Pitch");
-        // Convert current note offset into a radial value & add wheel input value if necessary
-        float toneAngleRad = (Mathf.Abs(pitchModifier) > 0 ? (currNoteOffset + 10 * pitchModifier) % 12 : currNoteOffset) * 2 * Mathf.PI / 12;
-        Vector2 vector = new Vector2(Mathf.Cos(toneAngleRad), Mathf.Sin(toneAngleRad));
-        return vector;
+        float pitchAxis = Input.GetAxis(player.ToString() + "Pitch");
+        // Convert current note offset into a radial value & add axis input value if necessary
+        int offset = Mathf.Abs(pitchAxis) > 0 ? (currNoteOffset + Mathf.FloorToInt(Mathf.Min(1f, 10 * pitchAxis))) % 12 : currNoteOffset;
+        return toneAngleToPitchVector(offsetToAngle(offset));
+    }
+
+    float offsetToAngle(int offset)
+    {
+        return offset * Mathf.PI / 6;
+    }
+
+    Vector2 toneAngleToPitchVector(float toneAngleRad) {
+        return new Vector2(Mathf.Cos(toneAngleRad), Mathf.Sin(toneAngleRad));
     }
 
     void setWheelNeedle(float toneAngle)

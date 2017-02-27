@@ -27,6 +27,7 @@ public class CharacterControl : MonoBehaviour
     // Currently selected Camelot tone to play
     private int currCamelot;
     private List<AudioClip> camelotList;
+    private PlayerID player;
 
     // Use this for initialization
     void Start()
@@ -43,48 +44,16 @@ public class CharacterControl : MonoBehaviour
         camelotList.Add(CamelotTone3);
         camelotList.Add(CamelotTone4);
         audio.clip = camelotList[0];
+        player = name == "Player1" ? PlayerID.P1 : PlayerID.P2;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (name == "Player1")
-        {
-            if (Input.GetKey(KeyCode.W))
-            {
-                transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                transform.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
-            }
-        }
-        else
-        {   // Player2
-            if (Input.GetKey(KeyCode.I))
-            {
-                transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed, Space.World);
-            }
-            if (Input.GetKey(KeyCode.J))
-            {
-                transform.Translate(Vector3.left * Time.deltaTime * movementSpeed, Space.World);
-            }
-            if (Input.GetKey(KeyCode.K))
-            {
-                transform.Translate(Vector3.back * Time.deltaTime * movementSpeed, Space.World);
-            }
-            if (Input.GetKey(KeyCode.L))
-            {
-                transform.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
-            }
+        Vector3 movement = new Vector3(Input.GetAxis(player.ToString() + "Horizontal"), 0f, Input.GetAxis(player.ToString() + "Vertical"));
+        if (movement.magnitude > 0) {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.AddForce(movement.normalized * 15);
         }
 
         // Object interaction

@@ -27,6 +27,9 @@ Assets/Plugins.meta
 Assets/Materials.meta
 Assets/Plugins/x64.meta
 
+# SD.. we can probably remove this one sometime
+Assets/Prefabs/Materials.meta
+
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 

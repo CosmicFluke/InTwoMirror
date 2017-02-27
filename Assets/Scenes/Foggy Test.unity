@@ -233,6 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   maxActionDistance: 10
+  audioEmitter: {fileID: 0}
   secondarySound: {fileID: 0}
   CamelotTone0: {fileID: 0}
   CamelotTone1: {fileID: 0}
@@ -413,6 +414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   maxActionDistance: 10
+  audioEmitter: {fileID: 0}
   secondarySound: {fileID: 0}
   CamelotTone0: {fileID: 0}
   CamelotTone1: {fileID: 0}

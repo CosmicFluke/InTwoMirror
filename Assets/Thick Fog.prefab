@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4819904632242368}
   - component: {fileID: 198507795274749448}
   - component: {fileID: 199814780849692292}
-  - component: {fileID: 65042930436278202}
+  - component: {fileID: 65166470920321888}
   m_Layer: 0
   m_Name: Thick Fog
   m_TagString: Untagged
@@ -36,13 +36,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1828515834584266}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.15, z: -44.9}
+  m_LocalPosition: {x: 5.4, y: 2.15, z: 3.52}
   m_LocalScale: {x: 4.571493, y: 0.43814474, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &65042930436278202
+--- !u!65 &65166470920321888
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -52,8 +52,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 40.8287, y: 21.300026, z: 21.300013}
-  m_Center: {x: -0.08728218, y: 0, z: 0}
+  m_Size: {x: 20.90065, y: 9.403277, z: 21.406279}
+  m_Center: {x: -0.02733335, y: -0.56137747, z: -0.05313304}
 --- !u!198 &198507795274749448
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -61,7 +61,7 @@ ParticleSystem:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1828515834584266}
   serializedVersion: 5
-  lengthInSec: 30
+  lengthInSec: 600
   speed: 1
   looping: 1
   prewarm: 1
@@ -109,7 +109,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1257799325
+  randomSeed: 954546423
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -565,7 +565,7 @@ ParticleSystem:
     serializedVersion: 3
     enabled: 1
     type: 12
-    radius: 10
+    radius: 4.496998
     angle: 64
     length: 5
     boxX: 1
@@ -2319,9 +2319,9 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
-    interiorCollisions: 1
+    interiorCollisions: 0
   TriggerModule:
     enabled: 0
     collisionShape0: {fileID: 0}

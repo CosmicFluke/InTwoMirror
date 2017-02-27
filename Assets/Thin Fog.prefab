@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 198507795274749448}
   - component: {fileID: 199814780849692292}
   m_Layer: 0
-  m_Name: Thick Fog
+  m_Name: Thin Fog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -9,6 +9,9 @@ public class CharacterControl : MonoBehaviour
     // max distance player must be to interact with object
     public float maxActionDistance = 10f;
 
+    // Contains audio source and sound control script
+    public GameObject audioEmitter;
+
     // Audio clips
     public AudioClip secondarySound;
     public AudioClip CamelotTone0;
@@ -39,6 +42,7 @@ public class CharacterControl : MonoBehaviour
         camelotList.Add(CamelotTone2);
         camelotList.Add(CamelotTone3);
         camelotList.Add(CamelotTone4);
+        audio.clip = camelotList[0];
     }
 
     // Update is called once per frame
@@ -81,35 +85,6 @@ public class CharacterControl : MonoBehaviour
             {
                 transform.Translate(Vector3.right * Time.deltaTime * movementSpeed, Space.World);
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.DownArrow)) // select lower camelot sound
-        {
-            Debug.Log("Lower camelot to " + currCamelot);
-            if (currCamelot > 0)
-                currCamelot--;
-        }
-        if (Input.GetKeyDown(KeyCode.UpArrow)) // select higher camelot sound
-        {
-            Debug.Log("Raise camelot to " + currCamelot);
-
-            if (currCamelot < 5)
-                currCamelot++;
-        }
-
-
-
-        if (Input.GetKeyDown(KeyCode.E)) // Play camelot sound
-        {
-            Debug.Log("currest camelot: " + currCamelot);
-            Debug.Log("Play camelot!");
-            audio.clip = camelotList[currCamelot];
-            audio.Play();
-        }
-        if (Input.GetKeyUp(KeyCode.E)) // Stop camelot sound
-        {
-            Debug.Log("Stop camelot!");
-            audio.Stop();
         }
 
         // Object interaction

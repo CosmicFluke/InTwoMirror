@@ -57,7 +57,7 @@ public class LevelOpeningController : MonoBehaviour
         }
     }
 
-    public void fadeInCamera()
+    public IEnumerator fadeInCamera()
     {
         canvas = GameObject.Find("Canvas");
         panel = (GameObject)Instantiate(Resources.Load("Prefabs/BlackPanel"));
@@ -69,22 +69,23 @@ public class LevelOpeningController : MonoBehaviour
         panel.transform.localScale = new Vector3(canvasHeight, canvasWidth, 1);
 
         panel.GetComponent<Graphic>().CrossFadeAlpha(0f, FadeInDuration, false);
+        yield return new WaitForSeconds(FadeInDuration);
     }
 
-    public void fadeOutCamera()
+    public IEnumerator fadeOutCamera()
     {
         Color color = panel.GetComponent<Image>().color;
         color.a = 1f;
         panel.GetComponent<Image>().color = color;
         panel.GetComponent<Image>().CrossFadeColor(Color.black, FadeOutDuration, false, true);
+
+        yield return new WaitForSeconds(FadeOutDuration);
     }
 
-    public IEnumerator loadScene(string sceneName) {
+    public void loadScene(string sceneName) {
         fadeOutCamera();
-        yield return WaitForSeconds(FadeOutDuration);
-        SceneManager.LoadScene(nextSceneName);
+        SceneManager.LoadScene(sceneName);
         fadeInCamera();
-        yield return WaitForSeconds(FadeInDuration);
         // TODO: destroy panel on sceneLoad
         // while (panel.GetComponent<Image>().color.a > 0) ;
         //Destroy(panel);

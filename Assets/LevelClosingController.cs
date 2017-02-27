@@ -26,7 +26,7 @@ public class LevelClosingController : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.B))
         {
             Debug.Log("Fade out camera...");
-            Instance.fadeOutCamera("OpeningScene");
+            Instance.loadScene("OpeningScene");
         }
 
     }

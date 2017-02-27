@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum Keys { Chromatic, AMajor, AMinor, DMajor, FSharpMinor, CMajor, EMinor };
+public enum PlayerID { P1, P2 };
 
 public class SoundControlScriptPd : MonoBehaviour {
 
@@ -12,7 +13,8 @@ public class SoundControlScriptPd : MonoBehaviour {
     public Image wheelNeedle;
     
     public float toneVectorThreshold = 0.25f;
-    public bool useController = true;
+    public bool useController = false;
+    public PlayerID player;
 
     AudioSource sound;
     GameObject soundProducer;
@@ -44,9 +46,9 @@ public class SoundControlScriptPd : MonoBehaviour {
         Hv_ObeliskVoice_v1_AudioLib selfVoice = GetComponent<Hv_ObeliskVoice_v1_AudioLib>();
 
         int keyAdjust = DPadButtons.right ? 1 : DPadButtons.left ? -1 : 0;
-        Vector2 offsetVector = useController ? getJoystickInput() : getMouseInput();
+        Vector2 offsetVector = useController ? getJoystickInput() : getOneAxisPitchInput();
 
-        if (Input.GetButtonDown("ToggleOctave")) {
+        if (Input.GetButtonDown(player.ToString() + "ToggleOctave")) {
             currOctave = Mathf.Abs(currOctave - 1);
             ParticleSystem.MainModule parts = GetComponent<ParticleSystem>().main;
             parts.startColor = new ParticleSystem.MinMaxGradient(currOctave == 0 ? Color.blue : Color.white);
@@ -67,7 +69,7 @@ public class SoundControlScriptPd : MonoBehaviour {
 
         setPitch(selfVoice);
 
-        float makeSound = Input.GetAxis("MakeSound");
+        float makeSound = Input.GetAxis(player.ToString() + "MakeSound");
         if (!playingSound && makeSound > 0)
             startSound();
         if (playingSound && makeSound == 0)
@@ -76,13 +78,13 @@ public class SoundControlScriptPd : MonoBehaviour {
 	}
 
     Vector2 getJoystickInput() {
-        return new Vector2(-Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        return new Vector2(-Input.GetAxis(player.ToString() + "PitchX"), Input.GetAxis(player.ToString() + "PitchY"));
     }
 
-    Vector2 getMouseInput() {
-        float wheelVal = Input.GetAxis("Mouse ScrollWheel");
+    Vector2 getOneAxisPitchInput() {
+        float pitchModifier = Input.GetAxis(player.ToString() + "Pitch");
         // Convert current note offset into a radial value & add wheel input value if necessary
-        float toneAngleRad = (Mathf.Abs(wheelVal) > 0 ? (currNoteOffset + 10 * wheelVal) % 12 : currNoteOffset) * 2 * Mathf.PI / 12;
+        float toneAngleRad = (Mathf.Abs(pitchModifier) > 0 ? (currNoteOffset + 10 * pitchModifier) % 12 : currNoteOffset) * 2 * Mathf.PI / 12;
         Vector2 vector = new Vector2(Mathf.Cos(toneAngleRad), Mathf.Sin(toneAngleRad));
         return vector;
     }

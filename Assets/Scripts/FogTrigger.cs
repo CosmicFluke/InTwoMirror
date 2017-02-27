@@ -20,12 +20,18 @@ public class FogTrigger : MonoBehaviour {
 			ParticleSystem.Particle[] particles = new ParticleSystem.Particle[fogSystem.particleCount];
 			fogSystem.GetParticles (particles);
 
-			fogSystem.startColor = new Color(fogSystem.startColor.r, fogSystem.startColor.g, fogSystem.startColor.b, fogSystem.startColor.a * 0.9f);
+//			fogSystem.startColor = new Color(fogSystem.startColor.r, fogSystem.startColor.g, fogSystem.startColor.b, fogSystem.startColor.a * 0.9f);
+//
+//			if (fogSystem.startColor.a < 0.1)
+//            {
+//                Destroy(fog, 5);
+//            }
 
-			if (fogSystem.startColor.a < 0.1)
-            {
-                Destroy(fog, 5);
-            }
+			fogSystem.Stop ();
+
+			if (fogSystem.particleCount == 0) {
+				Destroy (fog);
+			}
         }
 	}
 

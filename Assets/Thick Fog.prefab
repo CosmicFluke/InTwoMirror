@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65166470920321888}
   m_Layer: 0
   m_Name: Thick Fog
-  m_TagString: Untagged
+  m_TagString: ThickFog
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,7 +109,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 954546423
+  randomSeed: -1563850947
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -891,7 +891,7 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     curve:
-      scalar: 0.7853982
+      scalar: 0.08726646
       maxCurve:
         serializedVersion: 2
         m_Curve:

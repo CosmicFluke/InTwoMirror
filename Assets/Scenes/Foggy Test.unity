@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -102,6 +102,8 @@ GameObject:
   - component: {fileID: 543355404}
   - component: {fileID: 543355403}
   - component: {fileID: 543355402}
+  - component: {fileID: 543355407}
+  - component: {fileID: 543355406}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -173,6 +175,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &543355406
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 543355401}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &543355407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 543355401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42ec351780e6b4d52ba7a577ebe2e184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fog: {fileID: 1871198671}
 --- !u!1 &610936044
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,3 +733,8 @@ MonoBehaviour:
   camDist: 0
   camOffset: 0
   bounds: 0
+--- !u!1 &1871198671 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1828515834584266, guid: 248493d132679469e9dd7da7e350bddd,
+    type: 2}
+  m_PrefabInternal: {fileID: 804852010}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FogTrigger : MonoBehaviour {
 
-    public ParticleSystem fog;
+	public GameObject fog;
     bool destroyFog = false;
 
 	// Use this for initialization
@@ -16,12 +16,13 @@ public class FogTrigger : MonoBehaviour {
 	void Update () {
 		if (fog != null && destroyFog)
         {
-            ParticleSystem.Particle[] particles = new ParticleSystem.Particle[fog.particleCount];
-            fog.GetParticles(particles);
+			ParticleSystem fogSystem = fog.GetComponent<ParticleSystem>();
+			ParticleSystem.Particle[] particles = new ParticleSystem.Particle[fogSystem.particleCount];
+			fogSystem.GetParticles (particles);
 
-            fog.startColor = new Color(fog.startColor.r, fog.startColor.g, fog.startColor.b, fog.startColor.a * 0.9f);
+			fogSystem.startColor = new Color(fogSystem.startColor.r, fogSystem.startColor.g, fogSystem.startColor.b, fogSystem.startColor.a * 0.9f);
 
-            if (fog.startColor.a < 0.1)
+			if (fogSystem.startColor.a < 0.1)
             {
                 Destroy(fog, 5);
             }

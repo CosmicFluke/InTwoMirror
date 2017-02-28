@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class LevelClosingController : MonoBehaviour {
 
-    static LevelOpeningController Instance;
+    static GameController Instance;
 
     // Use this for initialization
     void Start()
     {
         if (Instance == null)
         {
-            Instance = GameObject.Find("GameController").GetComponent<LevelOpeningController>();
+            Instance = GameObject.Find("GameController").GetComponent<GameController>();
         }
-
-        Instance.fadeInCamera();
     }
 
     // Update is called once per frame

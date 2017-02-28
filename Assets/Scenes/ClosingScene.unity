@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 1410903817}
   - component: {fileID: 1410903816}
   m_Layer: 0
-  m_Name: LevelClosingControllerObject
+  m_Name: LevelClosingControllerObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

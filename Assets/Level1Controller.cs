@@ -1,21 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Level1Controller : MonoBehaviour {
 
-    static LevelOpeningController Instance;
+    static GameController Instance;
 
     // Use this for initialization
     void Start()
     {
         if (Instance == null)
         {
-            Instance = GameObject.Find("GameController").GetComponent<LevelOpeningController>();
+            Instance = GameObject.Find("GameController").GetComponent<GameController>();
         }
-
-        Instance.fadeInCamera();
     }
 
     // Update is called once per frame

@@ -324,6 +324,11 @@ Prefab:
       propertyPath: m_Intensity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23142545003914346, guid: 819ed4cdda94141498b9e76eeba9bc81,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2772f936dab8f49458293c8b4de0c95f, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}
   m_IsPrefabParent: 0
@@ -377,6 +382,11 @@ Prefab:
       value: 
       objectReference: {fileID: 243775203633315082, guid: 21ec2f9cc888617439a40fe8405b5fc1,
         type: 2}
+    - target: {fileID: 114060003700452664, guid: f8f92926004ada74c9aa9a6ac7b2ca9a,
+        type: 2}
+      propertyPath: useController
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f8f92926004ada74c9aa9a6ac7b2ca9a, type: 2}
   m_IsPrefabParent: 0
@@ -418,16 +428,6 @@ Prefab:
     - target: {fileID: 4401540532727902, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}
       propertyPath: m_RootOrder
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 108183562591990024, guid: 819ed4cdda94141498b9e76eeba9bc81,
-        type: 2}
-      propertyPath: m_Intensity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 23142545003914346, guid: 819ed4cdda94141498b9e76eeba9bc81,
-        type: 2}
-      propertyPath: m_MotionVectors
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}

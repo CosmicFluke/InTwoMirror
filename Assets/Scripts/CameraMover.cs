@@ -44,19 +44,19 @@ public class CameraMover : MonoBehaviour{
 
 
 	void Start(){
-		camDist = 15.0f;
-		bounds = 17.0f;
+		camDist = 9.0f;
+		bounds = 12.0f;
 		camera = GetComponent<Camera>();
 	}
 
 	void Update(){
 
 		distance = player1.position - player2.position;
-		if (camDist >= 19.0f) {
-			camDist = 19.0f;
-		}
-		if (camDist <= 15.0f) {
+		if (camDist >= 15.0f) {
 			camDist = 15.0f;
+		}
+		if (camDist <= 6.0f) {
+			camDist = 6.0f;
 		}
 		if (distance.x < 0) {
 			distance.x = distance.x * -1;
@@ -65,7 +65,7 @@ public class CameraMover : MonoBehaviour{
 			distance.z = distance.z * -1;
 		}
 
-		if (player1.position.x < (transform.position.x - bounds)) {
+        if (player1.position.x < (transform.position.x - bounds)) {
 			Vector3 pos = player1.position;
 			pos.x = transform.position.x - bounds;
 			player1.position = pos;
@@ -89,14 +89,14 @@ public class CameraMover : MonoBehaviour{
 			player2.position = pos;
 		}
 
-		if (distance.x > 15.0f) {
+		if (distance.x > 13.0f) {
 			camOffset = distance.x * 0.3f;
 			if (camOffset >= 8.5f) {
 				camOffset = 8.5f;
 			}
-		} else if (distance.x < 14.0f) {
+		} else if (distance.x <= 13.0f) {
 			camOffset = distance.x * 0.3f;
-		} else if (distance.z < 14.0f) {
+		} else if (distance.z <= 13.0f) {
 			camOffset = distance.x * 0.3f;
 		}
 
@@ -108,7 +108,7 @@ public class CameraMover : MonoBehaviour{
 
 		if (player1) {
 			Vector3 point = camera.WorldToViewportPoint(midPoint);
-			Vector3 delta = midPoint - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.3f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
+			Vector3 delta = midPoint - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.6f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
 			Vector3 destination = transform.position + delta;
 			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
 		}

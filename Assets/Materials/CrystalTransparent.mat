@@ -6,27 +6,28 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: No Name
+  m_Name: CrystalTransparent
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _DETAIL_MULX2 _EMISSION _NORMALMAP
   m_LightmapFlags: 1
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
     - first:
         name: _BumpMap
       second:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 10305, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
         name: _DetailAlbedoMap
       second:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Offset: {x: 1, y: 1}
     - first:
         name: _DetailMask
       second:
@@ -69,6 +70,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _SpecGlossMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
         name: _BumpScale
@@ -81,22 +88,22 @@ Material:
       second: 1
     - first:
         name: _DstBlend
-      second: 0
+      second: 10
     - first:
         name: _GlossMapScale
-      second: 1
+      second: 0.771
     - first:
         name: _Glossiness
-      second: 0.5
+      second: 0.854
     - first:
         name: _GlossyReflections
       second: 1
     - first:
         name: _Metallic
-      second: 0
+      second: 0.284
     - first:
         name: _Mode
-      second: 0
+      second: 3
     - first:
         name: _OcclusionStrength
       second: 1
@@ -117,11 +124,14 @@ Material:
       second: 0
     - first:
         name: _ZWrite
-      second: 1
+      second: 0
     m_Colors:
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0, g: 0, b: 0, a: 1}
+      second: {r: 0.04146841, g: 0.04632052, b: 0.09558821, a: 1}
+    - first:
+        name: _SpecColor
+      second: {r: 0.54563147, g: 0.85294116, b: 0.649481, a: 1}

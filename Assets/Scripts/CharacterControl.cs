@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerID { P1, P2 };
+
 public class CharacterControl : MonoBehaviour
 {
 
@@ -28,6 +30,7 @@ public class CharacterControl : MonoBehaviour
     private int currCamelot;
     private List<AudioClip> camelotList;
     private PlayerID player;
+    private Collider proximity = null;
 
     // Use this for initialization
     void Start()
@@ -92,5 +95,21 @@ public class CharacterControl : MonoBehaviour
             }
         }
         return closest;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.isTrigger && other.CompareTag("Interactive")) {
+            GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
+            proximity = other;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == proximity) {
+            proximity = null;
+            GetComponentInChildren<SoundControlScriptPd>().Interactive = null;
+        }
     }
 }

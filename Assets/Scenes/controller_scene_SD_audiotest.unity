@@ -375,6 +375,11 @@ Prefab:
       propertyPath: oscillatingFrequency
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114305435593839808, guid: 819ed4cdda94141498b9e76eeba9bc81,
+        type: 2}
+      propertyPath: player
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}
   m_IsPrefabParent: 0
@@ -556,12 +561,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 82178344345378764, guid: f8f92926004ada74c9aa9a6ac7b2ca9a,
-        type: 2}
-      propertyPath: OutputAudioMixerGroup
-      value: 
-      objectReference: {fileID: 243775203633315082, guid: 21ec2f9cc888617439a40fe8405b5fc1,
-        type: 2}
     - target: {fileID: 114060003700452664, guid: f8f92926004ada74c9aa9a6ac7b2ca9a,
         type: 2}
       propertyPath: useController
@@ -608,18 +607,6 @@ Prefab:
     - target: {fileID: 4401540532727902, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4107443778213230, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 24.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4107443778213230, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 4107443778213230, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 819ed4cdda94141498b9e76eeba9bc81, type: 2}
@@ -834,15 +821,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632ec2805726bfb48b57e11f619fe83a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  movementSpeed: 30
   maxActionDistance: 10
-  audioEmitter: {fileID: 0}
   secondarySound: {fileID: 8300000, guid: d5f07abf765dc754cbb3607627b36ddd, type: 3}
   CamelotTone0: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
-  CamelotTone1: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
-  CamelotTone2: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
-  CamelotTone3: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
-  CamelotTone4: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
 --- !u!23 &986454487
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1240,15 +1222,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632ec2805726bfb48b57e11f619fe83a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  movementSpeed: 30
   maxActionDistance: 10
-  audioEmitter: {fileID: 0}
   secondarySound: {fileID: 8300000, guid: d5f07abf765dc754cbb3607627b36ddd, type: 3}
   CamelotTone0: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
-  CamelotTone1: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
-  CamelotTone2: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
-  CamelotTone3: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
-  CamelotTone4: {fileID: 8300000, guid: c2b4a76bc7fc76a4598f9bf6852500a8, type: 3}
 --- !u!23 &1657002568
 MeshRenderer:
   m_ObjectHideFlags: 0

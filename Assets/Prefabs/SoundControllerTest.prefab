@@ -180,13 +180,13 @@ MonoBehaviour:
   toneAngleText: {fileID: 0}
   sound: {fileID: 82047026009706246}
   tones:
-  - {fileID: 8300000, guid: a16251cb1a6d27d47af05dcd727508a7, type: 3}
-  - {fileID: 8300000, guid: c149a3c337c97684aa89d67e81806033, type: 3}
-  - {fileID: 8300000, guid: e0580f572f1b86f4bb827c61425e6776, type: 3}
-  - {fileID: 8300000, guid: 265f3f54cacab534ba9b5cfa62086c94, type: 3}
-  - {fileID: 8300000, guid: 81a53a6d834db6c44b38490db5066204, type: 3}
-  - {fileID: 8300000, guid: 81b8fdb40ab2f5f468b6e8b6cfbfe46a, type: 3}
-  - {fileID: 8300000, guid: d48db8398c2d30140a77d8704a9ab2b7, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   soundProducer: {fileID: 0}
   wheelNeedle: {fileID: 0}
   toneVectorThreshold: 0.1

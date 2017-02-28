@@ -22,7 +22,7 @@ public class LevelTutorialController : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.B))
         {
             Debug.Log("Fade out camera...");
-            GameController.GotoScene("LevelClosing");
+            GameController.GotoScene("ClosingScene");
         }
 
     }

@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
     {
         if (0 != Input.GetAxis("GameControlTutorial"))
         {
-            SceneManager.LoadScene("LevelTutorial");
+            SceneManager.LoadScene("Tutorial");
         }
         if (0 != Input.GetAxis("GameControlLevel1"))
         {
@@ -62,11 +62,11 @@ public class GameController : MonoBehaviour
         }
         if (0 != Input.GetAxis("GameControlClosing"))
         {
-            SceneManager.LoadScene("LevelClosing");
+            SceneManager.LoadScene("ClosingScene");
         }
         if (0 != Input.GetAxis("GameControlOpening"))
         {
-            SceneManager.LoadScene("LevelOpening");
+            SceneManager.LoadScene("OpeningScene");
         }
     }
 

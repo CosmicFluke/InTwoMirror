@@ -25,7 +25,7 @@ public class LevelOpeningController : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.B))
         {
             Debug.Log("Fade out camera...");
-            GameController.GotoScene("LevelTutorial");
+            GameController.GotoScene("Tutorial");
         }
 
     }

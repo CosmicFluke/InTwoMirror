@@ -15,13 +15,22 @@ public class ResonatorController : MonoBehaviour {
     Key targetKey;
     const int baseNote = 57;
 
+    int ossCounter = 0;
+
 	// Use this for initialization
 	void Start () {
         targetKey = new Key(tone, chord);
+
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        if (isPlaying && oscillatingFrequency > 0)
+        {
+            Hv_ObeliskVoice_v1_AudioLib audio = GetComponent<Hv_ObeliskVoice_v1_AudioLib>();
+            audio.SetFloatParameter(Hv_ObeliskVoice_v1_AudioLib.Parameter.Mastervoicevolume, 0.6f * Mathf.Abs(Mathf.Sin(ossCounter * oscillatingFrequency * Mathf.PI / 60)) + 0.25f);
+            ossCounter++;
+        } else ossCounter = 0;
 		
 	}
 

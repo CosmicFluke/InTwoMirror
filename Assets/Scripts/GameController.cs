@@ -34,7 +34,8 @@ public class GameController : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Alpha0))
         {
-            SceneManager.LoadScene("Tutorial");
+            coroutine = loadScene("Tutorial");
+            StartCoroutine(coroutine);
         }
         if (Input.GetKeyUp(KeyCode.Alpha1))
         {
@@ -43,19 +44,23 @@ public class GameController : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Alpha2))
         {
-            SceneManager.LoadScene("Level2");
+            coroutine = loadScene("Level2");
+            StartCoroutine(coroutine);
         }
         if (Input.GetKeyUp(KeyCode.Alpha3))
         {
-            SceneManager.LoadScene("Level3");
+            coroutine = loadScene("Level3");
+            StartCoroutine(coroutine);
         }
         if (Input.GetKeyUp(KeyCode.Alpha4))
         {
-            SceneManager.LoadScene("ClosingScene");
+            coroutine = loadScene("ClosingScene");
+            StartCoroutine(coroutine);
         }
         if (Input.GetKeyUp(KeyCode.Alpha9))
         {
-            SceneManager.LoadScene("OpeningScene");
+            coroutine = loadScene("OpeningScene");
+            StartCoroutine(coroutine);
         }
     }
 
@@ -108,10 +113,7 @@ public class GameController : MonoBehaviour
         fadeOutCamera();
         yield return new WaitForSeconds(FadeOutDuration);
         SceneManager.LoadScene(sceneName);
-        panel = (GameObject)Instantiate(Resources.Load("Prefabs/BlackPanel"));
-        panel.transform.SetParent(canvas.transform);
         Debug.Log("After wait");
-        fadeInCamera();
         // TODO: destroy panel on sceneLoad
         // while (panel.GetComponent<Image>().color.a > 0) ;
         //Destroy(panel);

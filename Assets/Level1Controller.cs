@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Level1Controller : MonoBehaviour {
 
-    static GameController Instance;
+    static GameController GameController;
 
     // Use this for initialization
     void Start()
     {
-        if (Instance == null)
+        if (GameController == null)
         {
-            Instance = GameObject.Find("GameController").GetComponent<GameController>();
+            GameController = GameObject.Find("GameController").GetComponent<GameController>();
         }
+        GameController.fadeInCamera();
     }
 
     // Update is called once per frame
@@ -24,7 +25,7 @@ public class Level1Controller : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.B))
         {
             Debug.Log("Fade out camera...");
-            Instance.loadScene("ClosingScene");
+            GameController.loadScene("ClosingScene");
         }
 
     }

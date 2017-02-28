@@ -1,4 +1,5 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,41 +30,47 @@ public class GameController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GotoScene(string newScene)
     {
-        if (Input.GetKeyUp(KeyCode.Alpha0))
+        try
         {
-            coroutine = loadScene("Tutorial");
-            StartCoroutine(coroutine);
+            SceneManager.LoadScene(newScene);
         }
-        if (Input.GetKeyUp(KeyCode.Alpha1))
+        catch (Exception e)
         {
-            coroutine = loadScene("Level1");
-            StartCoroutine(coroutine);
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha2))
-        {
-            coroutine = loadScene("Level2");
-            StartCoroutine(coroutine);
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha3))
-        {
-            coroutine = loadScene("Level3");
-            StartCoroutine(coroutine);
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha4))
-        {
-            coroutine = loadScene("ClosingScene");
-            StartCoroutine(coroutine);
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha9))
-        {
-            coroutine = loadScene("OpeningScene");
-            StartCoroutine(coroutine);
+            Debug.Log("Scene not found [" + newScene + "]");
         }
     }
 
+    void Update()
+    {
+        if (0 != Input.GetAxis("GameControlTutorial"))
+        {
+            SceneManager.LoadScene("LevelTutorial");
+        }
+        if (0 != Input.GetAxis("GameControlLevel1"))
+        {
+            SceneManager.LoadScene("Level1");
+        }
+        if (0 != Input.GetAxis("GameControlLevel2"))
+        {
+            SceneManager.LoadScene("Level2");
+        }
+        if (0 != Input.GetAxis("GameControlLevel3"))
+        {
+            SceneManager.LoadScene("Level3");
+        }
+        if (0 != Input.GetAxis("GameControlClosing"))
+        {
+            SceneManager.LoadScene("LevelClosing");
+        }
+        if (0 != Input.GetAxis("GameControlOpening"))
+        {
+            SceneManager.LoadScene("LevelOpening");
+        }
+    }
+
+/*
     // Fades from black
     public void fadeInCamera()
     {
@@ -118,4 +125,5 @@ public class GameController : MonoBehaviour
         // while (panel.GetComponent<Image>().color.a > 0) ;
         //Destroy(panel);
     }
+*/
 }

@@ -13,7 +13,7 @@ public class LevelOpeningController : MonoBehaviour {
         {
             GameController = GameObject.Find("GameController").GetComponent<GameController>();
         }
-        GameController.fadeInCamera();
+        //GameController.fadeInCamera();
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class LevelOpeningController : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.B))
         {
             Debug.Log("Fade out camera...");
-            GameController.loadScene("ClosingScene");
+            GameController.GotoScene("LevelTutorial");
         }
 
     }

@@ -23,6 +23,10 @@ ExportedObj/
 # Unity3D generated meta files
 *.pidb.meta
 Assets/Prefabs.meta
+Assets/AudioTest.meta
+Assets/Resources.meta
+Assets/Scenes.meta
+Assets/Scripts.meta
 Assets/Plugins.meta
 Assets/Materials.meta
 Assets/Plugins/x64.meta

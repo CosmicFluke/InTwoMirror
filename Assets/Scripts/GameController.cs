@@ -23,30 +23,29 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Alpha0))
+        if (0!=Input.GetAxis("GameControlTutorial"))
         {
             SceneManager.LoadScene("Tutorial");
         }
-        if (Input.GetKeyUp(KeyCode.Alpha1))
+        if (0!=Input.GetAxis("GameControlLevel1"))
         {
             SceneManager.LoadScene("Level1");
         }
-        if (Input.GetKeyUp(KeyCode.Alpha2))
+        if (0!=Input.GetAxis("GameControlLevel2"))
         {
             SceneManager.LoadScene("Level2");
         }
-        if (Input.GetKeyUp(KeyCode.Alpha3))
+        if (0!=Input.GetAxis("GameControlLevel3"))
         {
             SceneManager.LoadScene("Level3");
         }
-        if (Input.GetKeyUp(KeyCode.Alpha4))
+        if (0!=Input.GetAxis("GameControlClosing"))
         {
             SceneManager.LoadScene("ClosingScene");
         }
-        if (Input.GetKeyUp(KeyCode.Alpha9))
+        if (0!=Input.GetAxis("GameControlOpening"))
         {
             SceneManager.LoadScene("OpeningScene");
         }

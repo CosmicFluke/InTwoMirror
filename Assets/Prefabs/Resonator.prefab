@@ -118,7 +118,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 2772f936dab8f49458293c8b4de0c95f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tone: 0
-  chord: 2
+  chord: 1
   oscillatingFrequency: 2
   distort: 0
   activeMaterial: {fileID: 2100000, guid: cb1eeb0db00f3bc4e8bbd4e7eba81d3e, type: 2}
@@ -300,13 +300,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a2f4e6a9fad4ac88646ccf278d8934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pitch: 57
+  Pitch: 69
   delayLevel: 0.37
   delayTimeLeft: 832
   delayTimeRight: 661
   distortion: 0.453
   masterVoiceOnOff: 1
-  masterVoiceVolume: 0.554
+  masterVoiceVolume: 0.54999954
   preAmpVolume: 0.534
 --- !u!135 &135822973635303596
 SphereCollider:

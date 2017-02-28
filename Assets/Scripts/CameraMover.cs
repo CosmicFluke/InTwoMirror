@@ -44,7 +44,7 @@ public class CameraMover : MonoBehaviour{
 
 
 	void Start(){
-		camDist = 9.0f;
+		camDist = 7.0f;
 		bounds = 12.0f;
 		camera = GetComponent<Camera>();
 	}
@@ -52,11 +52,11 @@ public class CameraMover : MonoBehaviour{
 	void Update(){
 
 		distance = player1.position - player2.position;
-		if (camDist >= 15.0f) {
-			camDist = 15.0f;
+		if (camDist >= 13.0f) {
+			camDist = 13.0f;
 		}
-		if (camDist <= 6.0f) {
-			camDist = 6.0f;
+		if (camDist <= 4.0f) {
+			camDist = 4.0f;
 		}
 		if (distance.x < 0) {
 			distance.x = distance.x * -1;
@@ -108,7 +108,7 @@ public class CameraMover : MonoBehaviour{
 
 		if (player1) {
 			Vector3 point = camera.WorldToViewportPoint(midPoint);
-			Vector3 delta = midPoint - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.6f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
+			Vector3 delta = midPoint - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
 			Vector3 destination = transform.position + delta;
 			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
 		}

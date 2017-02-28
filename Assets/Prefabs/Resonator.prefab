@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 4794366865078746}
   - component: {fileID: 108183562591990024}
   m_Layer: 0
-  m_Name: Area Light
+  m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ Transform:
   m_GameObject: {fileID: 1613264892578414}
   m_LocalRotation: {x: -0.6959128, y: 0, z: 0, w: 0.71812636}
   m_LocalPosition: {x: 0, y: 1.35, z: 0}
-  m_LocalScale: {x: 12, y: 9, z: 20}
+  m_LocalScale: {x: 14, y: 12, z: 24.3}
   m_Children: []
   m_Father: {fileID: 4401540532727902}
   m_RootOrder: 0
@@ -99,7 +99,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1239664176774770}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.33, z: 0}
+  m_LocalPosition: {x: -0.34, y: 1.42, z: 0.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4401540532727902}
@@ -247,13 +247,13 @@ Light:
   m_Enabled: 1
   serializedVersion: 7
   m_Type: 2
-  m_Color: {r: 1, g: 0.029411793, b: 0.029411793, a: 1}
+  m_Color: {r: 1, g: 0.30147058, b: 0.30147058, a: 1}
   m_Intensity: 0
-  m_Range: 6.92
+  m_Range: 8.54
   m_SpotAngle: 177
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -269,7 +269,7 @@ Light:
     m_Bits: 4294967295
   m_Lightmapping: 1
   m_AreaSize: {x: 4.93, y: 4.43}
-  m_BounceIntensity: 1.36
+  m_BounceIntensity: 0.92
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!114 &114305435593839808
@@ -284,11 +284,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tone: 0
-  chord: 2
+  chord: 1
   oscillatingFrequency: 2
   distort: 0
   activeMaterial: {fileID: 2100000, guid: cb1eeb0db00f3bc4e8bbd4e7eba81d3e, type: 2}
-  glowIntensity: 7
+  glowIntensity: 8
+  player: 0
 --- !u!114 &114660665899179868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -300,13 +301,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a2f4e6a9fad4ac88646ccf278d8934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pitch: 57
+  Pitch: 69
   delayLevel: 0.37
   delayTimeLeft: 832
   delayTimeRight: 661
   distortion: 0.453
   masterVoiceOnOff: 1
-  masterVoiceVolume: 0.554
+  masterVoiceVolume: 0.54999954
   preAmpVolume: 0.534
 --- !u!135 &135822973635303596
 SphereCollider:

@@ -94,7 +94,7 @@ Material:
     m_Colors:
     - first:
         name: _AnimationDirection
-      second: {r: 2, g: 1, b: -1, a: 1}
+      second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _AnimationTiling
       second: {r: 0.4, g: 0.39099997, b: 0.56, a: 0.7}
@@ -124,16 +124,16 @@ Material:
       second: {r: 0.1, g: 0.1, b: 0.1, a: 0.1}
     - first:
         name: _GDirectionAB
-      second: {r: 0.85, g: 0.3, b: 0.25, a: 0.25}
+      second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _GDirectionCD
-      second: {r: -0.3, g: -0.9, b: 0.5, a: 0.5}
+      second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _GFrequency
       second: {r: 0.1, g: 0.1, b: 0.1, a: 0.1}
     - first:
         name: _GSpeed
-      second: {r: 4, g: 2, b: 1, a: 1}
+      second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _GSteepness
       second: {r: 3.0301306, g: 1, b: 1, a: 1}

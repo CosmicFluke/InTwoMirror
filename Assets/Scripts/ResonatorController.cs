@@ -8,20 +8,24 @@ public class ResonatorController : MonoBehaviour {
     public Chord chord;
     public float oscillatingFrequency = 0f;
     public bool distort;
+    public Material activeMaterial;
+    public float glowIntensity = 7f;
 
     bool isPlaying = false;
     GameObject player;
     int playerTone;
     Key targetKey;
     const int baseNote = 57;
+    Material baseMaterial;
 
     int ossCounter = 0;
 
 	// Use this for initialization
 	void Start () {
         targetKey = new Key(tone, chord);
-
-	}
+        MeshRenderer mrend = GetComponentInChildren<MeshRenderer>();
+        baseMaterial = mrend.material;
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -39,6 +43,11 @@ public class ResonatorController : MonoBehaviour {
         AudioSource sound = GetComponent<AudioSource>();
         sound.Play();
         isPlaying = true;
+        MeshRenderer mrend = GetComponentInChildren<MeshRenderer>();
+        mrend.material = activeMaterial;
+        mrend.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        Light glow = GetComponentInChildren<Light>();
+        glow.intensity = glowIntensity;
     }
 
     void stop() {
@@ -46,6 +55,11 @@ public class ResonatorController : MonoBehaviour {
         AudioSource sound = GetComponent<AudioSource>();
         sound.Stop();
         isPlaying = false;
+        MeshRenderer mrend = GetComponentInChildren<MeshRenderer>();
+        mrend.material = baseMaterial;
+        mrend.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        Light glow = GetComponentInChildren<Light>();
+        glow.intensity = 0;
     }
 
     public void activate(GameObject player, int tone) {

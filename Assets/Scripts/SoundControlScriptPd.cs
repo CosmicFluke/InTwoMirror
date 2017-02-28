@@ -116,11 +116,9 @@ public class SoundControlScriptPd : MonoBehaviour {
 
     void setPitch(Hv_ObeliskVoice_v1_AudioLib voice)
     {
-        float newPitch = baseNote + 12 * currOctave + currNoteOffset;
-
-        if (newPitch != voice.GetFloatParameter(Hv_ObeliskVoice_v1_AudioLib.Parameter.Pitch))
+        if (Pitch != voice.GetFloatParameter(Hv_ObeliskVoice_v1_AudioLib.Parameter.Pitch))
         {
-            voice.SetFloatParameter(Hv_ObeliskVoice_v1_AudioLib.Parameter.Pitch, newPitch);
+            voice.SetFloatParameter(Hv_ObeliskVoice_v1_AudioLib.Parameter.Pitch, Pitch);
             if (playingSound)
             {
                 stopSound();

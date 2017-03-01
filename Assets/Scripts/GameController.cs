@@ -9,8 +9,8 @@ public class GameController : MonoBehaviour
 {
 
     static GameController Instance;
-    public float FadeInDuration = 2000;
-    public float FadeOutDuration = 2000;
+    public float FadeInDuration = 1000;
+    public float FadeOutDuration = 1000;
     GameObject canvas;
     GameObject panel;
     private IEnumerator coroutine;

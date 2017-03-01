@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7de945970405b41b7bd4d5c21e54fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationRate: 20
+  RotationRate: -20
   BouncingRate: 0.1
   ShouldRotate: 1
   ShouldBounce: 0

@@ -9,8 +9,8 @@ public class GameController : MonoBehaviour
 {
 
     static GameController Instance;
-    public float FadeInDuration;
-    public float FadeOutDuration;
+    public float FadeInDuration = 1000;
+    public float FadeOutDuration = 1000;
     GameObject canvas;
     GameObject panel;
     private IEnumerator coroutine;
@@ -32,45 +32,47 @@ public class GameController : MonoBehaviour
 
     public void GotoScene(string newScene)
     {
-        try
-        {
-            SceneManager.LoadScene(newScene);
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Scene not found [" + newScene + "]");
-        }
+        coroutine = LoadScene(newScene);
+        StartCoroutine(coroutine);
+    }
+
+    IEnumerator LoadScene(string newScene)
+    {
+        Debug.Log("GotoScene "+newScene);
+        fadeOutCamera();
+        yield return new WaitForSeconds(FadeOutDuration);
+        SceneManager.LoadScene(newScene);
+        fadeInCamera();
     }
 
     void Update()
     {
         if (0 != Input.GetAxis("GameControlTutorial"))
         {
-            SceneManager.LoadScene("Tutorial");
+	    GotoScene("Tutorial");
         }
         if (0 != Input.GetAxis("GameControlLevel1"))
         {
-            SceneManager.LoadScene("Level1");
+	    GotoScene("Level1");
         }
         if (0 != Input.GetAxis("GameControlLevel2"))
         {
-            SceneManager.LoadScene("Level2");
+	    GotoScene("Level2");
         }
         if (0 != Input.GetAxis("GameControlLevel3"))
         {
-            SceneManager.LoadScene("Level3");
+	    GotoScene("Level3");
         }
         if (0 != Input.GetAxis("GameControlClosing"))
         {
-            SceneManager.LoadScene("ClosingScene");
+	    GotoScene("ClosingScene");
         }
         if (0 != Input.GetAxis("GameControlOpening"))
         {
-            SceneManager.LoadScene("OpeningScene");
+	    GotoScene("OpeningScene");
         }
     }
 
-/*
     // Fades from black
     public void fadeInCamera()
     {
@@ -108,6 +110,7 @@ public class GameController : MonoBehaviour
         float canvasWidth = canvas.GetComponent<RectTransform>().rect.width;
         panel.transform.localScale = new Vector3(canvasHeight, canvasWidth, 1);
     }
+/*
 
     IEnumerator WaitAndFadeCamera(float waitTime)
     {

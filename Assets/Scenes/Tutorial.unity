@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1705441832}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.057907224, g: 0.052802444, b: 0.03148102, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -363,6 +363,27 @@ Prefab:
     - target: {fileID: 4507060162372154, guid: f046eb885b76ac246b6b59a6ef15475f, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 82116846536492342, guid: f046eb885b76ac246b6b59a6ef15475f,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243775203633315082, guid: 21ec2f9cc888617439a40fe8405b5fc1,
+        type: 2}
+    - target: {fileID: 82156108273074580, guid: f046eb885b76ac246b6b59a6ef15475f,
+        type: 2}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114858464495428290, guid: f046eb885b76ac246b6b59a6ef15475f,
+        type: 2}
+      propertyPath: toneVectorThreshold
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 114858464495428290, guid: f046eb885b76ac246b6b59a6ef15475f,
+        type: 2}
+      propertyPath: useController
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f046eb885b76ac246b6b59a6ef15475f, type: 2}
@@ -863,6 +884,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 82886891634928576, guid: 2741210bd3d9b0a4bb3cb520bfd66370,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243583966896909118, guid: 21ec2f9cc888617439a40fe8405b5fc1,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2741210bd3d9b0a4bb3cb520bfd66370, type: 2}
   m_IsPrefabParent: 0

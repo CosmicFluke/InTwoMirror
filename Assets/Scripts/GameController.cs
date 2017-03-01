@@ -32,8 +32,9 @@ public class GameController : MonoBehaviour
 
     public void GotoScene(string newScene)
     {
-        coroutine = LoadScene(newScene);
-        StartCoroutine(coroutine);
+        SceneManager.LoadScene(newScene);
+        //coroutine = LoadScene(newScene);
+        //StartCoroutine(coroutine);
     }
 
     IEnumerator LoadScene(string newScene)

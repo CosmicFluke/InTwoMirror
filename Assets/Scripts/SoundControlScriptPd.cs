@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class SoundControlScriptPd : MonoBehaviour {
 
     // Required
-    public AudioClip tone; // tone not required, not currently used
     public Image wheelNeedle;
     
     public float toneVectorThreshold = 0.25f;
@@ -35,7 +34,6 @@ public class SoundControlScriptPd : MonoBehaviour {
     // Use this for initialization
     void Start () {
         sound = GetComponent<AudioSource>();
-        if (tone != null) sound.clip = tone;
     }
 	
 	// Update is called once per frame
@@ -128,7 +126,7 @@ public class SoundControlScriptPd : MonoBehaviour {
     }
 
     void startSound() {
-        sound.volume = 0;
+        sound.volume = 1;
         sound.Play();
         playingSound = true;
         GetComponent<ParticleSystem>().Play();

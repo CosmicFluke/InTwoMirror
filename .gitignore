@@ -39,6 +39,13 @@ Assets/Standard\ Assets/Environment/Water.meta
 Assets/Standard\ Assets/Environment/Water\ (Basic).meta
 Assets/Plugins/x64.meta
 Assets/Plugins/x64/ObeliskVoice_v1.004.unity.macos.x64.meta
+Assets/Standard Assets/CrossPlatformInput.meta
+Assets/Standard Assets/Editor.meta
+Assets/Standard Assets/ParticleSystems.meta
+Assets/Standard Assets/ParticleSystems/Materials.meta
+Assets/Standard Assets/ParticleSystems/Shaders.meta
+Assets/Standard Assets/ParticleSystems/Textures.meta
+Assets/Standard Assets/Utility.meta
 
 # SD.. we can probably remove this one sometime
 Assets/Prefabs/Materials.meta
@@ -49,3 +56,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# OSX
+*.DS_Store

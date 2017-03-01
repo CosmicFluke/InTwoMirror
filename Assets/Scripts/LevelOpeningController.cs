@@ -22,11 +22,15 @@ public class LevelOpeningController : MonoBehaviour {
 
 
         // On level complete
-        if (Input.GetKeyUp(KeyCode.B))
+        if (Input.GetKeyUp(KeyCode.B) || Input.GetButtonDown("Start"))
         {
             //Debug.Log("Fade out camera...");
             GameController.GotoScene("Tutorial");
         }
 
+        if (Input.GetButtonDown("Cancel")) {
+            Application.Quit();
+            Debug.Log("Still here...?");
+        }
     }
 }

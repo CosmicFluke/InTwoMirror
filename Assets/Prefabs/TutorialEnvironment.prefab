@@ -710,7 +710,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1372652881596002}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.44, y: 23.658203, z: -39.17}
+  m_LocalPosition: {x: 4.44, y: 25.19, z: -39.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4431674605244188}
@@ -755,7 +755,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1520832282088478}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 42.3425, y: 25.852755, z: 7.095398}
+  m_LocalPosition: {x: 42.9, y: 24.17, z: 2.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4614171652553020}
@@ -782,15 +782,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1492024586674944}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -29.892378, y: 29.092754, z: 18.750618}
+  m_LocalRotation: {x: 0.052022576, y: -0.0071400846, z: 0.1357874, w: 0.9893455}
+  m_LocalPosition: {x: -42.46, y: 31.31, z: 19.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4314872646223108}
   - {fileID: 4752140607612970}
   m_Father: {fileID: 4484514986284724}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.02, y: 0, z: 15.63}
 --- !u!4 &4314872646223108
 Transform:
   m_ObjectHideFlags: 1
@@ -879,15 +879,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1749104601849988}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.205597, y: 28.898762, z: 23.746292}
+  m_LocalRotation: {x: -0.069625475, y: 0.0024739564, z: 0.03542365, w: 0.99694103}
+  m_LocalPosition: {x: 12.68, y: 30.04, z: 28.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4139596063050454}
   - {fileID: 4817414487341302}
   m_Father: {fileID: 4484514986284724}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -7.99, y: 0, z: 4.07}
 --- !u!4 &4475686157343506
 Transform:
   m_ObjectHideFlags: 1
@@ -1843,7 +1843,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1924,7 +1924,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -2323,12 +2323,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tone: 6
-  chord: 2
-  oscillatingFrequency: 10
+  chord: 1
+  oscillatingFrequency: 6
   distort: 0
   activeMaterial: {fileID: 2100000, guid: cb1eeb0db00f3bc4e8bbd4e7eba81d3e, type: 2}
   glowIntensity: 8
   player: 1
+  fadeFactor: 2
 --- !u!114 &114630437515611486
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2360,12 +2361,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tone: 0
-  chord: 1
+  chord: 2
   oscillatingFrequency: 2
   distort: 0
   activeMaterial: {fileID: 2100000, guid: cb1eeb0db00f3bc4e8bbd4e7eba81d3e, type: 2}
   glowIntensity: 8
   player: 0
+  fadeFactor: 2
 --- !u!114 &114892097981962694
 MonoBehaviour:
   m_ObjectHideFlags: 1

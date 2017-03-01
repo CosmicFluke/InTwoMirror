@@ -141,7 +141,8 @@ AudioSource:
   m_GameObject: {fileID: 1661331995501632}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243775203633315082, guid: 21ec2f9cc888617439a40fe8405b5fc1,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -339,11 +340,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7761b5c59424a4f8479b3158b53b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tone: {fileID: 8300000, guid: a16251cb1a6d27d47af05dcd727508a7, type: 3}
   wheelNeedle: {fileID: 0}
-  toneVectorThreshold: 0.25
-  useController: 0
+  toneVectorThreshold: 0.01
+  useController: 1
   player: 0
+  fadeFactor: 5
 --- !u!135 &135639315247174494
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class SoundControlScriptPd : MonoBehaviour {
 
     // Required
-    public AudioClip tone; // tone not required, not currently used
     public Image wheelNeedle;
     
     public float toneVectorThreshold = 0.25f;
     public bool useController = false;
     public PlayerID player;
+    public float fadeFactor = 0.1f;
 
     public Collider Interactive {
         get { return proximity; }
@@ -21,7 +21,8 @@ public class SoundControlScriptPd : MonoBehaviour {
     private Collider proximity = null;
     AudioSource sound;
     GameObject soundProducer;
-    bool playingSound = false;
+    bool isPlaying = false;
+    bool isStopping = false;
     int currNoteOffset = 0;
     int currOctave = 1;
     int currVolume = 1;
@@ -35,11 +36,10 @@ public class SoundControlScriptPd : MonoBehaviour {
     // Use this for initialization
     void Start () {
         sound = GetComponent<AudioSource>();
-        if (tone != null) sound.clip = tone;
     }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
         Hv_ObeliskVoice_v1_AudioLib selfVoice = GetComponent<Hv_ObeliskVoice_v1_AudioLib>();
 
         int keyAdjust = DPadButtons.right ? 1 : DPadButtons.left ? -1 : 0;
@@ -67,12 +67,17 @@ public class SoundControlScriptPd : MonoBehaviour {
         setPitch(selfVoice);
 
         float makeSound = Input.GetAxis(player.ToString() + "MakeSound");
-        if (!playingSound && makeSound > 0)
+        if (!isPlaying && makeSound > 0)
             startSound();
-        if (playingSound && makeSound == 0)
+        if (isPlaying && makeSound == 0)
             stopSound();
 
-	}
+        if (isPlaying && sound.volume < 1)
+            sound.volume = sound.volume + fadeFactor * Time.deltaTime;
+
+        if (isStopping) fadeOut();
+
+    }
 
     Vector2 getJoystickInput() {
         return new Vector2(-Input.GetAxis(player.ToString() + "PitchX"), Input.GetAxis(player.ToString() + "PitchY"));
@@ -119,19 +124,31 @@ public class SoundControlScriptPd : MonoBehaviour {
         if (Pitch != voice.GetFloatParameter(Hv_ObeliskVoice_v1_AudioLib.Parameter.Pitch))
         {
             voice.SetFloatParameter(Hv_ObeliskVoice_v1_AudioLib.Parameter.Pitch, Pitch);
-            if (playingSound)
-            {
-                stopSound();
-                startSound();
-            }
         }
+        if (isPlaying)
+            notifyInteractive();
     }
 
     void startSound() {
-        sound.volume = 0;
-        sound.Play();
-        playingSound = true;
+        if (isStopping)
+            isStopping = false;
+        else
+        {
+            sound.volume = 0;
+            sound.Play();
+        }
+        isPlaying = true;
         GetComponent<ParticleSystem>().Play();
+        notifyInteractive();
+    }
+
+    void stopSound() {
+        isStopping = true;
+        isPlaying = false;
+        GetComponent<ParticleSystem>().Stop();
+    }
+
+    void notifyInteractive() {
         if (proximity != null)
         {
             proximity.gameObject.GetComponent<ResonatorController>()
@@ -139,10 +156,15 @@ public class SoundControlScriptPd : MonoBehaviour {
         }
     }
 
-    void stopSound() {
-        sound.Stop();
-        playingSound = false;
-        GetComponent<ParticleSystem>().Stop();
+    void fadeOut()
+    {
+        if (sound.volume > 0)
+            sound.volume = sound.volume - fadeFactor * Time.deltaTime;
+        if (sound.volume <= 0)
+        {
+            isStopping = false;
+            sound.Stop();
+        }
     }
 
 }

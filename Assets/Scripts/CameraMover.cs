@@ -44,7 +44,7 @@ public class CameraMover : MonoBehaviour{
 
 
 	void Start(){
-		camDist = 7.0f;
+		camDist = 9.0f;
 		bounds = 12.0f;
 		camera = GetComponent<Camera>();
 	}
@@ -52,6 +52,8 @@ public class CameraMover : MonoBehaviour{
 	void Update(){
 
 		distance = player1.position - player2.position;
+		print (distance);
+
 		if (camDist >= 13.0f) {
 			camDist = 13.0f;
 		}
@@ -89,6 +91,7 @@ public class CameraMover : MonoBehaviour{
 			player2.position = pos;
 		}
 
+
 		if (distance.x > 13.0f) {
 			camOffset = distance.x * 0.3f;
 			if (camOffset >= 8.5f) {
@@ -105,6 +108,20 @@ public class CameraMover : MonoBehaviour{
 		midZ = (player2.position.z + player1.position.z) /2;
 
 		midPoint = new Vector3 (midX, midY, midZ);
+
+		Debug.Log ("midpoint " + midPoint);
+
+		float cameraZ = Camera.main.gameObject.transform.position.z;
+
+		if(player1.position.z < cameraZ){
+			midZ = player1.position.z - 10;
+		}
+		else if(player2.position.z < cameraZ){
+			midZ = player2.position.z - 10;
+		}
+
+		Debug.Log ("cameraZ " + Camera.main.gameObject.transform.position.z + "PLAYER1Z " + player1.position.z);
+		Debug.Log ("MidZ" + midZ);
 
 		if (player1) {
 			Vector3 point = camera.WorldToViewportPoint(midPoint);

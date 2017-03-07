@@ -28,6 +28,8 @@ public class CharacterControl : MonoBehaviour
     private PlayerID player;
     private Collider proximity = null;
 
+    public int HealthPoints;
+
     // Use this for initialization
     void Start()
     {
@@ -95,6 +97,11 @@ public class CharacterControl : MonoBehaviour
         if (other.isTrigger && other.CompareTag("Interactive")) {
             GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
             proximity = other;
+        }
+        if (other.CompareTag("Volatile")) // Take damage from vola(tiles)^2
+        {
+            HealthPoints--;
+            Debug.Log(name + " HP = " + HealthPoints);
         }
     }
 

@@ -22,9 +22,8 @@ public class LevelClosingController : MonoBehaviour {
 
 
         // On level complete
-        if (Input.GetKeyUp(KeyCode.B))
+        if (Input.GetKeyUp(KeyCode.B) || Input.GetButtonDown("Start"))
         {
-            Debug.Log("Fade out camera...");
             GameController.GotoScene("OpeningScene");
         }
 

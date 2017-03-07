@@ -27,6 +27,8 @@ public class CharacterControl : MonoBehaviour
     private List<AudioClip> camelotList;
     private PlayerID player;
     private Collider proximity = null;
+    private GameObject otherPlayer;
+
 
     public int HealthPoints;
 
@@ -41,7 +43,21 @@ public class CharacterControl : MonoBehaviour
         camelotList = new List<AudioClip>();
         camelotList.Add(CamelotTone0);
         audioSource.clip = camelotList[0];
-        player = name == "Player1" ? PlayerID.P1 : name == "Player2" ? PlayerID.P2 : PlayerID.Both;
+        // identify this and other player
+        if (name == "Player1")
+        {
+            player = PlayerID.P1;
+            otherPlayer = GameObject.Find("Player2");
+        }
+        else if(name == "Player2")
+        {
+            player = PlayerID.P2;
+            otherPlayer = GameObject.Find("Player1");
+        } else
+        {
+            player = PlayerID.Both;
+        }
+        //player = name == "Player1" ? PlayerID.P1 : name == "Player2" ? PlayerID.P2 : PlayerID.Both;
         if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
     }
 
@@ -90,6 +106,18 @@ public class CharacterControl : MonoBehaviour
             }
         }
         return closest;
+    }
+
+    // Checks distance between this and other player
+    // If within distance and both players make noise, will heal 1HP
+    private void CoopHeal()
+    {
+        Vector3 distance = otherPlayer.transform.position - transform.position;
+        if(distance.sqrMagnitude < maxActionDistance)
+        {
+            // If players are within MaxActionDistance...
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)

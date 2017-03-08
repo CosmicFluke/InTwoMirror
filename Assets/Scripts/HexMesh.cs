@@ -1,14 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class HexMesh : MonoBehaviour
-{
+[ExecuteInEditMode]
+public class HexMesh : MonoBehaviour {
+
+    public const float radiusRatio = 0.866025404f;
+    public float radius = 4f;
+
+    public float OuterRadius { get { return outerRadius; } }
+    public Vector3[] OuterVertices { get { return corners; } }
+
     private List<Vector3> vertices;
     private Vector3[] v;
     private List<int> triangles;
     private Mesh mesh;
+
+    private Vector3[] corners;
+
+    private float innerRadius, outerRadius = 4f;
 
     void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
     {
@@ -23,14 +35,12 @@ public class HexMesh : MonoBehaviour
 
     private void Generate()
     {
-        WaitForSeconds wait = new WaitForSeconds(0.05f);
+        // WaitForSeconds wait = new WaitForSeconds(0.05f);
 
         GetComponent<MeshFilter>().mesh = mesh = new Mesh();
         mesh.name = "hexagon";
 
-        float outerRadius = 5f;
-
-        float innerRadius = outerRadius * 0.866025404f;
+        innerRadius = outerRadius * radiusRatio;
 
         Vector3[] corners = {
         new Vector3(0f, 0f, outerRadius),
@@ -41,6 +51,8 @@ public class HexMesh : MonoBehaviour
         new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
         new Vector3(0f, 0f, outerRadius)
         };
+
+        this.corners = corners;
 
         Vector3 center = transform.localPosition;
         for (int i = 0; i < 6; i++)
@@ -61,6 +73,7 @@ public class HexMesh : MonoBehaviour
 
     private void Awake()
     {
+        outerRadius = radius;
         vertices = new List<Vector3>();
         triangles = new List<int>();
         Generate();

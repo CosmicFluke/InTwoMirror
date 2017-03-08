@@ -11,7 +11,7 @@ public class MergeMeshes : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        MeshFilter[] meshFilters = toMerge.Select<GameObject, MeshFilter>(obj => obj.GetComponent<MeshFilter>()).ToArray<MeshFilter>();
+        MeshFilter[] meshFilters = toMerge.Select(obj => obj.GetComponent<MeshFilter>()).ToArray();
         CombineInstance[] combine = new CombineInstance[meshFilters.Length];
         int i = 0;
         while (i < meshFilters.Length)

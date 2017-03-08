@@ -11,15 +11,11 @@ public class CharacterControl : MonoBehaviour
     // max distance player must be to interact with object
     public float maxActionDistance = 10f;
 
-    /** Audio clip (deprecated) */
-    public AudioClip secondarySound;
-    /** Audio clip (deprecated) */
-    public AudioClip CamelotTone0;
-
-    public PlayerID Player { get { return player; } }
+    public readonly PlayerID player;
 
     // the closest actionable object to the player
     private GameObject actionable;
+
     // Secondary audio for this player
     private AudioSource audioSource;
     // Currently selected Camelot tone to play
@@ -31,6 +27,9 @@ public class CharacterControl : MonoBehaviour
 
 
     public int HealthPoints;
+
+    // Current game board region of the player
+    private GameObject currentRegion;
 
     // Use this for initialization
     void Start()
@@ -69,25 +68,31 @@ public class CharacterControl : MonoBehaviour
             Rigidbody rb = GetComponent<Rigidbody>();
             rb.AddForce(movement * movementSpeed);
         }
+    }
 
-        // Object interaction
-        actionable = FindClosestInteractive();
-        if (actionable != null)
-        {
-            // Do something with the actionable object!
-            Debug.Log("Closest actionable: " + actionable.name);
+    void Update() {
 
-            // Pressing F plays audio
-            if (Input.GetKeyUp(KeyCode.F))
-            {
-                audioSource.clip = secondarySound;
-                audioSource.Play();
-            }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.isTrigger && other.CompareTag("Interactive")) {
+            GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
+            actionable = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == actionable) {
+            actionable = null;
+            GetComponentInChildren<SoundControlScriptPd>().Interactive = null;
         }
     }
 
     // Find the closest interactive object
     // From https://docs.unity3d.com/ScriptReference/GameObject.FindGameObjectsWithTag.html
+    // Not currently in use
     GameObject FindClosestInteractive()
     {
         GameObject[] gos;

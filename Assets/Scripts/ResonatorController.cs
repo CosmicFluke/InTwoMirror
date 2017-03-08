@@ -97,7 +97,10 @@ public class ResonatorController : MonoBehaviour {
     }
 
     public void activate(GameObject activatingPlayer, int tone) {
+        // Limit activation to specified player (if one-player resonator)
         if (player != PlayerID.Both && activatingPlayer.GetComponentInChildren<SoundControlScriptPd>().player != player) return;
+
+        // For one-player resonators
         if (player != PlayerID.Both && checkTone(tone))
         {
             Hv_ObeliskVoice_v1_AudioLib audio = GetComponent<Hv_ObeliskVoice_v1_AudioLib>();
@@ -105,12 +108,15 @@ public class ResonatorController : MonoBehaviour {
             playerObj = activatingPlayer;
             start();
         }
+        // For two-player resonators
         else if (player == PlayerID.Both) {
+            // First player to activate
             if (playerObj == null && checkTone(tone)) {
                 playerObj = activatingPlayer;
                 playerTone = tone;
                 // halfStart();
             }
+            // Second player to activate
             else if (playerObj != null && playerTone != tone && checkTone(tone)) {
                 Hv_ObeliskVoice_v1_AudioLib audio = GetComponent<Hv_ObeliskVoice_v1_AudioLib>();
                 audio.SetFloatParameter(Hv_ObeliskVoice_v1_AudioLib.Parameter.Pitch, baseNote + (int) this.tone);

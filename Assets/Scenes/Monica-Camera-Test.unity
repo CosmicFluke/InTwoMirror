@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 1496333863}
   - component: {fileID: 1496333862}
   - component: {fileID: 1496333861}
+  - component: {fileID: 1496333866}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -232,9 +233,9 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  field of view: 115
+  orthographic: 1
+  orthographic size: 13.18
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -254,13 +255,36 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1496333860}
-  m_LocalRotation: {x: 0.22290282, y: 0.06444264, z: -0.023364967, w: 0.9724277}
-  m_LocalPosition: {x: -2.1, y: 18.1, z: -26.5}
+  m_LocalRotation: {x: 0.10815032, y: 0.110022284, z: 0.0013430782, w: 0.98802674}
+  m_LocalPosition: {x: -7.3, y: 24.1, z: -60.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 25.882002, y: 7.3380003, z: -1.064}
+  m_LocalEulerAnglesHint: {x: 12.323001, y: 12.876, z: 1.552}
+--- !u!114 &1496333866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1496333860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c0abe4a642c447c8abb154f510c57c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dampTime: 0.15
+  target: {fileID: 1496333865}
+  midX: 0
+  midY: 0
+  midZ: 0
+  player1: {fileID: 1645353831}
+  player2: {fileID: 1721528417}
+  midPoint: {x: 0, y: 0, z: 0}
+  distance: {x: 0, y: 0, z: 0}
+  camDist: 0
+  camOffset: 0
+  bounds: 0
 --- !u!1 &1632563933
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +440,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1645353826}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 2.5, z: 0}
+  m_LocalPosition: {x: 11, y: 2.5, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}

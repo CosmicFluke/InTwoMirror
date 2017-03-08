@@ -53,5 +53,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hexTileGenerator: {fileID: 1135183852774086, guid: 701f10236bf5021408ee1f1a043914a4,
     type: 2}
-  regionTemplate: {fileID: 1112251875464310, guid: 508576e6102420040b95c52c6ca9ae75,
+  regionPrefab: {fileID: 1112251875464310, guid: 508576e6102420040b95c52c6ca9ae75,
     type: 2}
+  tileA: {fileID: 2100000, guid: 8c19a618a0bd9844583b91dca0875a34, type: 2}
+  tileB: {fileID: 2100000, guid: 82096aab38f01cb40a1cbf8629a810ba, type: 2}
+  tileC: {fileID: 2100000, guid: 76ff537c8e1a84345868e6aeee938ab3, type: 2}
+  outlineA: {fileID: 0}
+  outlineB: {fileID: 0}
+  outlineC: {fileID: 0}

@@ -8,7 +8,7 @@ public enum RegionState { A, B, C }
 public enum RegionEffect { Stable, Unstable, Volatile }
 public enum Actions { Shift, Flip,  }
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class Region : MonoBehaviour {
 
     public static RegionEffect StateToEffect(RegionState state, PlayerID player)
@@ -17,16 +17,43 @@ public class Region : MonoBehaviour {
         else return player == PlayerID.P1 ? (RegionEffect)state : (RegionEffect)(((int)state - 1) * -1);
     }
 
+    public Material[] TileMaterials
+    {
+        set
+        {
+            tileMaterials = value;
+            updateMaterials();
+        }
+        get
+        {
+            return (Material[]) tileMaterials.Clone();
+        }
+    }
+
+    public Material[] OutlineMaterials
+    {
+        set
+        {
+            outlineMaterials = value;
+            updateMaterials();
+        }
+        get {
+            return (Material[])outlineMaterials.Clone();
+        }
+    }
+
     public RegionState initialState = RegionState.A;
     public GameObject[] neighbouringRegions;
     public string RegionID;
-    public Material outlineMaterial;
 
     public RegionState State { get { return this.currentState; } }
 
     private RegionState currentState;
     private bool isMerged = false;
-    private LineRenderer outline;
+    private LineRenderer outlineRenderer;
+
+    private Material[] tileMaterials;
+    private Material[] outlineMaterials;
 
     void Start () {
         currentState = initialState;
@@ -34,16 +61,17 @@ public class Region : MonoBehaviour {
 
     public void ShiftState(int offset) {
         currentState = (RegionState)(((int)currentState + offset) % 3);
+        updateMaterials();
     }
 
-    public void MakeRegionFromTiles(GameObject[] hexTiles) {
-        MeshFilter[] toMerge = hexTiles.Select(tile => tile.GetComponent<MeshFilter>()).ToArray();
-        mergeMeshes(toMerge);
-    }
-
-    public void FlattenChildMeshes() {
+    public void MakeRegionFromChildren() {
         MeshFilter[] toMerge = GetComponentsInChildren<MeshFilter>();
         mergeMeshes(toMerge);
+        updateMaterials();
+        MeshCollider collider = GetComponent<MeshCollider>();
+        collider.sharedMesh = GetComponent<MeshFilter>().sharedMesh;
+        collider.convex = true;
+        collider.isTrigger = true;
     }
 
     /**
@@ -67,14 +95,13 @@ public class Region : MonoBehaviour {
         transform.GetComponent<MeshFilter>().mesh = newMesh;
         newMesh.CombineMeshes(combine);
         isMerged = true;
-        // renderLine();  // buggy
     }
 
     /** 
      * Renders a border around the region
      * Currently non-working
      */
-    private LineRenderer renderLine()
+    private void renderLine()
     {
         Vector3[] corners = findOutlinePath(GetComponent<MeshFilter>().sharedMesh);
         LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -82,14 +109,14 @@ public class Region : MonoBehaviour {
         lineRenderer.startWidth = 0.2f;
         lineRenderer.endWidth = 0.2f;
         lineRenderer.useWorldSpace = true;
-        lineRenderer.material = outlineMaterial;
+        lineRenderer.material = outlineMaterials[(int)currentState];
         lineRenderer.transform.parent = gameObject.transform;
         for (int i = 0; i < 7; i++)
         {
             Vector3 point = 2 * gameObject.transform.position + corners[i] + new Vector3(0f, 0.1f, 0f);
             lineRenderer.SetPosition(i, point);
         }
-        return lineRenderer;
+        this.outlineRenderer = lineRenderer;
     }
 
     private Vector3[] findOutlinePath(Mesh mesh) {
@@ -162,5 +189,23 @@ public class Region : MonoBehaviour {
     private struct VertexContext {
         public int[] edges;
         public int[] triangles;
+    }
+
+    private void updateMaterials() {
+        if (tileMaterials != null && tileMaterials[(int)currentState] != null)
+            transform.GetComponent<MeshRenderer>().material = tileMaterials[(int)currentState];
+        if (outlineRenderer != null && outlineMaterials != null && outlineMaterials[(int)currentState] != null)
+            outlineRenderer.material = outlineMaterials[(int)currentState];
+    }
+
+    public void SetTileMaterial(RegionState state, Material tileMaterial) {
+        tileMaterials[(int)state] = tileMaterial;
+        if (state == currentState) updateMaterials();
+    }
+
+    public void SetOutlineMaterial(RegionState state, Material outlineMaterial)
+    {
+        outlineMaterials[(int)state] = outlineMaterial;
+        if (state == currentState) updateMaterials();
     }
 }

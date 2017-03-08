@@ -11,7 +11,11 @@ public class LevelController : MonoBehaviour
     private float _levelCompletion = 0;
 
     private bool _musicPlaying = true;
-    private const bool DEBUG = true;
+    private const bool Debug = true;
+
+    // The amount of actions each player starts with, could be unique for each level.
+    public int StartActionOne = 3;
+    public int StartActionTwo = 3;
 
     // Use this for initialization
     void Start()
@@ -20,6 +24,7 @@ public class LevelController : MonoBehaviour
         {
             _gameController = GameObject.Find("GameController").GetComponent<GameController>();
         }
+
         _levelCompletion = 0;
     }
 
@@ -32,7 +37,7 @@ public class LevelController : MonoBehaviour
                 _gameController.GotoScene("ClosingScene");
         }
 
-        if (DEBUG)
+        if (Debug)
         {
             if (Input.GetButtonDown("Start"))
             {
@@ -56,6 +61,7 @@ public class LevelController : MonoBehaviour
     /**
      *  Progresses through the level.
      */
+
     public void ProgressLevel(float percent)
     {
         _levelCompletion += percent;

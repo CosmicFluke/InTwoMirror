@@ -7,7 +7,6 @@ public class LevelController : MonoBehaviour
 {
     static GameController _gameController;
 
-    public int Level = 0; // In case we need special stuff on certain levels
     private float _levelCompletion = 0;
 
     private bool _musicPlaying = true;
@@ -26,6 +25,7 @@ public class LevelController : MonoBehaviour
         }
 
         _levelCompletion = 0;
+
     }
 
     void Update()
@@ -34,7 +34,7 @@ public class LevelController : MonoBehaviour
         if (_levelCompletion >= 100)
         {
             if (_gameController != null)
-                _gameController.GotoScene("ClosingScene");
+				_gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
         if (Debug)
@@ -42,7 +42,7 @@ public class LevelController : MonoBehaviour
             if (Input.GetButtonDown("Start"))
             {
                 if (_gameController != null)
-                    _gameController.GotoScene("ClosingScene");
+					_gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
 
             if (Input.GetButtonDown("ToggleMusic"))
@@ -71,6 +71,6 @@ public class LevelController : MonoBehaviour
     {
         _levelCompletion = 0;
         if (_gameController != null)
-            _gameController.GotoScene(SceneManager.GetActiveScene().name);
+			_gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

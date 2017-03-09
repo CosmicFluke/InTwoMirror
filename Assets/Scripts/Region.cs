@@ -8,7 +8,9 @@ public enum RegionState { A, B, C }
 public enum RegionEffect { Stable, Unstable, Volatile }
 public enum Actions { Shift, Flip,  }
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
+
+
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Region : MonoBehaviour {
 
     public static RegionEffect StateToEffect(RegionState state, PlayerID player)
@@ -50,7 +52,9 @@ public class Region : MonoBehaviour {
 
     private RegionState currentState;
     private bool isMerged = false;
-    private LineRenderer outlineRenderer;
+    private List<Vector3[]> outlineCorners = new List<Vector3[]>();
+    private List<Vector3> originalPositions = new List<Vector3>();
+    //private LineRenderer[] lineRenderers;
 
     private Material[] tileMaterials;
     private Material[] outlineMaterials;
@@ -68,10 +72,6 @@ public class Region : MonoBehaviour {
         MeshFilter[] toMerge = GetComponentsInChildren<MeshFilter>();
         mergeMeshes(toMerge);
         updateMaterials();
-        MeshCollider collider = GetComponent<MeshCollider>();
-        collider.sharedMesh = GetComponent<MeshFilter>().sharedMesh;
-        collider.convex = true;
-        collider.isTrigger = true;
     }
 
     /**
@@ -91,85 +91,12 @@ public class Region : MonoBehaviour {
             combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
             i++;
         }
+        outlineCorners.AddRange(meshFilters.Where(mf => mf != null && mf.GetComponent<HexMesh>() != null).Select(mf => mf.GetComponent<HexMesh>().OuterVertices));
+        originalPositions.AddRange(meshFilters.Where(mf => mf != null && mf.GetComponent<HexMesh>() != null).Select(mf => mf.transform.position));
         Mesh newMesh = new Mesh();
-        transform.GetComponent<MeshFilter>().mesh = newMesh;
+        transform.GetComponent<MeshFilter>().sharedMesh = newMesh;
         newMesh.CombineMeshes(combine);
         isMerged = true;
-    }
-
-    /** 
-     * Renders a border around the region
-     * Currently non-working
-     */
-    private void renderLine()
-    {
-        Vector3[] corners = findOutlinePath(GetComponent<MeshFilter>().sharedMesh);
-        LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.numPositions = corners.Length + 1;
-        lineRenderer.startWidth = 0.2f;
-        lineRenderer.endWidth = 0.2f;
-        lineRenderer.useWorldSpace = true;
-        lineRenderer.material = outlineMaterials[(int)currentState];
-        lineRenderer.transform.parent = gameObject.transform;
-        for (int i = 0; i < 7; i++)
-        {
-            Vector3 point = 2 * gameObject.transform.position + corners[i] + new Vector3(0f, 0.1f, 0f);
-            lineRenderer.SetPosition(i, point);
-        }
-        this.outlineRenderer = lineRenderer;
-    }
-
-    private Vector3[] findOutlinePath(Mesh mesh) {
-        HashSet<int> visitedVertices = new HashSet<int>();
-        List<int> path = new List<int>();
-        Dictionary<int, VertexContext> contextMemo = new Dictionary<int, VertexContext>();
-        VertexContext context;
-        int currVertex = mesh.triangles[0];
-        contextMemo[currVertex] = getContext(mesh, currVertex);
-        while (currVertex != mesh.triangles[0] || visitedVertices.Count == 0)
-        {
-            visitedVertices.Add(currVertex);
-            context = contextMemo[currVertex];
-            Stack<int> edges = new Stack<int>(context.edges.Except(visitedVertices));
-            Debug.Log("Stack has " + edges.Count.ToString() + " items");
-            int nextVertex = edges.Pop();
-            if (context.triangles.Length != 6)
-            {
-                path.Add(currVertex);
-                if (!contextMemo.ContainsKey(nextVertex)) contextMemo[nextVertex] = getContext(mesh, nextVertex);
-                while (contextMemo[currVertex].triangles.Intersect(contextMemo[nextVertex].triangles).Count() > 1)
-                {
-                    if (edges.Count == 0) throw new Exception("Empty stack.  Something went wrong!");
-                    nextVertex = edges.Pop();
-                    if (!contextMemo.ContainsKey(nextVertex)) contextMemo[nextVertex] = getContext(mesh, nextVertex);
-                }
-            }
-            currVertex = nextVertex;
-        }
-        path.Add(currVertex);
-        return path.ToArray().Select(i => mesh.vertices[i]).ToArray();
-    }
-
-    private VertexContext getContext(Mesh mesh, int vertex)
-    {
-        int numTriangles = 0;
-        HashSet<int> connectedVertices = new HashSet<int>();
-        List<int> triangles = new List<int>();
-        connectedVertices.Add(vertex);
-        for (int i = 0; i < mesh.triangles.Length; i += 3)
-        {
-            Triangle triangle = new Triangle(mesh.triangles, i);
-            if (triangle.vertices.Contains(vertex))
-            {
-                triangles.Add(i / 3);
-                connectedVertices.UnionWith(triangle.vertices);
-            }
-        }
-        connectedVertices.Remove(vertex);
-        VertexContext t;
-        t.edges = connectedVertices.ToArray();
-        t.triangles = triangles.ToArray();
-        return t;
     }
 
     private struct Triangle
@@ -180,8 +107,8 @@ public class Region : MonoBehaviour {
             vertices = new int[] { v1, v2, v3 };
             if (vertices.Distinct().Count() != 3) throw new Exception("Not all diff.");
         }
-        public Triangle(int[] vertices, int index) {
-            this.vertices = new int[] { vertices[index], vertices[index + 1], vertices[index + 2] };
+        public Triangle(IEnumerable<int> vertices, int index) {
+            this.vertices = new int[] { vertices.ElementAt(index), vertices.ElementAt(index + 1), vertices.ElementAt(index + 2) };
             if (this.vertices.Distinct().Count() != 3) throw new Exception("Not all diff.");
         }
     }
@@ -194,8 +121,8 @@ public class Region : MonoBehaviour {
     private void updateMaterials() {
         if (tileMaterials != null && tileMaterials[(int)currentState] != null)
             transform.GetComponent<MeshRenderer>().material = tileMaterials[(int)currentState];
-        if (outlineRenderer != null && outlineMaterials != null && outlineMaterials[(int)currentState] != null)
-            outlineRenderer.material = outlineMaterials[(int)currentState];
+        //if (lineRenderer != null && outlineMaterials != null && outlineMaterials[(int)currentState] != null)
+        //    lineRenderer.material = outlineMaterials[(int)currentState];
     }
 
     public void SetTileMaterial(RegionState state, Material tileMaterial) {

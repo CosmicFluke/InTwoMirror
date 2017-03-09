@@ -10,16 +10,17 @@ public class HexGridGenerator : MonoBehaviour {
     public int width;
     public int length;
 
+    public bool Generated { get { return isGenerated; } }
+
     private GameObject[,] tiles;
     private Material origMat;
 
-    private bool generated = false;
+    private bool isGenerated = false;
 
     // Use this for initialization
     void Awake() {
         tiles = new GameObject[length, width];
     }
-
 
     void Start(){
     }
@@ -38,17 +39,17 @@ public class HexGridGenerator : MonoBehaviour {
         Vector3 parentPos = gameObject.transform.position;
         foreach (int z in Enumerable.Range(0, length))
         {
-            rowOffset = -(z % 2) * innerRadius * 0.5f;
+            rowOffset = -(z % 2) * innerRadius;
             foreach (int x in Enumerable.Range(0, width - 1 + (z % 2)))
             {
-                Vector3 pos = new Vector3(parentPos.x / 2f + rowOffset, parentPos.y, parentPos.z / 2f + colOffset);
+                Vector3 pos = new Vector3(parentPos.x + rowOffset, parentPos.y, parentPos.z + colOffset);
                 tiles[z, x] = Instantiate(hexPrefab, pos, Quaternion.identity);
                 tiles[z, x].transform.parent = gameObject.transform;
-                rowOffset += innerRadius;
+                rowOffset += innerRadius * 2;
             }
-            colOffset += (1.5f * outerRadius) / 2f;
+            colOffset += (1.5f * outerRadius);
         }
-        generated = true;
+        isGenerated = true;
     }
 
     [ContextMenu("Destroy tiles")]
@@ -63,7 +64,7 @@ public class HexGridGenerator : MonoBehaviour {
             }
         }
         tiles = null;
-        generated = false;
+        isGenerated = false;
     }
 	
 	// Update is called once per frame

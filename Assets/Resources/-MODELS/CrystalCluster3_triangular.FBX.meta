@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: 01e45852dfbb62945bf2803d2a4c1722
-timeCreated: 1488938562
-licenseType: Pro
+guid: 9820b691555b6b94e9e45dc3b152c9c6
+timeCreated: 1489016960
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Canyon
+    4300000: CrystalCluster3
   materials:
     importMaterials: 1
     materialName: 0

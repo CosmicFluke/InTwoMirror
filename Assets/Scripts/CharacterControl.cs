@@ -11,36 +11,23 @@ public class CharacterControl : MonoBehaviour
     // max distance player must be to interact with object
     public float maxActionDistance = 10f;
 
-    /** Audio clip (deprecated) */
-    public AudioClip secondarySound;
-    /** Audio clip (deprecated) */
-    public AudioClip CamelotTone0;
-
-    public PlayerID Player { get { return player; } }
+    public PlayerID player;
 
     // the closest actionable object to the player
     private GameObject actionable;
+
     // Secondary audio for this player
     private AudioSource audioSource;
-    // Currently selected Camelot tone to play
-    private int currCamelot;
-    private List<AudioClip> camelotList;
-    private PlayerID player;
-    private Collider proximity = null;
+
+    // Current game board region of the player
+    private GameObject currentRegion;
 
     // Use this for initialization
     void Start()
     {
         actionable = null;
         audioSource = GetComponent<AudioSource>();
-        currCamelot = 2;
-
-        // Add tones to the list
-        camelotList = new List<AudioClip>();
-        camelotList.Add(CamelotTone0);
-        audioSource.clip = camelotList[0];
-        player = name == "Player1" ? PlayerID.P1 : name == "Player2" ? PlayerID.P2 : PlayerID.Both;
-        if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
+        if (player == PlayerID.Both) throw new System.Exception("Invalid player ID for control script");
     }
 
     // Update is called once per frame
@@ -51,25 +38,31 @@ public class CharacterControl : MonoBehaviour
             Rigidbody rb = GetComponent<Rigidbody>();
             rb.AddForce(movement * movementSpeed);
         }
+    }
 
-        // Object interaction
-        actionable = FindClosestInteractive();
-        if (actionable != null)
-        {
-            // Do something with the actionable object!
-            Debug.Log("Closest actionable: " + actionable.name);
+    void Update() {
 
-            // Pressing F plays audio
-            if (Input.GetKeyUp(KeyCode.F))
-            {
-                audioSource.clip = secondarySound;
-                audioSource.Play();
-            }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.isTrigger && other.CompareTag("Interactive")) {
+            GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
+            actionable = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == actionable) {
+            actionable = null;
+            GetComponentInChildren<SoundControlScriptPd>().Interactive = null;
         }
     }
 
     // Find the closest interactive object
     // From https://docs.unity3d.com/ScriptReference/GameObject.FindGameObjectsWithTag.html
+    // Not currently in use
     GameObject FindClosestInteractive()
     {
         GameObject[] gos;
@@ -88,21 +81,5 @@ public class CharacterControl : MonoBehaviour
             }
         }
         return closest;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.isTrigger && other.CompareTag("Interactive")) {
-            GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
-            proximity = other;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other == proximity) {
-            proximity = null;
-            GetComponentInChildren<SoundControlScriptPd>().Interactive = null;
-        }
     }
 }

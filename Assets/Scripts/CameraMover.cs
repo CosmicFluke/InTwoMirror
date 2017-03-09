@@ -9,7 +9,7 @@ using UnityEngine;
 public class CameraMover : MonoBehaviour{
 
 	// SD commented out as not required for InTwo public static CameraMover cTrack; //cFollow
-//	public float dampTime = 0.15f; //figure out what this is
+	public float dampTime = 0.15f; //figure out what this is
 	public float smoothing = 5.0f;
 	private Vector3 velocity = Vector3.zero;
 	public Transform target;
@@ -100,7 +100,7 @@ public class CameraMover : MonoBehaviour{
 		}
 
 		midX = (player2.position.x + player1.position.x) /2; 
-		midY = (player2.position.y + player1.position.y) /2 + 20;
+		midY = (player2.position.y + player1.position.y) /2;
 		midZ = (player2.position.z + player1.position.z) /2;
 
 		midPoint = new Vector3 (midX, midY, midZ);
@@ -109,31 +109,30 @@ public class CameraMover : MonoBehaviour{
 
 		float cameraZ = Camera.main.gameObject.transform.position.z;
 
-		if(player1.position.z < cameraZ){
-//			print ("player1 z less than cameraZ");
-//			Debug.Log ("Before" + midZ);
-			midZ = player1.position.z - 10;
-//			Debug.Log ("After" + midZ);
-
-		}
-		else if(player2.position.z < cameraZ){
-//			print ("player2 z less than cameraZ");
-//			Debug.Log ("Before" + midZ);
-			midZ = player2.position.z - 10;
-//			Debug.Log ("After" + midZ);
-
-		}
+//		if(player1.position.z < cameraZ){
+////			print ("player1 z less than cameraZ");
+////			Debug.Log ("Before" + midZ);
+//			midZ = player1.position.z - 10;
+////			Debug.Log ("After" + midZ);
+//
+//		}
+//		else if(player2.position.z < cameraZ){
+////			print ("player2 z less than cameraZ");
+////			Debug.Log ("Before" + midZ);
+//			midZ = player2.position.z - 10;
+////			Debug.Log ("After" + midZ);
+//
+//		}
 
 //		Debug.Log ("cameraZ " + cameraZ + " PLAYER1Z " + player1.position.z);
 //		Debug.Log ("MidZ" + midZ);
 
 		if (player1) {
-//			Vector3 point = camera.WorldToViewportPoint(midPoint);
-//			Debug.Log (point);
-//			Vector3 delta = midPoint - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
-//			Vector3 destination = transform.position + delta;
-//			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-			transform.LookAt(midPoint);
+			Vector3 point = camera.WorldToViewportPoint(midPoint);
+			Debug.Log (point);
+			Vector3 delta = midPoint - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
+			Vector3 destination = transform.position + delta;
+			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
 			//transform.position = Vector3.(transform.position, midPoint, smoothing);
 		}
 

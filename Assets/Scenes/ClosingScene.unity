@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.057907224, g: 0.052802444, b: 0.03148102, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -145,13 +145,14 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 712561132}
   m_Father: {fileID: 420612536}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30.4, y: -219.3}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 48.7, y: 125.33}
   m_SizeDelta: {x: 386.6, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &363652301
@@ -278,7 +279,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 363652300}
-  - {fileID: 712561132}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -312,9 +312,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 531775420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4014a21873237bc4aaf6284bf01a5689, type: 3}
+  m_Script: {fileID: 11500000, guid: f4c0964ebe51f1743b55320b7402f855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Level: 0
 --- !u!4 &531775422
 Transform:
   m_ObjectHideFlags: 0
@@ -432,16 +433,16 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 712561131}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 420612536}
-  m_RootOrder: 1
+  m_Father: {fileID: 363652300}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 444.7, y: 51.9}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -98.899994, y: 18.19999}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &712561133
@@ -528,6 +529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1821841451}
   - component: {fileID: 1821841450}
+  - component: {fileID: 1821841452}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -561,6 +563,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1821841452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1821841449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c0964ebe51f1743b55320b7402f855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Level: 0
 --- !u!1 &1957579541
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,6 +30,9 @@ public class CharacterControl : MonoBehaviour
     // Current game board region of the player
     private GameObject currentRegion;
 
+    // Temporary way to assign and access the two characters
+    public AnimatedCharacter character;
+
     // Use this for initialization
     void Start()
     {
@@ -51,6 +54,16 @@ public class CharacterControl : MonoBehaviour
         {
             Rigidbody rb = GetComponent<Rigidbody>();
             rb.AddForce(movement * movementSpeed);
+
+            // Rotate the character towards the direction of movement
+            Quaternion newRotation = new Quaternion();
+            newRotation.SetLookRotation(movement);
+            transform.rotation = newRotation;
+
+            // Call SetAnimation with parameter "Yell" to play the character's yelling animation
+            character.SetAnimation("Run");
+        } else {
+            character.SetAnimation("Idle");
         }
     }
 

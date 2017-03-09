@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9be2c5234d5b4c54b8316b6b4f4f55f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardLayout: TestConfig1
+  boardLayoutString: TestConfig1
 --- !u!114 &114936405129400662
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -67,3 +67,4 @@ MonoBehaviour:
   hexPrefab: {fileID: 1399084267760958, guid: 4bc2069b77436c74ebe07e468688e322, type: 2}
   width: 4
   length: 6
+  shape: 0

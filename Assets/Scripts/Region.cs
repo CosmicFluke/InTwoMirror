@@ -26,10 +26,7 @@ public class Region : MonoBehaviour {
             tileMaterials = value;
             updateMaterials();
         }
-        get
-        {
-            return (Material[]) tileMaterials.Clone();
-        }
+        get { return (Material[])tileMaterials.Clone(); }
     }
 
     public Material[] OutlineMaterials
@@ -39,9 +36,7 @@ public class Region : MonoBehaviour {
             outlineMaterials = value;
             updateMaterials();
         }
-        get {
-            return (Material[])outlineMaterials.Clone();
-        }
+        get { return (Material[]) outlineMaterials.Clone(); }
     }
 
     public RegionState initialState = RegionState.A;
@@ -97,20 +92,6 @@ public class Region : MonoBehaviour {
         transform.GetComponent<MeshFilter>().sharedMesh = newMesh;
         newMesh.CombineMeshes(combine);
         isMerged = true;
-    }
-
-    private struct Triangle
-    {
-        public int[] vertices;
-        public Triangle(int v1, int v2, int v3)
-        {
-            vertices = new int[] { v1, v2, v3 };
-            if (vertices.Distinct().Count() != 3) throw new Exception("Not all diff.");
-        }
-        public Triangle(IEnumerable<int> vertices, int index) {
-            this.vertices = new int[] { vertices.ElementAt(index), vertices.ElementAt(index + 1), vertices.ElementAt(index + 2) };
-            if (this.vertices.Distinct().Count() != 3) throw new Exception("Not all diff.");
-        }
     }
 
     private struct VertexContext {

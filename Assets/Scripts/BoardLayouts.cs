@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 public static class BoardLayouts {
-    public static Dictionary<string, Type> layoutMap = new Dictionary<string, Type> {
-        { "TestConfig1", typeof(TestConfig1) }
+    public static Dictionary<string, BoardSpec> layoutMap = new Dictionary<string, BoardSpec> {
+        { "TestConfig1", new TestConfig1().Board }
     };
 }

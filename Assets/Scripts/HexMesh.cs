@@ -12,6 +12,8 @@ public class HexMesh : MonoBehaviour {
 
     public float OuterRadius { get { return outerRadius; } }
     public Vector3[] OuterVertices { get { return corners; } }
+    public GameObject[] Edges { get { return edges; } }
+    public HexTileLocation Location { get { return location; } set { location = value; } }
 
     private List<Vector3> vertices;
     private List<int> triangles;
@@ -21,6 +23,9 @@ public class HexMesh : MonoBehaviour {
     private Vector3[] corners;
 
     private float innerRadius, outerRadius = 4f;
+
+    private GameObject[] edges = new GameObject[6];
+    public HexTileLocation location;
 
     void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
     {

@@ -18,6 +18,14 @@ public class CharacterControl : MonoBehaviour
 
     // Secondary audio for this player
     private AudioSource audioSource;
+    // Currently selected Camelot tone to play
+    private int currCamelot;
+    private List<AudioClip> camelotList;
+    private Collider proximity = null;
+    private GameObject otherPlayer;
+
+
+    public int HealthPoints;
 
     // Current game board region of the player
     private GameObject currentRegion;
@@ -27,34 +35,56 @@ public class CharacterControl : MonoBehaviour
     {
         actionable = null;
         audioSource = GetComponent<AudioSource>();
-        if (player == PlayerID.Both) throw new System.Exception("Invalid player ID for control script");
+        currCamelot = 2;
+
+        if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
+
+        // identify other player
+        otherPlayer = player == PlayerID.P1 ? GameObject.Find("Player2") : player == PlayerID.P2 ? GameObject.Find("Player1") : null;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         Vector3 movement = new Vector3(Input.GetAxis(player.ToString() + "Horizontal"), 0f, Input.GetAxis(player.ToString() + "Vertical"));
-        if (movement.magnitude > 0) {
+        if (movement.magnitude > 0)
+        {
             Rigidbody rb = GetComponent<Rigidbody>();
             rb.AddForce(movement * movementSpeed);
         }
     }
 
-    void Update() {
+    void Update()
+    {
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger && other.CompareTag("Interactive")) {
+        if (other.isTrigger && other.CompareTag("Interactive"))
+        {
             GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
             actionable = other.gameObject;
         }
+        if (other.gameObject.GetComponent<Region>() != null)
+            ExecuteTileEffect(other.gameObject);
+    }
+
+    private void ExecuteTileEffect(GameObject tile)
+    {
+        // Take damage from vola(tiles)^2
+        if (Region.StateToEffect(tile.GetComponent<Region>().State, player) == RegionEffect.Volatile)
+        {
+            HealthPoints--;
+            Debug.Log(name + " HP = " + HealthPoints);
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other == actionable) {
+        if (other == actionable)
+        {
             actionable = null;
             GetComponentInChildren<SoundControlScriptPd>().Interactive = null;
         }
@@ -81,5 +111,17 @@ public class CharacterControl : MonoBehaviour
             }
         }
         return closest;
+    }
+
+    // Checks distance between this and other player
+    // If within distance and both players make noise, will heal 1HP
+    private void CoopHeal()
+    {
+        Vector3 distance = otherPlayer.transform.position - transform.position;
+        if (distance.sqrMagnitude < maxActionDistance)
+        {
+            // If players are within MaxActionDistance...
+        }
+
     }
 }

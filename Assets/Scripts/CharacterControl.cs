@@ -50,10 +50,10 @@ public class CharacterControl : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 movement = new Vector3(Input.GetAxis(player.ToString() + "Horizontal"), 0f, Input.GetAxis(player.ToString() + "Vertical"));
+        Rigidbody rb = GetComponent<Rigidbody>();
         if (movement.magnitude > 0)
         {
-            Rigidbody rb = GetComponent<Rigidbody>();
-            rb.AddForce(movement * movementSpeed);
+            rb.velocity = movement * movementSpeed;
 
             // Rotate the character towards the direction of movement
             Quaternion newRotation = new Quaternion();
@@ -64,6 +64,7 @@ public class CharacterControl : MonoBehaviour
             character.SetAnimation("Run");
         } else {
             character.SetAnimation("Idle");
+            rb.velocity = movement * movementSpeed;
         }
     }
 

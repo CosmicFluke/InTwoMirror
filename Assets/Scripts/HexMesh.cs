@@ -14,9 +14,9 @@ public class HexMesh : MonoBehaviour {
     public Vector3[] OuterVertices { get { return corners; } }
 
     private List<Vector3> vertices;
-    private Vector3[] v;
     private List<int> triangles;
     private Mesh mesh;
+    private LineRenderer lineRenderer;
 
     private Vector3[] corners;
 
@@ -37,7 +37,7 @@ public class HexMesh : MonoBehaviour {
     {
         // WaitForSeconds wait = new WaitForSeconds(0.05f);
 
-        GetComponent<MeshFilter>().mesh = mesh = new Mesh();
+        GetComponent<MeshFilter>().sharedMesh = mesh = new Mesh();
         mesh.name = "hexagon";
 
         innerRadius = outerRadius * radiusRatio;
@@ -54,7 +54,7 @@ public class HexMesh : MonoBehaviour {
 
         this.corners = corners;
 
-        Vector3 center = transform.localPosition;
+        Vector3 center = new Vector3();
         for (int i = 0; i < 6; i++)
         {
             AddTriangle(
@@ -63,10 +63,30 @@ public class HexMesh : MonoBehaviour {
                 center + corners[i + 1]
             );
         }
+        for (int i = 0; i < 6; i++)
+        {
+            AddTriangle(
+                center - Vector3.up,
+                center + corners[i + 1] - Vector3.up,
+                center + corners[i] - Vector3.up
+            );
+        }
 
+        for (int i = 0;i < 6; i++)
+        {
+            AddTriangle(
+                center + corners[i] - Vector3.up,
+                center + corners[i + 1],
+                center + corners[i]
+            );
+            AddTriangle(
+                center + corners[i] - Vector3.up, 
+                center + corners[i + 1] - Vector3.up, 
+                center + corners[i + 1]
+            );
+        }
 
         mesh.vertices = vertices.ToArray();
-        v = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
     }
@@ -77,6 +97,26 @@ public class HexMesh : MonoBehaviour {
         vertices = new List<Vector3>();
         triangles = new List<int>();
         Generate();
+        DrawLines();
+    }
+
+    private void DrawLines() {
+        if (lineRenderer == null && gameObject.GetComponent<LineRenderer>() == null)
+            lineRenderer = gameObject.AddComponent<LineRenderer>();
+        else
+        {
+            Destroy(lineRenderer);
+            lineRenderer = gameObject.GetComponent<LineRenderer>();
+        }
+        lineRenderer.numPositions = corners.Length;
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+        lineRenderer.useWorldSpace = true;
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 point = gameObject.transform.position + corners[i] + new Vector3(0f, 0.1f, 0f);
+            lineRenderer.SetPosition(i, point);
+        }
     }
 
     void Start()
@@ -89,19 +129,15 @@ public class HexMesh : MonoBehaviour {
 
     }
 
-    /*
-    private void OnDrawGizmos()
-    {
-        if (v == null)
-        {
-            return;
-        }
-        Gizmos.color = Color.black;
-        for (int i = 0; i < v.Length; i++)
-        {
-            Gizmos.DrawSphere(v[i], 0.1f);
-        }
-    }
-    */
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    for (int i = 0; i < OuterVertices.Length - 1; i++)
+    //    {
+    //        if (i == 0) Gizmos.color = Color.blue;
+    //        Gizmos.DrawSphere((transform.position + OuterVertices[i] + Vector3.up), 0.1f);
+    //        if (i == 0) Gizmos.color = Color.red;
+    //    }
+    //}
 
 }

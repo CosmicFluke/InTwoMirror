@@ -50,7 +50,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1112251875464310}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -94,4 +94,3 @@ MonoBehaviour:
   initialState: 0
   neighbouringRegions: []
   RegionID: 
-  outlineMaterial: {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}

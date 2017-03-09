@@ -21,10 +21,8 @@ public class SoundControlScript : MonoBehaviour {
     AudioSource audioSource;
     bool playingSound = false;
     float currPitch = 1f;
-    int currVolume = 1;
 
     string[] toneLabels = {"A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#"};
-    int numTones = 7;
 
     /** The current tone rotation value (in degrees) */
     //float toneRotation = 0f;

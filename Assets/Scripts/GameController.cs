@@ -30,47 +30,48 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void GotoScene(string newScene)
+    public void GotoScene(int newSceneIndex)
     {
-        SceneManager.LoadScene(newScene);
+        SceneManager.LoadScene(newSceneIndex);
         //coroutine = LoadScene(newScene);
         //StartCoroutine(coroutine);
     }
 
-    IEnumerator LoadScene(string newScene)
+    IEnumerator LoadScene(int newSceneIndex)
     {
-        Debug.Log("GotoScene "+newScene);
+		Debug.Log("GotoScene "+ newSceneIndex);
         fadeOutCamera();
         yield return new WaitForSeconds(FadeOutDuration);
-        SceneManager.LoadScene(newScene);
+		SceneManager.LoadScene(newSceneIndex);
         fadeInCamera();
     }
 
     void Update()
     {
+		// TODO: Clean this up to use indices once level orders have been finalized
         if (0 != Input.GetAxis("GameControlTutorial"))
         {
-	    GotoScene("Tutorial");
+			GotoScene(SceneManager.GetSceneByName("Tutorial").buildIndex);
         }
         if (0 != Input.GetAxis("GameControlLevel1"))
         {
-	    GotoScene("Level1");
+			GotoScene(SceneManager.GetSceneByName("Level1").buildIndex);
         }
         if (0 != Input.GetAxis("GameControlLevel2"))
         {
-	    GotoScene("Level2");
+			GotoScene(SceneManager.GetSceneByName("Level2").buildIndex);
         }
         if (0 != Input.GetAxis("GameControlLevel3"))
         {
-	    GotoScene("Level3");
+			GotoScene(SceneManager.GetSceneByName("Level3").buildIndex);
         }
         if (0 != Input.GetAxis("GameControlClosing"))
         {
-	    GotoScene("ClosingScene");
+			GotoScene(SceneManager.GetSceneByName("ClosingScene").buildIndex);
         }
         if (0 != Input.GetAxis("GameControlOpening"))
         {
-	    GotoScene("OpeningScene");
+			GotoScene(SceneManager.GetSceneByName("OpeningScene").buildIndex);
         }
     }
 

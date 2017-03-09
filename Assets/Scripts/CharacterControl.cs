@@ -37,6 +37,9 @@ public class CharacterControl : MonoBehaviour
         if (movement.magnitude > 0) {
             Rigidbody rb = GetComponent<Rigidbody>();
             rb.AddForce(movement * movementSpeed);
+            Quaternion newRotation = new Quaternion();
+            newRotation.SetLookRotation(movement);
+            transform.rotation = newRotation;
         }
     }
 

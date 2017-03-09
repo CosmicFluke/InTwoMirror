@@ -11,7 +11,7 @@ public class CharacterControl : MonoBehaviour
     // max distance player must be to interact with object
     public float maxActionDistance = 10f;
 
-    public readonly PlayerID player;
+    public PlayerID player;
 
     // the closest actionable object to the player
     private GameObject actionable;

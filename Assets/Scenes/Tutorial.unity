@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1705441832}
-  m_IndirectSpecularColor: {r: 0.057907224, g: 0.052802444, b: 0.03148102, a: 1}
+  m_IndirectSpecularColor: {r: 0.05790729, g: 0.052802436, b: 0.03148097, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -257,6 +257,16 @@ Prefab:
       propertyPath: player2
       value: 
       objectReference: {fileID: 1657002571}
+    - target: {fileID: 20656796530158302, guid: f98f78a55ca4c3f43afa0e9e3965b2b5,
+        type: 2}
+      propertyPath: orthographic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20656796530158302, guid: f98f78a55ca4c3f43afa0e9e3965b2b5,
+        type: 2}
+      propertyPath: field of view
+      value: 55
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f98f78a55ca4c3f43afa0e9e3965b2b5, type: 2}
   m_IsPrefabParent: 0
@@ -452,7 +462,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4507060162372154, guid: f046eb885b76ac246b6b59a6ef15475f, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.15
+      value: 0.81
       objectReference: {fileID: 0}
     - target: {fileID: 4507060162372154, guid: f046eb885b76ac246b6b59a6ef15475f, type: 2}
       propertyPath: m_LocalPosition.z
@@ -896,7 +906,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c0964ebe51f1743b55320b7402f855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Level: 0
   StartActionOne: 3
   StartActionTwo: 3
 --- !u!4 &1162490555
@@ -1404,7 +1413,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4343140461172786, guid: 2741210bd3d9b0a4bb3cb520bfd66370, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 4343140461172786, guid: 2741210bd3d9b0a4bb3cb520bfd66370, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1429,6 +1438,11 @@ Prefab:
     - target: {fileID: 4343140461172786, guid: 2741210bd3d9b0a4bb3cb520bfd66370, type: 2}
       propertyPath: m_RootOrder
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114137288306963214, guid: 2741210bd3d9b0a4bb3cb520bfd66370,
+        type: 2}
+      propertyPath: player
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2741210bd3d9b0a4bb3cb520bfd66370, type: 2}

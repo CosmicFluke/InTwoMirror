@@ -33,6 +33,7 @@ Assets/UISprites.meta
 Assets/Terrain.meta
 Assets/Standard\ Assets.meta
 Assets/Mixers.meta
+Assets/AnimationControllers.meta
 Assets/Scripts/TestScripts.meta
 Assets/Prefabs/Board\ Templates.meta
 Assets/Standard\ Assets/Environment.meta
@@ -51,9 +52,10 @@ Assets/Standard\ Assets/Utility.meta
 Assets/Asset\ Store.meta
 Assets/Asset\ Store/Free\ Boulder\ Pack.meta
 Assets/Asset\ Store/InfinitaStudio\ -\ Mountains.meta
+Assets/Resources/-SOUND.meta
+Assets/Resources/-SOUND/-MUSIC.meta
+Assets/Scenes/Model\ Assembly.unity.meta
 
-# SD.. we can probably remove this one sometime
-Assets/Prefabs/Materials.meta
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt

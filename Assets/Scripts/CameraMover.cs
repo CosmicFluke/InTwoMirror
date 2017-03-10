@@ -35,14 +35,6 @@ public class CameraMover : MonoBehaviour{
 		camDist = 9.0f;
 		bounds = 12.0f;
 		camera = GetComponent<Camera>();
-
-		midX = (player2.position.x + player1.position.x) /2; 
-		midY = (player2.position.y + player1.position.y) /2;
-		midZ = (player2.position.z + player1.position.z) /2;
-
-		midPoint = new Vector3 (midX, midY, midZ);
-
-		offset = transform.position - midPoint;
 	}
 
 	void LateUpdate(){

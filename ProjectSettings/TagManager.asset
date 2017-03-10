@@ -8,6 +8,7 @@ TagManager:
   - ThickFog
   - Tiles
   - skinny
+  - Volatile
   layers:
   - Default
   - TransparentFX

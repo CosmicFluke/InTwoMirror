@@ -11,7 +11,7 @@ public class CharacterControl : MonoBehaviour
     // max distance player must be to interact with object
     public float maxActionDistance = 10f;
 
-    public readonly PlayerID player;
+    public PlayerID player;
 
     // the closest actionable object to the player
     private GameObject actionable;
@@ -30,6 +30,9 @@ public class CharacterControl : MonoBehaviour
     // Current game board region of the player
     private GameObject currentRegion;
 
+    // Temporary way to assign and access the two characters
+    public AnimatedCharacter character;
+
     // Use this for initialization
     void Start()
     {
@@ -47,10 +50,21 @@ public class CharacterControl : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 movement = new Vector3(Input.GetAxis(player.ToString() + "Horizontal"), 0f, Input.GetAxis(player.ToString() + "Vertical"));
+        Rigidbody rb = GetComponent<Rigidbody>();
         if (movement.magnitude > 0)
         {
-            Rigidbody rb = GetComponent<Rigidbody>();
-            rb.AddForce(movement * movementSpeed);
+            rb.velocity = movement * movementSpeed;
+
+            // Rotate the character towards the direction of movement
+            Quaternion newRotation = new Quaternion();
+            newRotation.SetLookRotation(movement);
+            transform.rotation = newRotation;
+
+            // Call SetAnimation with parameter "Yell" to play the character's yelling animation
+            character.SetAnimation("Run");
+        } else {
+            character.SetAnimation("Idle");
+            rb.velocity = movement * movementSpeed;
         }
     }
 

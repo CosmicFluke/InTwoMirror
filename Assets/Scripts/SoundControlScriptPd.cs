@@ -25,11 +25,9 @@ public class SoundControlScriptPd : MonoBehaviour {
     bool isStopping = false;
     int currNoteOffset = 0;
     int currOctave = 1;
-    int currVolume = 1;
     int currKey = 0;
 
     const int baseNote = 57;
-    int numTones = 7;
 
     public int Pitch { get { return baseNote + 12 * currOctave + currNoteOffset; } }
 

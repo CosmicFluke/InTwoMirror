@@ -27,7 +27,7 @@ public class CameraMover : MonoBehaviour{
 	public float camOffset;
 	public float bounds;
 
-	Camera camera;
+	Camera cam;
 
 
 	void Awake(){ //Startup of the game
@@ -46,7 +46,7 @@ public class CameraMover : MonoBehaviour{
 	void Start(){
 		camDist = 7.0f;
 		bounds = 12.0f;
-		camera = GetComponent<Camera>();
+		cam = GetComponent<Camera>();
 	}
 
 	void Update(){
@@ -107,8 +107,8 @@ public class CameraMover : MonoBehaviour{
 		midPoint = new Vector3 (midX, midY, midZ);
 
 		if (player1) {
-			Vector3 point = camera.WorldToViewportPoint(midPoint);
-			Vector3 delta = midPoint - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
+			// Vector3 point = cam.WorldToViewportPoint(midPoint);
+			Vector3 delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
 			Vector3 destination = transform.position + delta;
 			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
 		}

@@ -91,6 +91,7 @@ public class PlayerMovementController : MonoBehaviour
         {
             HealthPoints--;
             Debug.Log(name + " HP = " + HealthPoints);
+            LevelController.UpdatePlayerHealth(player, HealthPoints);
         }
 
     }
@@ -136,6 +137,5 @@ public class PlayerMovementController : MonoBehaviour
         {
             // If players are within MaxActionDistance...
         }
-
     }
 }

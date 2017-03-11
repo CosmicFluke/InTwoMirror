@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using UnityEngine;
 
 public enum RegionState { A, B, C }
@@ -11,14 +10,22 @@ public enum Actions { Shift, Flip,  }
 [RequireComponent(typeof(RegionOutline))]
 public class Region : MonoBehaviour {
 
+    public RegionState State { get { return currentState; } }
+    public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
+
+    [Header("Set-up properties")]
+    public RegionState initialState = RegionState.A;
+    private Material material;
+    [Header("Runtime properties")]
+    public RegionState currentState;
+    [Header("Editor properties (board design)")]
+    public GameObject[] hexTilesToAdd;
+
     public static RegionEffect StateToEffect(RegionState state, PlayerID player)
     {
         if (state == RegionState.C) return RegionEffect.Volatile;
         else return player == PlayerID.P1 ? (RegionEffect)state : (RegionEffect)(((int)state - 1) * -1);
     }
-
-    public RegionState initialState = RegionState.A;
-    public GameObject[] hexTilesToAdd;
 
     [SerializeField]
     private GameObject[] neighbours;
@@ -29,7 +36,6 @@ public class Region : MonoBehaviour {
     [SerializeField]
     private Material[] outlineMaterials = new Material[3];
 
-    private RegionState currentState;
     private List<Vector3> outerVertices;
 
     void Start () {
@@ -39,10 +45,12 @@ public class Region : MonoBehaviour {
     void init()
     {
         currentState = initialState;
+        SetRegionColor();
     }
 
     public void ShiftState(int offset) {
         currentState = (RegionState)(((int)currentState + offset) % 3);
+        SetRegionColor();
         updateMaterials();
     }
 
@@ -53,11 +61,14 @@ public class Region : MonoBehaviour {
         board.regions.Remove(gameObject);
     }
 
+    /// <summary>
+    /// Consolidates the tiles in `hexTilesToAdd` into the region.
+    /// </summary>
     [ContextMenu("Consolidate new tiles")]
     public void Consolidate() {
         if (hexTilesToAdd == null || hexTilesToAdd.Length == 0) return;
         IEnumerable<HexMesh> newTiles = hexTilesToAdd.Select(t => t.GetComponent<HexMesh>()).Where(hex => hex != null);
-        if (!isContiguous(hexTilesToAdd)) throw new Exception("Region tiles must be contiguous.");
+        if (!isContiguous(hexTilesToAdd)) throw new System.Exception("Region tiles must be contiguous.");
 
         foreach (HexMesh tile in newTiles)
         {   
@@ -135,6 +146,8 @@ public class Region : MonoBehaviour {
         if (tiles.Length == 1) return true;
         if (tiles.Length == 2) return tiles[0].GetComponent<HexMesh>().Edges.Contains(tiles[1]);
         int n = 0;
+
+        // BFS to check for a path to all tiles
         Queue<GameObject> q = new Queue<GameObject>();
         HashSet<GameObject> visited = new HashSet<GameObject>();
         q.Enqueue(tiles[0]);
@@ -154,9 +167,6 @@ public class Region : MonoBehaviour {
         }
         return visited.Count == tiles.Length;
     }
-
-    struct MeshData { Vector3[] vertices; int[] triangles;
-        public MeshData(Vector3[] vertices, int[] triangles) { this.vertices = vertices; this.triangles = triangles; } }
 
     private void refreshColliders()
     {
@@ -230,14 +240,29 @@ public class Region : MonoBehaviour {
         get { return (Material[])outlineMaterials.Clone(); }
     }
 
-    public RegionState State { get { return currentState; } }
-    public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
-
+    public void SetRegionColor()
+    {
+        if (currentState == RegionState.A)
+        {
+            //material.color = Color.green;
+            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileA") as Material;
+        }
+        if (currentState == RegionState.B)
+        {
+            //material.color = Color.red;
+            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileB") as Material;
+        }
+        if (currentState == RegionState.C)
+        {
+            //material.color = Color.blue;
+            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileC") as Material;
+        }
+    }
 }
 
-public class NoMeshStoredException : Exception
+public class NoMeshStoredException : System.Exception
 {
     public NoMeshStoredException() { }
     public NoMeshStoredException(string message) : base(message) { }
-    public NoMeshStoredException(string message, Exception inner) : base(message, inner) { }
+    public NoMeshStoredException(string message, System.Exception inner) : base(message, inner) { }
 }

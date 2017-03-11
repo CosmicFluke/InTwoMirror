@@ -9,17 +9,19 @@ public class SoundController : MonoBehaviour
 
 	public AudioSource sound;
 
+	ParticleSystem particleSystem;
+
 	// Use this for initialization
 	void Start ()
 	{
-	
+		particleSystem = GetComponent<ParticleSystem> ();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
 		if (sound.isPlaying) {
-			GetComponent<ParticleSystem> ().Play ();
+			particleSystem.Play ();
 		} else {
 			stopSound ();
 		}
@@ -27,6 +29,13 @@ public class SoundController : MonoBehaviour
 
 	void startSound (AudioClip clip)
 	{
+		startSound (clip, GetComponent<ParticleSystem> ());
+	}
+
+	void startSound (AudioClip clip, ParticleSystem particleSystem)
+	{
+		this.particleSystem = particleSystem;
+
 		sound.clip = clip;
 		sound.Play ();
 

@@ -9,8 +9,6 @@ public class SoundController : MonoBehaviour
 
 	public AudioSource sound;
 
-	public AudioClip test;
-
 	// Use this for initialization
 	void Start ()
 	{
@@ -42,7 +40,7 @@ public class SoundController : MonoBehaviour
 
 	void notifyInteractive ()
 	{
-		// TODO: Add in interaction with regions.
+		// TODO: This may just better belong in the player controller script where the sounds are played from.
 	}
 		
 }

@@ -193,7 +193,7 @@ public class Region : MonoBehaviour {
             Mesh oldMesh = tile.GetComponent<MeshFilter>().sharedMesh;
             MeshCollider mc = gameObject.AddComponent<MeshCollider>();
             mc.sharedMesh = new Mesh();
-            mc.sharedMesh.vertices = oldMesh.vertices.Select(v => tile.transform.TransformPoint(v)).ToArray();
+            mc.sharedMesh.vertices = oldMesh.vertices.Select(v => tile.transform.TransformPoint(v) - transform.position).ToArray();
             mc.sharedMesh.triangles = oldMesh.triangles;
             mc.convex = true;
             mc.isTrigger = true;

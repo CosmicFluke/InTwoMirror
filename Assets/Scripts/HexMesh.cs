@@ -3,24 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 [ExecuteInEditMode]
 public class HexMesh : MonoBehaviour {
 
     public const float radiusRatio = 0.866025404f;
     public float radius = 4f;
+    public HexTileLocation location;
 
     public float OuterRadius { get { return outerRadius; } }
     public Vector3[] OuterVertices { get { return corners; } }
+    public GameObject[] Edges { get { return edges; } }
+    public HexTileLocation Location { get { return location; } set { location = value; } }
+
+    [SerializeField]
+    private GameObject[] edges = new GameObject[6];
 
     private List<Vector3> vertices;
     private List<int> triangles;
     private Mesh mesh;
     private LineRenderer lineRenderer;
-
     private Vector3[] corners;
+    private float innerRadius, outerRadius;
 
-    private float innerRadius, outerRadius = 4f;
+    private void Awake()
+    {
+        outerRadius = radius;
+        vertices = new List<Vector3>();
+        triangles = new List<int>();
+        Generate();
+    }
 
     void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
     {
@@ -91,21 +103,13 @@ public class HexMesh : MonoBehaviour {
         mesh.RecalculateNormals();
     }
 
-    private void Awake()
-    {
-        outerRadius = radius;
-        vertices = new List<Vector3>();
-        triangles = new List<int>();
-        Generate();
-        DrawLines();
-    }
-
-    private void DrawLines() {
+    public void DrawOutline() {
         if (lineRenderer == null && gameObject.GetComponent<LineRenderer>() == null)
             lineRenderer = gameObject.AddComponent<LineRenderer>();
         else
         {
-            Destroy(lineRenderer);
+            if (Application.isPlaying) Destroy(lineRenderer);
+            else DestroyImmediate(lineRenderer);
             lineRenderer = gameObject.GetComponent<LineRenderer>();
         }
         lineRenderer.numPositions = corners.Length;
@@ -118,6 +122,43 @@ public class HexMesh : MonoBehaviour {
             lineRenderer.SetPosition(i, point);
         }
     }
+
+    public void Delete() {
+        HexGridGenerator gen = transform.parent.GetComponent<HexGridGenerator>();
+        if (gen != null) gen.ReleaseTile(Location.row, Location.offset);
+        Region r = transform.parent.GetComponent<Region>();
+        if (r != null) r.ReleaseTile(gameObject);
+        foreach (GameObject edge in edges) {
+            HexMesh neighbour = edge.GetComponent<HexMesh>();
+            if (neighbour == null) continue;
+            for (int i = 0; i < 6; i++)
+                if (neighbour.Edges[i] == gameObject)
+                {
+                    neighbour.Edges[i] = null;
+                    break;
+                }
+        }
+        Destroy(gameObject);
+    }
+
+    [ContextMenu("Make region from tile")]
+    private void makeRegionFromTile() {
+        GameBoard board = transform.parent.GetComponentInParent<GameBoard>();
+        if (board == null) throw new System.Exception("The selected tile is not a descendant of a game board.");
+        board.CreateRegionWithTiles(new Transform[] { transform });
+    }
+
+    [UnityEditor.MenuItem("HexTiles/Make region from selected tiles")]
+    private static void makeRegionFromSelectedTiles()
+    {
+        IEnumerable<Transform> hexes = UnityEditor.Selection.GetTransforms(UnityEditor.SelectionMode.Editable)
+            .Where(t => t.gameObject != null)
+            .Where(t => t.GetComponent<HexMesh>() != null);
+        GameBoard board = FindObjectOfType<GameBoard>();
+        if (board == null) throw new System.Exception("Could not find a GameBoard.");
+        board.CreateRegionWithTiles(hexes);
+    }
+
 
     void Start()
     {

@@ -19,6 +19,9 @@ public struct HexTileLocation {
         this.evenRowSize = evenRowSize;
         this.offsetType = offsetType;
     }
+    public override string ToString() {
+        return string.Format("HexTileLocation(row: {0}, offset: {1} from {2}, evenRowWidth: {3})", row, offset, offsetType, evenRowSize);
+    }
 }
 
 public struct RegionSpecification {

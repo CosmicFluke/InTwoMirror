@@ -54,6 +54,12 @@ public class Region : MonoBehaviour {
         updateMaterials();
     }
 
+    [ContextMenu("Delete region")]
+    public void Delete() {
+        if (Application.isPlaying) Destroy(gameObject);
+        else DestroyImmediate(gameObject);
+    }
+
     public void OnDestroy()
     {
         GameBoard board = GetComponentInParent<GameBoard>();
@@ -101,10 +107,16 @@ public class Region : MonoBehaviour {
 
     public Vector3[] GetBorderVertices()
     {
-        GameObject startingTile = hexTiles[0];
-        int startingEdge = findOuterEdge(startingTile.GetComponent<HexMesh>());
-        List<Vector3> vertices = new List<Vector3>();
+        int tileNum = 0;
+        GameObject startingTile = null;
+        int startingEdge = -1;
+        while (startingEdge < 0) {
+            if (tileNum >= hexTiles.Count) throw new System.Exception("Could not find a suitable outer tile for the region. Data error.");
+            startingTile = hexTiles[tileNum++];
+            startingEdge = findOuterEdge(startingTile.GetComponent<HexMesh>());
+        }
 
+        List<Vector3> vertices = new List<Vector3>();
         GameObject currTile = startingTile;
         int currEdge = startingEdge;
         HexMesh hex = currTile.GetComponent<HexMesh>(); ;

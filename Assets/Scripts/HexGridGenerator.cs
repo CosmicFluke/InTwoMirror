@@ -51,6 +51,7 @@ public class HexGridGenerator : MonoBehaviour {
 
     [ContextMenu("Generate tiles")]
     public void Generate() {
+        Debug.Log(string.Format("Generating hex grid: width={0}, length={1}, shape={2}", width, length, shape));
         if (tiles == null || widthFunctions == null) Init();
         if (hexPrefab == null) {
             Debug.Log("Attempted to generate tiles without hexagon prefab.");
@@ -60,14 +61,15 @@ public class HexGridGenerator : MonoBehaviour {
         if (hexMesh == null) {
             Debug.Log("Could not generate hex tiles: hexPrefab does not have a HexMesh component.");
             return;
-        }
+        }   
         Vector3 parentPos = gameObject.transform.position;
         foreach (int z in Enumerable.Range(0, length))
         {
             int rowWidth = widthFunctions[shape](z);
+            Debug.Log("Building row: " + z + ", rowWidth=" + rowWidth);
             if (rowWidth % 2 == 1)
-                makeTile(new HexTileLocation(z, 0, rowWidth % 2 == 0), rowWidth);
-            foreach (int x in Enumerable.Range(Mathf.Abs(width % 2 - 1), rowWidth / 2))
+                makeTile(new HexTileLocation(z, 0, false), rowWidth);
+            foreach (int x in Enumerable.Range(1, rowWidth / 2))
             {
                 makeTile(new HexTileLocation(z, x, rowWidth % 2 == 0), rowWidth);
                 makeTile(new HexTileLocation(z, -x, rowWidth % 2 == 0), rowWidth);
@@ -83,6 +85,8 @@ public class HexGridGenerator : MonoBehaviour {
     /// <param name="loc">Tile location, with a row number and centre-offset.</param>
     /// <param name="rowWidth">The width of the row this tile will be placed in.</param>
     private void makeTile(HexTileLocation loc, int rowWidth) {
+        if (!loc.evenRowSize)
+            Debug.Log("Making hex tile at " + loc.ToString());
         if (loc.offsetType != HexTileLocation.OffsetType.Centre) throw new Exception("New tiles must be specified using centre-offset.");
         float outerRadius = hexPrefab.GetComponent<HexMesh>().radius;
         float innerRadius = outerRadius * HexMesh.radiusRatio;

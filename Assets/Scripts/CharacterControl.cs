@@ -91,6 +91,7 @@ public class CharacterControl : MonoBehaviour
         {
             HealthPoints--;
             Debug.Log(name + " HP = " + HealthPoints);
+            LevelController.UpdatePlayerHealth(player, HealthPoints);
         }
 
     }

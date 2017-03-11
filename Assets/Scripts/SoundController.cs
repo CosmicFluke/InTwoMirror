@@ -44,7 +44,7 @@ public class SoundController : MonoBehaviour
 
 	void stopSound ()
 	{
-		GetComponent<ParticleSystem> ().Stop ();
+		particleSystem.Stop ();
 	}
 
 	void notifyInteractive ()

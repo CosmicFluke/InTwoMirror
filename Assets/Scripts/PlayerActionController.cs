@@ -18,6 +18,11 @@ public class PlayerActionController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.gameObject.layer == LayerMask.NameToLayer("Board"))
+        {
+            Region r = other.GetComponent<Region>();
+            if (r != null)
+                currentRegion = r;
+        }
     }
 }

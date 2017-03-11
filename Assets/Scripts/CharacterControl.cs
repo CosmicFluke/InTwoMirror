@@ -61,10 +61,10 @@ public class CharacterControl : MonoBehaviour
             transform.rotation = newRotation;
 
             // Call SetAnimation with parameter "Yell" to play the character's yelling animation
-            character.SetAnimation("Run");
+            if (character != null) character.SetAnimation("Run");
         } else {
-            character.SetAnimation("Idle");
-            rb.velocity = movement * movementSpeed;
+            if (character != null) character.SetAnimation("Idle");
+            rb.velocity = rb.velocity + (movement * movementSpeed);
         }
     }
 

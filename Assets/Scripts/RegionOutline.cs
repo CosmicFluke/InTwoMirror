@@ -28,6 +28,7 @@ public class RegionOutline : MonoBehaviour {
 	void Update () {
 	}
 
+    [ContextMenu("Refresh")]
     public void Refresh()
     {
         Region region = GetComponent<Region>();

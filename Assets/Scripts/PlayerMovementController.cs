@@ -12,16 +12,6 @@ public class PlayerMovementController : MonoBehaviour
     public float maxActionDistance = 10f;
 
     public PlayerID player;
-
-    // the closest actionable object to the player
-    private GameObject actionable;
-
-    // Secondary audio for this player
-    private AudioSource audioSource;
-    // Currently selected Camelot tone to play
-    private int currCamelot;
-    private List<AudioClip> camelotList;
-    private Collider proximity = null;
     private GameObject otherPlayer;
 
 
@@ -36,10 +26,6 @@ public class PlayerMovementController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        actionable = null;
-        audioSource = GetComponent<AudioSource>();
-        currCamelot = 2;
-
         if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
 
         // identify other player
@@ -75,11 +61,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-//        if (other.isTrigger && other.CompareTag("Interactive"))
-//        {
-//            GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
-//            actionable = other.gameObject;
-//        }
         if (other.gameObject.GetComponent<Region>() != null)
             ExecuteTileEffect(other.gameObject);
     }

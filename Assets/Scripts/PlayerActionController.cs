@@ -14,14 +14,27 @@ public class PlayerActionController : MonoBehaviour
 
     private SoundController _soundController;
 
-    public AnimatedCharacter Character;
+    private AnimatedCharacter characterAnimation;
 
     // Use this for initialization
     void Start()
     {
         if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
 
-        _soundController = new SoundController(GetComponent<AudioSource>());
+        _soundController = GetComponentInChildren<SoundController>();
+        if (_soundController == null)
+        {
+            _soundController = new GameObject(player.ToString() + "Sound Emitter", typeof(SoundController)).GetComponent<SoundController>();
+            _soundController.transform.position = transform.position;
+            _soundController.transform.SetParent(transform);
+        }
+
+        characterAnimation = GetComponentInChildren<AnimatedCharacter>();
+        if (characterAnimation == null) {
+            throw new System.Exception("This player object does not have a child with AnimatedCharacter.");
+        }
+
+
     }
 
     void FixedUpdate()
@@ -71,7 +84,7 @@ public class PlayerActionController : MonoBehaviour
     /// <param name="action"></param>
     private void ExecuteRegionAction(Dictionary<RegionState, RegionState> action)
     {
-        Character.SetAnimation("Yell");
+        characterAnimation.SetAnimation("Yell");
         CurrentRegion.currentState = action[CurrentRegion.currentState];
         CurrentRegion.SetRegionColor(); // This should update the region's materials, right?
         CurrentRegion.Consolidate();

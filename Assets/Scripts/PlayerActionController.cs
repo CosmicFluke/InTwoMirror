@@ -73,7 +73,8 @@ public class PlayerActionController : MonoBehaviour
     {
         Character.SetAnimation("Yell");
         CurrentRegion.currentState = action[CurrentRegion.currentState];
-        CurrentRegion.Consolidate(); // This should update the region's materials, right?
+        CurrentRegion.SetRegionColor(); // This should update the region's materials, right?
+        CurrentRegion.Consolidate();
         foreach (GameObject neighbour in CurrentRegion.Neighbours)
         {
             // TODO: Fix this, neighbours are just empty now, they should be an array of Regions, then we just do same as above.

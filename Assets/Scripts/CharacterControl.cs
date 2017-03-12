@@ -25,7 +25,7 @@ public class CharacterControl : MonoBehaviour
     private GameObject otherPlayer;
 
 
-    public int HealthPoints;
+    public float HealthPoints;
 
     // Current game board region of the player
     private GameObject currentRegion;
@@ -80,6 +80,10 @@ public class CharacterControl : MonoBehaviour
             GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
             actionable = other.gameObject;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
         if (other.gameObject.GetComponent<Region>() != null)
             ExecuteTileEffect(other.gameObject);
     }
@@ -89,7 +93,7 @@ public class CharacterControl : MonoBehaviour
         // Take damage from vola(tiles)^2
         if (Region.StateToEffect(tile.GetComponent<Region>().State, player) == RegionEffect.Volatile)
         {
-            HealthPoints--;
+            HealthPoints-= Time.deltaTime*0.1f;
             Debug.Log(name + " HP = " + HealthPoints);
             LevelController.UpdatePlayerHealth(player, HealthPoints);
         }

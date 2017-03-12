@@ -10,6 +10,7 @@ TagManager:
   - skinny
   - Volatile
   - Region
+  - LevelController
   layers:
   - Default
   - TransparentFX

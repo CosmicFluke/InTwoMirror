@@ -74,7 +74,6 @@ public class RegionOutline : MonoBehaviour {
             colliders = new Collider[] { objCollider };
         Vector3 vertex;
 
-        int[] heights = new int[lr.numPositions];
         for (int i = 0; i < lr.numPositions; i++)
         {
             vertex = lr.GetPosition(i);

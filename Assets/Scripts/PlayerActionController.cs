@@ -6,14 +6,12 @@ public class PlayerActionController : MonoBehaviour
 {
     public PlayerID player;
 
-    Region CurrentRegion;
+    public int[] actionInventory;
+    
+    public Region Region { get { return currentRegion; } }
 
-    public AudioClip ActionOneSound;
-    public AudioClip ActionTwoSound;
-    public AudioClip ActionThreeSound;
-
+    private Region currentRegion;
     private SoundController _soundController;
-
     private AnimatedCharacter characterAnimation;
 
     // Use this for initialization
@@ -21,12 +19,10 @@ public class PlayerActionController : MonoBehaviour
     {
         if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
 
-        _soundController = GetComponentInChildren<SoundController>();
+        _soundController = GetComponent<SoundController>();
         if (_soundController == null)
         {
-            _soundController = new GameObject(player.ToString() + "Sound Emitter", typeof(SoundController)).GetComponent<SoundController>();
-            _soundController.transform.position = transform.position;
-            _soundController.transform.SetParent(transform);
+            _soundController = gameObject.AddComponent<SoundController>();
         }
 
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
@@ -47,10 +43,10 @@ public class PlayerActionController : MonoBehaviour
             ActionDictionary.Add(RegionState.A, RegionState.C);
             ActionDictionary.Add(RegionState.C, RegionState.B);
 
-            _soundController.startSound(ActionOneSound);
+            _soundController.startSound(1);
             ExecuteRegionAction(ActionDictionary);
 
-            print(CurrentRegion.currentState);
+            print(currentRegion.currentState);
         }
         else if (Input.GetButtonDown(player.ToString() + "Action2"))
         {
@@ -59,10 +55,10 @@ public class PlayerActionController : MonoBehaviour
             ActionDictionary.Add(RegionState.B, RegionState.A);
             ActionDictionary.Add(RegionState.C, RegionState.C);
 
-            _soundController.startSound(ActionTwoSound);
+            _soundController.startSound(2);
             ExecuteRegionAction(ActionDictionary);
 
-            print(CurrentRegion.currentState);
+            print(currentRegion.currentState);
         }
         else if (Input.GetButtonDown(player.ToString() + "Action3"))
         {
@@ -71,10 +67,10 @@ public class PlayerActionController : MonoBehaviour
             ActionDictionary.Add(RegionState.B, RegionState.C);
             ActionDictionary.Add(RegionState.C, RegionState.A);
 
-            _soundController.startSound(ActionThreeSound);
+            _soundController.startSound(3);
             ExecuteRegionAction(ActionDictionary);
 
-            print(CurrentRegion.currentState);
+            print(currentRegion.currentState);
         }
     }
 
@@ -85,10 +81,10 @@ public class PlayerActionController : MonoBehaviour
     private void ExecuteRegionAction(Dictionary<RegionState, RegionState> action)
     {
         characterAnimation.SetAnimation("Yell");
-        CurrentRegion.currentState = action[CurrentRegion.currentState];
-        CurrentRegion.SetRegionColor(); // This should update the region's materials, right?
-        CurrentRegion.Consolidate();
-        foreach (GameObject neighbour in CurrentRegion.Neighbours)
+        currentRegion.currentState = action[currentRegion.currentState];
+        currentRegion.SetRegionColor(); // This should update the region's materials, right?
+        currentRegion.Consolidate();
+        foreach (GameObject neighbour in currentRegion.Neighbours)
         {
             // TODO: Fix this, neighbours are just empty now, they should be an array of Regions, then we just do same as above.
         }
@@ -100,7 +96,7 @@ public class PlayerActionController : MonoBehaviour
         {
             Region r = other.GetComponent<Region>();
             if (r != null)
-                CurrentRegion = r;
+                currentRegion = r;
         }
     }
 }

@@ -38,7 +38,7 @@ public class LevelController : MonoBehaviour
         }
         else if (canvas == null)
         {
-            canvas = (GameObject) FindObjectOfType(typeof(Canvas));
+            canvas = ((Canvas)FindObjectOfType(typeof(Canvas))).gameObject;
             Debug.Log("canvas linked");
         }
 
@@ -59,17 +59,10 @@ public class LevelController : MonoBehaviour
         foreach(GameObject player in players)
         {
             Debug.Log(player.name);
-            updatePlayerHealth(player.GetComponent<PlayerMovementController>().player, player.GetComponent<PlayerMovementController>().HealthPoints);
+            updatePlayerHealth(player.GetComponent<PlayerMovementController>().player, player.GetComponent<PlayerMovementController>().healthPoints);
         }
     }
 
-    public void updatePlayerHealth(PlayerID id, int hp)
-    {
-        if(id == PlayerID.P1)
-            p1Health.text = "Player 1: " + hp;
-        else if(id == PlayerID.P2)
-            p2Health.text = "Player 2: " + hp;
-    }
     void Update()
     {
         // On level complete
@@ -114,5 +107,13 @@ public class LevelController : MonoBehaviour
         _levelCompletion = 0;
         if (_gameController != null)
 			_gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void updatePlayerHealth(PlayerID id, float hp)
+    {
+        if (id == PlayerID.P1)
+            p1Health.text = "Player 1: " + hp.ToString("N2");
+        else if (id == PlayerID.P2)
+            p2Health.text = "Player 2: " + hp.ToString("N2");
     }
 }

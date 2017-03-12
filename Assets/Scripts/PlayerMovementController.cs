@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +14,7 @@ public class PlayerMovementController : MonoBehaviour
     public PlayerID player;
     private GameObject otherPlayer;
 
-
-    public int HealthPoints;
+    public float healthPoints;
 
     // Current game board region of the player
     private GameObject currentRegion;
@@ -56,34 +55,28 @@ public class PlayerMovementController : MonoBehaviour
 
     void Update()
     {
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Region>() != null)
-            ExecuteTileEffect(other.gameObject);
     }
 
-    private void ExecuteTileEffect(GameObject tile)
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.GetComponent<Region>() != null)
+            executeTileEffect(other.gameObject);
+    }
+
+    private void executeTileEffect(GameObject tile)
     {
         // Take damage from vola(tiles)^2
         if (Region.StateToEffect(tile.GetComponent<Region>().State, player) == RegionEffect.Volatile)
         {
-            HealthPoints--;
-            Debug.Log(name + " HP = " + HealthPoints);
-            GameObject.FindWithTag("LevelController").GetComponent<LevelController>().updatePlayerHealth(player, HealthPoints);
+            healthPoints -= Time.deltaTime*0.1f;
+            Debug.Log(name + " HP = " + healthPoints);
+            GameObject.FindWithTag("LevelController").GetComponent<LevelController>().updatePlayerHealth(player, healthPoints);
         }
 
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-//        if (other == actionable)
-//        {
-//            actionable = null;
-//            GetComponentInChildren<SoundControlScriptPd>().Interactive = null;
-//        }
     }
 
     // Find the closest interactive object
@@ -118,5 +111,6 @@ public class PlayerMovementController : MonoBehaviour
         {
             // If players are within MaxActionDistance...
         }
+
     }
 }

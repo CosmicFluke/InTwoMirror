@@ -75,11 +75,11 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger && other.CompareTag("Interactive"))
-        {
-            GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
-            actionable = other.gameObject;
-        }
+//        if (other.isTrigger && other.CompareTag("Interactive"))
+//        {
+//            GetComponentInChildren<SoundControlScriptPd>().Interactive = other;
+//            actionable = other.gameObject;
+//        }
         if (other.gameObject.GetComponent<Region>() != null)
             ExecuteTileEffect(other.gameObject);
     }
@@ -98,11 +98,11 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other == actionable)
-        {
-            actionable = null;
-            GetComponentInChildren<SoundControlScriptPd>().Interactive = null;
-        }
+//        if (other == actionable)
+//        {
+//            actionable = null;
+//            GetComponentInChildren<SoundControlScriptPd>().Interactive = null;
+//        }
     }
 
     // Find the closest interactive object

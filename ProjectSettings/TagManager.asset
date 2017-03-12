@@ -9,6 +9,7 @@ TagManager:
   - Tiles
   - skinny
   - Volatile
+  - Region
   layers:
   - Default
   - TransparentFX

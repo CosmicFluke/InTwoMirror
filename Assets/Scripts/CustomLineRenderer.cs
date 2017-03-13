@@ -9,7 +9,7 @@ public class CustomLineRenderer : MonoBehaviour {
     /// <summary> Used if no material is given.</summary>
     public Shader shader;
     /// <summary> Used if no material is given.</summary>
-    public Color lineColor = Color.green;
+    public Color lineColor = new Color(0, 240, 120, 0.3f);
     [Range(0.05f, 1.0f)]
     public float lineSize = 0.2f;
 
@@ -121,7 +121,6 @@ public class CustomLineRenderer : MonoBehaviour {
         if (objCollider != null)
             colliders = new Collider[] { objCollider };
 
-        int[] heights = new int[mesh.vertices.Length];
         for (int i = 0; i < mesh.vertices.Length; i++)
         {
             Vector3 vertex = mesh.vertices[i];
@@ -222,7 +221,7 @@ public class CustomLineRenderer : MonoBehaviour {
         if (material == null)
         {
             material = new Material(shader);
-            material.color = lineColor == null ? new Color(0, 240, 120, 0.3f) : lineColor;
+            material.color = lineColor;
         }
     }
 

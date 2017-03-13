@@ -9,6 +9,8 @@ TagManager:
   - Tiles
   - skinny
   - Volatile
+  - Region
+  - LevelController
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - 
   - 
   - Terrain
-  - 
+  - Regions
   - 
   - 
   - 

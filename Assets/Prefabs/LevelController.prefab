@@ -9,60 +9,48 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1608923200002960}
+  m_RootGameObject: {fileID: 1390345510994792}
   m_IsPrefabParent: 1
---- !u!1 &1608923200002960
+--- !u!1 &1390345510994792
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4527989608012110}
-  - component: {fileID: 114260712547050952}
-  - component: {fileID: 114252382481201568}
+  - component: {fileID: 4337569258379052}
+  - component: {fileID: 114937783236967836}
   m_Layer: 0
-  m_Name: TestConfig1
-  m_TagString: Untagged
+  m_Name: LevelController
+  m_TagString: LevelController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4527989608012110
+--- !u!4 &4337569258379052
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1608923200002960}
+  m_GameObject: {fileID: 1390345510994792}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.68, y: 1.1, z: 0}
+  m_LocalPosition: {x: -7.2, y: 3.9, z: 7.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114252382481201568
+--- !u!114 &114937783236967836
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1608923200002960}
+  m_GameObject: {fileID: 1390345510994792}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 663671c9e1dffcb4c8b3328403c2a707, type: 3}
+  m_Script: {fileID: 11500000, guid: f4c0964ebe51f1743b55320b7402f855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114260712547050952
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1608923200002960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c3ba4856a3b90d4f8b21604d46064d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hexPrefab: {fileID: 1399084267760958, guid: 4bc2069b77436c74ebe07e468688e322, type: 2}
-  width: 4
-  length: 6
+  StartActionOne: 3
+  StartActionTwo: 3
+  canvas: {fileID: 0}

@@ -10,7 +10,13 @@ public enum Actions { Shift, Flip,  }
 [RequireComponent(typeof(RegionOutline))]
 public class Region : MonoBehaviour {
 
-    public RegionState State { get { return currentState; } }
+    public RegionState State { get { return currentState; }
+        set
+        {
+            currentState = value;
+            updateMaterials();
+        }
+    }
     public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
 
     [Header("Set-up properties")]
@@ -36,22 +42,17 @@ public class Region : MonoBehaviour {
     [SerializeField]
     private Material[] outlineMaterials = new Material[3];
 
-    private List<Vector3> outerVertices;
-
     void Start () {
         init();
 	}
 
     void init()
     {
-        currentState = initialState;
-        SetRegionColor();
+        refresh();
     }
 
     public void ShiftState(int offset) {
-        currentState = (RegionState)(((int)currentState + offset) % 3);
-        SetRegionColor();
-        updateMaterials();
+        State = (RegionState)(((int)State + offset) % 3);
     }
 
     [ContextMenu("Delete region")]
@@ -105,38 +106,54 @@ public class Region : MonoBehaviour {
         neighbours = neighboursTmp.ToArray();
     }
 
-    public Vector3[] GetBorderVertices()
+    public List<Vector3> GetBorderVertices(float insideBorder)
     {
+        insideBorder *= 0.95f;
         int tileNum = 0;
         GameObject startingTile = null;
         int startingEdge = -1;
         while (startingEdge < 0) {
             if (tileNum >= hexTiles.Count) throw new System.Exception("Could not find a suitable outer tile for the region. Data error.");
-            startingTile = hexTiles[tileNum++];
+            startingTile = hexTiles[tileNum];
+            tileNum++;
             startingEdge = findOuterEdge(startingTile.GetComponent<HexMesh>());
         }
 
         List<Vector3> vertices = new List<Vector3>();
         GameObject currTile = startingTile;
+        GameObject nextTile = null;
         int currEdge = startingEdge;
-        HexMesh hex = currTile.GetComponent<HexMesh>(); ;
-        vertices.Add(hex.transform.position + hex.OuterVertices[currEdge]);
+        int nextEdge = -1;
+        bool concaveVertex = false;
+        HexMesh hex = currTile.GetComponent<HexMesh>();
+        Vector3 vertex = hex.transform.position + hex.OuterVertices[currEdge];
+        vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
         // Advance around hex edges in a clockwise direction
         while (currTile != startingTile || currEdge != startingEdge || vertices.Count == 1)
         {
-            vertices.Add(hex.transform.position + hex.OuterVertices[(currEdge + 1) % 6]);
-            // Advance to the next edge on the hex
-            currEdge = (currEdge + 1) % 6;
-            if (hexTiles.Contains(hex.Edges[currEdge]))
+            nextTile = currTile;
+            nextEdge = (currEdge + 1) % 6;
+            if (hexTiles.Contains(hex.Edges[nextEdge]))
             {
-                currTile = hex.Edges[currEdge];
-                currEdge = (currEdge + 4) % 6;
+                concaveVertex = true;
+                nextTile = hex.Edges[nextEdge];
+                nextEdge = (nextEdge + 4) % 6;
             }
+            else concaveVertex = false;
+            vertex = hex.transform.position + hex.OuterVertices[(currEdge + 1) % 6];
+            vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
+            // Advance to the next edge on the hex
+            currEdge = nextEdge;
+            currTile = nextTile;
             hex = currTile.GetComponent<HexMesh>();
         }
-        outerVertices = vertices;
-        Debug.Log("Vertices (" + vertices.Count + "): \n  " + string.Join("\n  ", outerVertices.Select(v => v.ToString()).ToArray()));
-        return vertices.ToArray();
+        return vertices;
+    }
+
+    private Vector3 shiftPointInsideRegion(Vector3 vertex, HexMesh hex, int currEdge, bool concaveVertex, float amt)
+    {
+        Vector3 shiftDirection = hex.transform.position + (concaveVertex ? hex.OuterVertices[(currEdge + 2) % 6] : Vector3.zero);
+        return Vector3.MoveTowards(vertex, shiftDirection, 0.5f * amt / Mathf.Cos(Mathf.Deg2Rad * 30));
     }
 
     public void ReleaseTile(GameObject tile)
@@ -148,7 +165,7 @@ public class Region : MonoBehaviour {
     [ContextMenu("Refresh")]
     private void refresh()
     {
-        if (!Application.isPlaying) init();
+        currentState = initialState;
         refreshColliders();
         GetComponent<RegionOutline>().Refresh();
         updateMaterials();
@@ -193,7 +210,7 @@ public class Region : MonoBehaviour {
             Mesh oldMesh = tile.GetComponent<MeshFilter>().sharedMesh;
             MeshCollider mc = gameObject.AddComponent<MeshCollider>();
             mc.sharedMesh = new Mesh();
-            mc.sharedMesh.vertices = oldMesh.vertices.Select(v => tile.transform.TransformPoint(v)).ToArray();
+            mc.sharedMesh.vertices = oldMesh.vertices.Select(v => tile.transform.TransformPoint(v) - transform.position).ToArray();
             mc.sharedMesh.triangles = oldMesh.triangles;
             mc.convex = true;
             mc.isTrigger = true;
@@ -211,13 +228,13 @@ public class Region : MonoBehaviour {
 
     [ContextMenu("Update materials")]
     private void updateMaterials() {
-        if (tileMaterials != null && tileMaterials[(int)currentState] != null)
+        if (tileMaterials != null && tileMaterials[(int)State] != null)
             foreach (GameObject tile in hexTiles)
-                tile.transform.GetComponent<MeshRenderer>().material = tileMaterials[(int)currentState];
-        CustomLineRenderer outline = GetComponent<CustomLineRenderer>();
-        if (outline != null && outlineMaterials != null && outlineMaterials[(int)currentState] != null)
+                tile.transform.GetComponent<MeshRenderer>().material = tileMaterials[(int)State];
+        RegionOutline outline = GetComponent<RegionOutline>();
+        if (outline != null && outlineMaterials != null && outlineMaterials[(int)State] != null)
         {
-            outline.Material = outlineMaterials[(int)currentState];
+            outline.Material = outlineMaterials[(int)State];
         }
     }
 
@@ -250,25 +267,6 @@ public class Region : MonoBehaviour {
             updateMaterials();
         }
         get { return (Material[])outlineMaterials.Clone(); }
-    }
-
-    public void SetRegionColor()
-    {
-        if (currentState == RegionState.A)
-        {
-            //material.color = Color.green;
-            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileA") as Material;
-        }
-        if (currentState == RegionState.B)
-        {
-            //material.color = Color.red;
-            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileB") as Material;
-        }
-        if (currentState == RegionState.C)
-        {
-            //material.color = Color.blue;
-            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileC") as Material;
-        }
     }
 }
 

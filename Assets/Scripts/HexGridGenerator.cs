@@ -153,17 +153,15 @@ public class HexGridGenerator : MonoBehaviour {
             tile = tiles[row, OffsetToIndexInRow(offset)];
         }
         catch (NullReferenceException e) {
-            Debug.Log(string.Format("Null ref at Release Tile.\nRow: {0}  Offset: {1}", row, offset));
-            throw e;
+            Debug.LogError(e);
+            Debug.LogError(string.Format("ReleaseTile: null ref at tiles[{0}, {1}] where tiles is {2}null", row, offset, tiles == null ? "" : "not "));
+            int count = 0;
+            foreach (GameObject t in tiles) if (t != null) count++;
+            return null;
         }
         if (tile == null) Debug.Log("Tile not found.");
         tiles[row, OffsetToIndexInRow(offset)] = null;
         return tile;
-    }
-
-    public void DeleteTile(int row, int offset)
-    {
-        Destroy(ReleaseTile(row, offset));
     }
 
     public static HexTileLocation EdgeToLocation(HexTileLocation loc, int edge) {

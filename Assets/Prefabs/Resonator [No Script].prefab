@@ -20,11 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4401540532727902}
   - component: {fileID: 135822973635303596}
-  - component: {fileID: 114305435593839808}
   - component: {fileID: 82074880410482916}
   - component: {fileID: 114660665899179868}
   m_Layer: 0
-  m_Name: Resonator
+  m_Name: Resonator [No Script]
   m_TagString: Interactive
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,24 +271,6 @@ Light:
   m_BounceIntensity: 0.92
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114305435593839808
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1208510431861290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea1f3fac3c3205f4480bfbcf2bda9971, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tone: 0
-  chord: 1
-  oscillatingFrequency: 2
-  distort: 0
-  activeMaterial: {fileID: 2100000, guid: cb1eeb0db00f3bc4e8bbd4e7eba81d3e, type: 2}
-  glowIntensity: 8
-  player: 0
 --- !u!114 &114660665899179868
 MonoBehaviour:
   m_ObjectHideFlags: 1

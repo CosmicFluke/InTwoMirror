@@ -18,8 +18,8 @@ public class LevelController : MonoBehaviour
     public int StartActionTwo = 3;
 
     public GameObject canvas;
-    private static Text P1Health;
-    private static Text P2Health;
+    private Text p1Health;
+    private Text p2Health;
 
     // Use this for initialization
     void Start()
@@ -43,23 +43,23 @@ public class LevelController : MonoBehaviour
         }
 
         // Programatically instantiate player health UI
-        P1Health = ((GameObject) Instantiate(Resources.Load("UI/PlayerHealth"))).GetComponent<Text>();
-        P1Health.transform.SetParent(canvas.transform);
-        P2Health = ((GameObject)Instantiate(Resources.Load("UI/PlayerHealth"))).GetComponent<Text>();
-        P2Health.transform.SetParent(canvas.transform);
+        p1Health = ((GameObject) Instantiate(Resources.Load("UI/PlayerHealth"))).GetComponent<Text>();
+        p1Health.transform.SetParent(canvas.transform);
+        p2Health = ((GameObject)Instantiate(Resources.Load("UI/PlayerHealth"))).GetComponent<Text>();
+        p2Health.transform.SetParent(canvas.transform);
 
         // TODO: finalize clean positioning
         Vector3 bottomLeft = new Vector3(100, 10, 0);
         Vector3 bottomRight = new Vector3(canvas.GetComponent<RectTransform>().rect.width - 50, 10, 0);
 
-        P1Health.GetComponent<RectTransform>().position = bottomLeft;
-        P2Health.GetComponent<RectTransform>().position = bottomRight;
+        p1Health.GetComponent<RectTransform>().position = bottomLeft;
+        p2Health.GetComponent<RectTransform>().position = bottomRight;
 
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach(GameObject player in players)
         {
-            Debug.Log(player.name);
-            UpdatePlayerHealth(player.GetComponent<CharacterControl>().player, player.GetComponent<CharacterControl>().HealthPoints);
+            Debug.Log("Initializing health for " + player.name);
+            updatePlayerHealth(player.GetComponent<PlayerMovementController>().player, player.GetComponent<PlayerMovementController>().healthPoints);
         }
     }
 
@@ -109,11 +109,11 @@ public class LevelController : MonoBehaviour
 			_gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public static void UpdatePlayerHealth(PlayerID id, float hp)
+    public void updatePlayerHealth(PlayerID id, float hp)
     {
         if (id == PlayerID.P1)
-            P1Health.text = "Player 1: " + hp.ToString("N2");
+            p1Health.text = "Player 1: " + hp.ToString("N2");
         else if (id == PlayerID.P2)
-            P2Health.text = "Player 2: " + hp.ToString("N2");
+            p2Health.text = "Player 2: " + hp.ToString("N2");
     }
 }

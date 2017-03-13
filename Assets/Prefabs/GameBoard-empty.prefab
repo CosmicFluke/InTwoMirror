@@ -63,5 +63,5 @@ MonoBehaviour:
   hexGeneratorPrefab: {fileID: 1590816459888886, guid: a8999b189d73b574ab6c92d0e2b54a81,
     type: 2}
   shape: 0
-  width: 4
+  width: 5
   length: 7

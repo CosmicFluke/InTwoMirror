@@ -123,12 +123,13 @@ public class HexMesh : MonoBehaviour {
         }
     }
 
+    [ContextMenu("Delete from board")]
     public void Delete() {
         HexGridGenerator gen = transform.parent.GetComponent<HexGridGenerator>();
         if (gen != null) gen.ReleaseTile(Location.row, Location.offset);
         Region r = transform.parent.GetComponent<Region>();
         if (r != null) r.ReleaseTile(gameObject);
-        foreach (GameObject edge in edges) {
+        foreach (GameObject edge in edges.Where(edge => edge != null)) {
             HexMesh neighbour = edge.GetComponent<HexMesh>();
             if (neighbour == null) continue;
             for (int i = 0; i < 6; i++)
@@ -138,7 +139,8 @@ public class HexMesh : MonoBehaviour {
                     break;
                 }
         }
-        Destroy(gameObject);
+        if (Application.isPlaying) Destroy(gameObject);
+        else DestroyImmediate(gameObject);
     }
 
     [ContextMenu("Make region from tile")]
@@ -158,7 +160,6 @@ public class HexMesh : MonoBehaviour {
         if (board == null) throw new System.Exception("Could not find a GameBoard.");
         board.CreateRegionWithTiles(hexes);
     }
-
 
     void Start()
     {

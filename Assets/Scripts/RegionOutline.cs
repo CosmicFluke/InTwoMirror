@@ -3,8 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(LineRenderer), typeof(Region))]
 public class RegionOutline : MonoBehaviour {
+
+    public Material Material {
+        get { return material; }
+        set
+        {
+            material = value;
+            LineRenderer outline = GetComponent<LineRenderer>();
+            outline.material = material;
+        }
+    }
 
     public Material material;
     [Range(0.05f, 1.0f)]
@@ -31,13 +41,16 @@ public class RegionOutline : MonoBehaviour {
     public void Refresh()
     {
         Region region = GetComponent<Region>();
-        Vector3[] vertices = region.GetBorderVertices();
+        Vector3[] vertices = region.GetBorderVertices(lineSize).Select(v => v + Vector3.up * lineSize / 2f).ToArray();
         LineRenderer outline = GetComponent<LineRenderer>();
         outline.material = region.OutlineMaterials[(int)region.State];
         outline.startWidth = lineSize;
         outline.endWidth = lineSize;
-        outline.startColor = lineColor;
-        outline.endColor = lineColor;
+        if (outline.sharedMaterial == null)
+        {
+            outline.startColor = lineColor;
+            outline.endColor = lineColor;
+        }
 
         outline.numPositions = vertices.Length;
         outline.SetPositions(vertices);
@@ -74,7 +87,6 @@ public class RegionOutline : MonoBehaviour {
             colliders = new Collider[] { objCollider };
         Vector3 vertex;
 
-        int[] heights = new int[lr.numPositions];
         for (int i = 0; i < lr.numPositions; i++)
         {
             vertex = lr.GetPosition(i);

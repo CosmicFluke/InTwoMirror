@@ -81,8 +81,7 @@ public class PlayerActionController : MonoBehaviour
     private void ExecuteRegionAction(Dictionary<RegionState, RegionState> action)
     {
         characterAnimation.SetAnimation("Yell");
-        currentRegion.currentState = action[currentRegion.currentState];
-        currentRegion.SetRegionColor(); // This should update the region's materials, right?
+        currentRegion.State = action[currentRegion.currentState];
         currentRegion.Consolidate();
         foreach (GameObject neighbour in currentRegion.Neighbours)
         {

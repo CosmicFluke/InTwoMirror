@@ -10,7 +10,13 @@ public enum Actions { Shift, Flip,  }
 [RequireComponent(typeof(RegionOutline))]
 public class Region : MonoBehaviour {
 
-    public RegionState State { get { return currentState; } }
+    public RegionState State { get { return currentState; }
+        set
+        {
+            currentState = value;
+            updateMaterials();
+        }
+    }
     public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
 
     [Header("Set-up properties")]
@@ -36,8 +42,6 @@ public class Region : MonoBehaviour {
     [SerializeField]
     private Material[] outlineMaterials = new Material[3];
 
-    private List<Vector3> outerVertices;
-
     void Start () {
         init();
 	}
@@ -48,9 +52,7 @@ public class Region : MonoBehaviour {
     }
 
     public void ShiftState(int offset) {
-        currentState = (RegionState)(((int)currentState + offset) % 3);
-        SetRegionColor();
-        updateMaterials();
+        State = (RegionState)(((int)State + offset) % 3);
     }
 
     [ContextMenu("Delete region")]
@@ -104,7 +106,7 @@ public class Region : MonoBehaviour {
         neighbours = neighboursTmp.ToArray();
     }
 
-    public Vector3[] GetBorderVertices(float insideBorder)
+    public List<Vector3> GetBorderVertices(float insideBorder)
     {
         insideBorder *= 0.95f;
         int tileNum = 0;
@@ -145,8 +147,7 @@ public class Region : MonoBehaviour {
             currTile = nextTile;
             hex = currTile.GetComponent<HexMesh>();
         }
-        outerVertices = vertices;
-        return vertices.ToArray();
+        return vertices;
     }
 
     private Vector3 shiftPointInsideRegion(Vector3 vertex, HexMesh hex, int currEdge, bool concaveVertex, float amt)
@@ -227,13 +228,13 @@ public class Region : MonoBehaviour {
 
     [ContextMenu("Update materials")]
     private void updateMaterials() {
-        if (tileMaterials != null && tileMaterials[(int)currentState] != null)
+        if (tileMaterials != null && tileMaterials[(int)State] != null)
             foreach (GameObject tile in hexTiles)
-                tile.transform.GetComponent<MeshRenderer>().material = tileMaterials[(int)currentState];
-        CustomLineRenderer outline = GetComponent<CustomLineRenderer>();
-        if (outline != null && outlineMaterials != null && outlineMaterials[(int)currentState] != null)
+                tile.transform.GetComponent<MeshRenderer>().material = tileMaterials[(int)State];
+        RegionOutline outline = GetComponent<RegionOutline>();
+        if (outline != null && outlineMaterials != null && outlineMaterials[(int)State] != null)
         {
-            outline.Material = outlineMaterials[(int)currentState];
+            outline.Material = outlineMaterials[(int)State];
         }
     }
 
@@ -266,25 +267,6 @@ public class Region : MonoBehaviour {
             updateMaterials();
         }
         get { return (Material[])outlineMaterials.Clone(); }
-    }
-
-    public void SetRegionColor()
-    {
-        if (currentState == RegionState.A)
-        {
-            //material.color = Color.green;
-            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileA") as Material;
-        }
-        if (currentState == RegionState.B)
-        {
-            //material.color = Color.red;
-            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileB") as Material;
-        }
-        if (currentState == RegionState.C)
-        {
-            //material.color = Color.blue;
-            gameObject.GetComponent<Renderer>().material = Resources.Load("Materials/tempTileC") as Material;
-        }
     }
 }
 

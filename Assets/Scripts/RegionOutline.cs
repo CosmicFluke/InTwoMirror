@@ -6,6 +6,16 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer), typeof(Region))]
 public class RegionOutline : MonoBehaviour {
 
+    public Material Material {
+        get { return material; }
+        set
+        {
+            material = value;
+            LineRenderer outline = GetComponent<LineRenderer>();
+            outline.material = material;
+        }
+    }
+
     public Material material;
     [Range(0.05f, 1.0f)]
     public float lineSize = 0.2f;

@@ -153,6 +153,7 @@ public class HexGridGenerator : MonoBehaviour {
             tile = tiles[row, OffsetToIndexInRow(offset)];
         }
         catch (NullReferenceException e) {
+            Debug.LogError(e);
             Debug.LogError(string.Format("ReleaseTile: null ref at tiles[{0}, {1}] where tiles is {2}null", row, offset, tiles == null ? "" : "not "));
             int count = 0;
             foreach (GameObject t in tiles) if (t != null) count++;

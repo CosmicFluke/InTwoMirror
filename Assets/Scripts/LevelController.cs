@@ -58,7 +58,7 @@ public class LevelController : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach(GameObject player in players)
         {
-            Debug.Log(player.name);
+            Debug.Log("Initializing health for " + player.name);
             updatePlayerHealth(player.GetComponent<PlayerMovementController>().player, player.GetComponent<PlayerMovementController>().healthPoints);
         }
     }

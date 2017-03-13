@@ -44,8 +44,7 @@ public class Region : MonoBehaviour {
 
     void init()
     {
-        currentState = initialState;
-        SetRegionColor();
+        refresh();
     }
 
     public void ShiftState(int offset) {
@@ -105,38 +104,55 @@ public class Region : MonoBehaviour {
         neighbours = neighboursTmp.ToArray();
     }
 
-    public Vector3[] GetBorderVertices()
+    public Vector3[] GetBorderVertices(float insideBorder)
     {
+        insideBorder *= 0.95f;
         int tileNum = 0;
         GameObject startingTile = null;
         int startingEdge = -1;
         while (startingEdge < 0) {
             if (tileNum >= hexTiles.Count) throw new System.Exception("Could not find a suitable outer tile for the region. Data error.");
-            startingTile = hexTiles[tileNum++];
+            startingTile = hexTiles[tileNum];
+            tileNum++;
             startingEdge = findOuterEdge(startingTile.GetComponent<HexMesh>());
         }
 
         List<Vector3> vertices = new List<Vector3>();
         GameObject currTile = startingTile;
+        GameObject nextTile = null;
         int currEdge = startingEdge;
-        HexMesh hex = currTile.GetComponent<HexMesh>(); ;
-        vertices.Add(hex.transform.position + hex.OuterVertices[currEdge]);
+        int nextEdge = -1;
+        bool concaveVertex = false;
+        HexMesh hex = currTile.GetComponent<HexMesh>();
+        Vector3 vertex = hex.transform.position + hex.OuterVertices[currEdge];
+        vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
         // Advance around hex edges in a clockwise direction
         while (currTile != startingTile || currEdge != startingEdge || vertices.Count == 1)
         {
-            vertices.Add(hex.transform.position + hex.OuterVertices[(currEdge + 1) % 6]);
-            // Advance to the next edge on the hex
-            currEdge = (currEdge + 1) % 6;
-            if (hexTiles.Contains(hex.Edges[currEdge]))
+            nextTile = currTile;
+            nextEdge = (currEdge + 1) % 6;
+            if (hexTiles.Contains(hex.Edges[nextEdge]))
             {
-                currTile = hex.Edges[currEdge];
-                currEdge = (currEdge + 4) % 6;
+                concaveVertex = true;
+                nextTile = hex.Edges[nextEdge];
+                nextEdge = (nextEdge + 4) % 6;
             }
+            else concaveVertex = false;
+            vertex = hex.transform.position + hex.OuterVertices[(currEdge + 1) % 6];
+            vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
+            // Advance to the next edge on the hex
+            currEdge = nextEdge;
+            currTile = nextTile;
             hex = currTile.GetComponent<HexMesh>();
         }
         outerVertices = vertices;
-        Debug.Log("Vertices (" + vertices.Count + "): \n  " + string.Join("\n  ", outerVertices.Select(v => v.ToString()).ToArray()));
         return vertices.ToArray();
+    }
+
+    private Vector3 shiftPointInsideRegion(Vector3 vertex, HexMesh hex, int currEdge, bool concaveVertex, float amt)
+    {
+        Vector3 shiftDirection = hex.transform.position + (concaveVertex ? hex.OuterVertices[(currEdge + 2) % 6] : Vector3.zero);
+        return Vector3.MoveTowards(vertex, shiftDirection, 0.5f * amt / Mathf.Cos(Mathf.Deg2Rad * 30));
     }
 
     public void ReleaseTile(GameObject tile)
@@ -148,7 +164,7 @@ public class Region : MonoBehaviour {
     [ContextMenu("Refresh")]
     private void refresh()
     {
-        if (!Application.isPlaying) init();
+        currentState = initialState;
         refreshColliders();
         GetComponent<RegionOutline>().Refresh();
         updateMaterials();

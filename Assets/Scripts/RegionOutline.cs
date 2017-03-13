@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(LineRenderer), typeof(Region))]
 public class RegionOutline : MonoBehaviour {
 
     public Material material;
@@ -28,17 +28,19 @@ public class RegionOutline : MonoBehaviour {
 	void Update () {
 	}
 
-    [ContextMenu("Refresh")]
     public void Refresh()
     {
         Region region = GetComponent<Region>();
-        Vector3[] vertices = region.GetBorderVertices();
+        Vector3[] vertices = region.GetBorderVertices(lineSize).Select(v => v + Vector3.up * lineSize / 2f).ToArray();
         LineRenderer outline = GetComponent<LineRenderer>();
         outline.material = region.OutlineMaterials[(int)region.State];
         outline.startWidth = lineSize;
         outline.endWidth = lineSize;
-        outline.startColor = lineColor;
-        outline.endColor = lineColor;
+        if (outline.sharedMaterial == null)
+        {
+            outline.startColor = lineColor;
+            outline.endColor = lineColor;
+        }
 
         outline.numPositions = vertices.Length;
         outline.SetPositions(vertices);

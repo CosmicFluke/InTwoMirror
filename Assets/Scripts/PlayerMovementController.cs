@@ -95,12 +95,12 @@ public class PlayerMovementController : MonoBehaviour
             if (healthPoints <= 0)
             {
                 Debug.Log(name + " has died.");
-                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().updatePlayerHealth(player, 0f);
+                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, 0f);
             }
             else
             {
                 Debug.Log(name + " HP = " + healthPoints + " at collision duration: " + collisionCurrentDuration.ToString());
-                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().updatePlayerHealth(player, healthPoints);
+                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
             }
         }
     }

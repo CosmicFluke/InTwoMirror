@@ -18,8 +18,8 @@ public class LevelController : MonoBehaviour
     public int StartActionTwo = 3;
 
     public GameObject canvas;
-    private Text p1Health;
-    private Text p2Health;
+    private Slider p1Health;
+    private Slider p2Health;
 
     // Use this for initialization
     void Start()
@@ -43,9 +43,9 @@ public class LevelController : MonoBehaviour
         }
 
         // Programatically instantiate player health UI
-        p1Health = ((GameObject) Instantiate(Resources.Load("UI/PlayerHealth"))).GetComponent<Text>();
+        p1Health = ((GameObject) Instantiate(Resources.Load("UI/P1HealthBar"))).GetComponent<Slider>();
         p1Health.transform.SetParent(canvas.transform);
-        p2Health = ((GameObject)Instantiate(Resources.Load("UI/PlayerHealth"))).GetComponent<Text>();
+        p2Health = ((GameObject)Instantiate(Resources.Load("UI/P2HealthBar"))).GetComponent<Slider>();
         p2Health.transform.SetParent(canvas.transform);
 
         // TODO: finalize clean positioning
@@ -59,7 +59,7 @@ public class LevelController : MonoBehaviour
         foreach(GameObject player in players)
         {
             Debug.Log("Initializing health for " + player.name);
-            updatePlayerHealth(player.GetComponent<PlayerMovementController>().player, player.GetComponent<PlayerMovementController>().healthPoints);
+            UpdatePlayerHealth(player.GetComponent<PlayerMovementController>().player, player.GetComponent<PlayerMovementController>().healthPoints);
         }
     }
 
@@ -109,11 +109,11 @@ public class LevelController : MonoBehaviour
 			_gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void updatePlayerHealth(PlayerID id, float hp)
+    public void UpdatePlayerHealth(PlayerID id, float hp)
     {
         if (id == PlayerID.P1)
-            p1Health.text = "Player 1: " + hp.ToString("N2");
+            p1Health.value = hp / 100;
         else if (id == PlayerID.P2)
-            p2Health.text = "Player 2: " + hp.ToString("N2");
+            p2Health.value = hp / 100;
     }
 }

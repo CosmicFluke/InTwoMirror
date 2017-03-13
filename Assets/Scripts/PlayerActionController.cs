@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerActionController : MonoBehaviour
@@ -56,21 +57,16 @@ public class PlayerActionController : MonoBehaviour
     /// <param name="action"></param>
     private void ExecuteRegionAction(Action action)
     {
+        currentRegion = GetComponent<PlayerMovementController>().Region;
         characterAnimation.SetAnimation("Yell");
-        currentRegion.PropagateAction(action, player, GameObject.FindWithTag("Board").GetComponent<GameBoard>().ActionDistance[(int) action] + 1);
-        foreach (GameObject neighbour in currentRegion.Neighbours)
+        currentRegion.State = ActionDictionary.Lookup(action, currentRegion.State, player);
+        foreach (Region neighbour in currentRegion.Neighbours.Select(neighbour => neighbour.GetComponent<Region>()))
         {
-            // TODO: Fix this, neighbours are just empty now, they should be an array of Regions, then we just do same as above.
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Region")
-        {
-            Region r = other.GetComponent<Region>();
-            if (r != null)
-                currentRegion = r;
+            if (neighbour == null) {
+                Debug.Log("Neighbour doesn't have Region component?");
+                continue;
+            }
+            neighbour.State = ActionDictionary.Lookup(action, neighbour.State, player);
         }
     }
 }

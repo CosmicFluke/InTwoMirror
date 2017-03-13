@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour {
 
+    /// <summary>
+    /// Specifies how far each of the actions (from Action enum) propagate.
+    /// Mappings to the int values of the actions.  Temporary solution.
+    /// </summary>
     public int[] ActionDistance = new int[] { 1, 1, 1 };
     public List<GameObject> regions;
     [Header("Materials")]

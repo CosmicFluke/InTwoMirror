@@ -42,17 +42,6 @@ public abstract class Region : MonoBehaviour {
     public RegionState currentState;
     public Material material;
 
-    public void PropagateAction(Action action, PlayerID player, int distance) {
-        State = ActionDictionary.Lookup(action, State, player);
-        if (distance == -1)
-            distance = GetComponentInParent<GameBoard>().StateChangePropagationDistance;
-        else if (distance <= 1) return;
-        foreach (Region r in Neighbours.Select(o => o.GetComponent<Region>()))
-        {
-            r.PropagateAction(action, player, distance - 1);
-        }
-    }
-
 
     // Use this for initialization
     void Start () {

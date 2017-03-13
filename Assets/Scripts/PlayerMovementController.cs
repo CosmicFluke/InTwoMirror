@@ -19,6 +19,7 @@ public class PlayerMovementController : MonoBehaviour
 
     // Current game board region of the player
     private Region currentRegion;
+    public Region Region { get { return currentRegion; } }
 
     // Temporary way to assign and access the two characters
     public AnimatedCharacter characterAnimation;

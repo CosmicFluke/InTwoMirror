@@ -14,13 +14,20 @@ public class PlayerMovementController : MonoBehaviour
     public PlayerID player;
     private GameObject otherPlayer;
 
-    public float healthPoints;
+    public float healthPoints = 100f;
 
     // Current game board region of the player
     private GameObject currentRegion;
 
     // Temporary way to assign and access the two characters
     public AnimatedCharacter character;
+
+    // Keeps track of volatile collision duration
+    private float collisionStartTime;
+    private float collisionCurrentDuration;
+    private float collisionTotalDuration = 0f;
+
+    //public UnityEngine.UI.Text CollisionText; 
 
     // Use this for initialization
     void Start()
@@ -29,6 +36,7 @@ public class PlayerMovementController : MonoBehaviour
 
         // identify other player
         otherPlayer = player == PlayerID.P1 ? GameObject.Find("Player2") : player == PlayerID.P2 ? GameObject.Find("Player1") : null;
+
     }
 
     // Update is called once per frame
@@ -59,24 +67,42 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        collisionStartTime = Time.time;
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.GetComponent<Region>() != null)
-            executeTileEffect(other.gameObject);
+        {
+            ExecuteTileEffect(other.gameObject);
+        }
     }
 
-    private void executeTileEffect(GameObject tile)
+    private void OnTriggerExit()
+    {
+        collisionTotalDuration = collisionCurrentDuration;
+    }
+
+    private void ExecuteTileEffect(GameObject tile)
     {
         // Take damage from vola(tiles)^2
         if (Region.StateToEffect(tile.GetComponent<Region>().State, player) == RegionEffect.Volatile)
         {
-            healthPoints -= Time.deltaTime*0.1f;
-            Debug.Log(name + " HP = " + healthPoints);
-            GameObject.FindWithTag("LevelController").GetComponent<LevelController>().updatePlayerHealth(player, healthPoints);
-        }
+            collisionCurrentDuration = collisionTotalDuration + Time.time - collisionStartTime;
+            //CollisionText.text = collisionCurrentDuration.ToString();
 
+            healthPoints = collisionCurrentDuration==0 ? -25 * (collisionCurrentDuration - 4) : -25 * (Mathf.Pow(2, collisionCurrentDuration) - 4);
+            if (healthPoints <= 0)
+            {
+                Debug.Log(name + " has died.");
+                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().updatePlayerHealth(player, 0f);
+            }
+            else
+            {
+                Debug.Log(name + " HP = " + healthPoints + " at collision duration: " + collisionCurrentDuration.ToString());
+                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().updatePlayerHealth(player, healthPoints);
+            }
+        }
     }
 
     // Find the closest interactive object

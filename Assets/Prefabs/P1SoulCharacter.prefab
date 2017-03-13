@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 136161116348918252}
   - component: {fileID: 114720773078032284}
   m_Layer: 0
-  m_Name: SoulCharacter
+  m_Name: P1SoulCharacter
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -730,7 +730,7 @@ MonoBehaviour:
   movementSpeed: 10
   maxActionDistance: 10
   player: 0
-  HealthPoints: 50
+  healthPoints: 0
   character: {fileID: 114826662134749346}
 --- !u!114 &114447813512129744
 MonoBehaviour:

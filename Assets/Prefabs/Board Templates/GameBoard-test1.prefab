@@ -3684,6 +3684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -3772,6 +3773,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -3812,6 +3814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -3928,6 +3931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4288,6 +4292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4312,6 +4317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4338,6 +4344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4387,6 +4394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4459,6 +4467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4508,6 +4517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4581,6 +4591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4669,6 +4680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4693,6 +4705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4717,6 +4730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4745,6 +4759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4953,6 +4968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -4977,6 +4993,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -5025,6 +5042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:
@@ -5153,6 +5171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  currentState: 0
   hexTilesToAdd: []
   neighbours: []
   hexTiles:

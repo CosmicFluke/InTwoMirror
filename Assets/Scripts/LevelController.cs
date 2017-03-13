@@ -42,24 +42,27 @@ public class LevelController : MonoBehaviour
             Debug.Log("canvas linked");
         }
 
-        // Programatically instantiate player health UI
-        p1Health = ((GameObject) Instantiate(Resources.Load("UI/P1HealthBar"))).GetComponent<Slider>();
-        p1Health.transform.SetParent(canvas.transform);
-        p2Health = ((GameObject)Instantiate(Resources.Load("UI/P2HealthBar"))).GetComponent<Slider>();
-        p2Health.transform.SetParent(canvas.transform);
-
-        // TODO: finalize clean positioning
-        Vector3 bottomLeft = new Vector3(100, 10, 0);
-        Vector3 bottomRight = new Vector3(canvas.GetComponent<RectTransform>().rect.width - 50, 10, 0);
-
-        p1Health.GetComponent<RectTransform>().position = bottomLeft;
-        p2Health.GetComponent<RectTransform>().position = bottomRight;
-
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject player in players)
+        if(SceneManager.GetActiveScene().name != "OpeningScene")
         {
-            Debug.Log("Initializing health for " + player.name);
-            UpdatePlayerHealth(player.GetComponent<PlayerMovementController>().player, player.GetComponent<PlayerMovementController>().healthPoints);
+            // Programatically instantiate player health UI
+            p1Health = ((GameObject) Instantiate(Resources.Load("UI/P1HealthBar"))).GetComponent<Slider>();
+            p1Health.transform.SetParent(canvas.transform);
+            p2Health = ((GameObject)Instantiate(Resources.Load("UI/P2HealthBar"))).GetComponent<Slider>();
+            p2Health.transform.SetParent(canvas.transform);
+
+            // TODO: finalize clean positioning
+            Vector3 bottomLeft = new Vector3(p2Health.GetComponent<RectTransform>().rect.width / 2, 10, 0);
+            Vector3 bottomRight = new Vector3(canvas.GetComponent<RectTransform>().rect.width - p2Health.GetComponent<RectTransform>().rect.width / 2, 10, 0);
+
+            p1Health.GetComponent<RectTransform>().position = bottomLeft;
+            p2Health.GetComponent<RectTransform>().position = bottomRight;
+
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach(GameObject player in players)
+            {
+                Debug.Log("Initializing health for " + player.name);
+                UpdatePlayerHealth(player.GetComponent<PlayerMovementController>().player, player.GetComponent<PlayerMovementController>().healthPoints);
+            }
         }
     }
 

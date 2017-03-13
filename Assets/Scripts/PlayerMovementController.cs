@@ -17,10 +17,10 @@ public class PlayerMovementController : MonoBehaviour
     public float healthPoints = 100f;
 
     // Current game board region of the player
-    private GameObject currentRegion;
+    private RegionBuilder currentRegion;
 
     // Temporary way to assign and access the two characters
-    public AnimatedCharacter character;
+    public AnimatedCharacter characterAnimation;
 
     // Keeps track of volatile collision duration
     private float collisionStartTime;
@@ -54,25 +54,37 @@ public class PlayerMovementController : MonoBehaviour
             transform.rotation = newRotation;
 
             // Call SetAnimation with parameter "Yell" to play the character's yelling animation
-            if (character != null) character.SetAnimation("Run");
+            if (characterAnimation != null) characterAnimation.SetAnimation("Run");
         } else {
-            if (character != null) character.SetAnimation("Idle");
+            if (characterAnimation != null) characterAnimation.SetAnimation("Idle");
             rb.velocity = rb.velocity + (movement * movementSpeed);
         }
     }
 
     void Update()
     {
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        changeRegion(other);
+            
         collisionStartTime = Time.time;
+    }
+
+    private void changeRegion(Collider other) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Regions"))
+        {
+            RegionBuilder r = other.GetComponent<RegionBuilder>();
+            if (r == null) return;
+            currentRegion = r;
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.GetComponent<Region>() != null)
+        if (other.gameObject.GetComponent<RegionBuilder>() != null)
         {
             ExecuteTileEffect(other.gameObject);
         }
@@ -86,7 +98,7 @@ public class PlayerMovementController : MonoBehaviour
     private void ExecuteTileEffect(GameObject tile)
     {
         // Take damage from vola(tiles)^2
-        if (Region.StateToEffect(tile.GetComponent<Region>().State, player) == RegionEffect.Volatile)
+        if (RegionBuilder.StateToEffect(tile.GetComponent<RegionBuilder>().State, player) == RegionEffect.Volatile)
         {
             collisionCurrentDuration = collisionTotalDuration + Time.time - collisionStartTime;
             //CollisionText.text = collisionCurrentDuration.ToString();

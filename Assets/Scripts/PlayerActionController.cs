@@ -82,7 +82,6 @@ public class PlayerActionController : MonoBehaviour
     {
         characterAnimation.SetAnimation("Yell");
         currentRegion.State = action[currentRegion.currentState];
-        currentRegion.Consolidate();
         foreach (GameObject neighbour in currentRegion.Neighbours)
         {
             // TODO: Fix this, neighbours are just empty now, they should be an array of Regions, then we just do same as above.

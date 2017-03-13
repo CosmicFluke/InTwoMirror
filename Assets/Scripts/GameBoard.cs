@@ -61,7 +61,7 @@ public class GameBoard : MonoBehaviour {
             {
                 CreateRegionWithTiles(new Transform[] { genObj.transform.GetChild(0) });
             }
-        foreach (Region r in regions.Where(obj => obj != null).Select(obj => obj.GetComponent<Region>())) {
+        foreach (RegionBuilder r in regions.Where(obj => obj != null).Select(obj => obj.GetComponent<RegionBuilder>())) {
             if (r != null)
                 r.Consolidate();
         }
@@ -72,22 +72,25 @@ public class GameBoard : MonoBehaviour {
             yield return ch;
     }
 
-    public Region CreateRegionWithTiles(IEnumerable<Transform> tiles) {
+    public RegionBuilder CreateRegionWithTiles(IEnumerable<Transform> tiles) {
         tiles = tiles.Where(t => t.GetComponent<HexMesh>() != null);
         if (tiles.Count() == 0) return null;
-        Region newRegion = createEmptyRegion();
+        RegionBuilder newRegion = createEmptyRegion();
         newRegion.hexTilesToAdd = tiles.Select(t => t.gameObject).ToArray();
         newRegion.Consolidate();
         return newRegion;
     }
 
 
-    private Region createEmptyRegion() {
-        Region region = new GameObject("Region " + (regions.Count + 1), typeof(Region)).GetComponent<Region>();
+    private RegionBuilder createEmptyRegion() {
+        RegionBuilder region = new GameObject("Region " + (regions.Count + 1), typeof(RegionBuilder)).GetComponent<RegionBuilder>();
         region.transform.position = transform.position;
         region.transform.SetParent(transform);
         region.TileMaterials = (Material[])TileMaterials.Clone();
         region.OutlineMaterials = (Material[])OutlineMaterials.Clone();
+        int layer = LayerMask.NameToLayer("Regions");
+        if (layer > 0)
+            region.gameObject.layer = LayerMask.NameToLayer("Regions");
         regions.Add(region.gameObject);
         return region;
     }

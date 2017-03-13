@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer), typeof(Region))]
+[RequireComponent(typeof(LineRenderer), typeof(RegionBuilder))]
 public class RegionOutline : MonoBehaviour {
 
     public Material Material {
@@ -16,9 +16,11 @@ public class RegionOutline : MonoBehaviour {
         }
     }
 
+    public bool IsActive;
+
     public Material material;
     [Range(0.05f, 1.0f)]
-    public float lineSize = 0.1f;
+    public float lineBaseSize = 0.1f;
 
     /// <summary> Used if no material is given.</summary>
     public Color lineColor = Color.white;
@@ -30,22 +32,33 @@ public class RegionOutline : MonoBehaviour {
     [Range(0.1f, 5.0f), Tooltip("Maximum distance along y-axis for conforming to a surface; will throw error if distance is exceeded.")]
     public float surfaceConformMaxDistance = 5.0f;
 
+    private float currLineSize;
+    private float growRate = 1.0f; // number of seconds per cycle
+    private float growFactor = 1.0f;
+
     // Use this for initialization
     void Start () {
+        currLineSize = lineBaseSize;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (IsActive)
+        {
+            float deltaSize = (Time.deltaTime / growRate) * growFactor * lineBaseSize;
+            currLineSize += (currLineSize < growFactor * lineBaseSize ? 1 : -1) * deltaSize;
+        }
+        else if (currLineSize != lineBaseSize) currLineSize = lineBaseSize;
 	}
 
     public void Refresh()
     {
-        Region region = GetComponent<Region>();
-        Vector3[] vertices = region.GetBorderVertices(lineSize).Select(v => v + Vector3.up * lineSize / 2f).ToArray();
+        RegionBuilder region = GetComponent<RegionBuilder>();
+        Vector3[] vertices = region.GetBorderVertices(lineBaseSize).Select(v => v + Vector3.up * lineBaseSize / 2f).ToArray();
         LineRenderer outline = GetComponent<LineRenderer>();
         outline.material = region.OutlineMaterials[(int)region.State];
-        outline.startWidth = lineSize;
-        outline.endWidth = lineSize;
+        outline.startWidth = lineBaseSize;
+        outline.endWidth = lineBaseSize;
         if (outline.sharedMaterial == null)
         {
             outline.startColor = lineColor;

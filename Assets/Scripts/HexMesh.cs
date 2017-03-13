@@ -10,6 +10,7 @@ public class HexMesh : MonoBehaviour {
     public const float radiusRatio = 0.866025404f;
     [Header("State/position info")]
     public float radius = 4f;
+    public float height = 2f;
     public HexGridCoordinates location;
     [SerializeField]
     private GameObject[] edges = new GameObject[6];
@@ -75,6 +76,7 @@ public class HexMesh : MonoBehaviour {
         this.corners = corners;
 
         Vector3 center = new Vector3();
+        // Top
         for (int i = 0; i < 6; i++)
         {
             AddTriangle(
@@ -83,25 +85,27 @@ public class HexMesh : MonoBehaviour {
                 center + corners[i + 1]
             );
         }
+        // Bottom
         for (int i = 0; i < 6; i++)
         {
             AddTriangle(
-                center - Vector3.up,
-                center + corners[i + 1] - Vector3.up,
-                center + corners[i] - Vector3.up
+                center - Vector3.up * height,
+                center + corners[i + 1] - Vector3.up * height,
+                center + corners[i] - Vector3.up * height
             );
         }
 
+        // Sides
         for (int i = 0;i < 6; i++)
         {
             AddTriangle(
-                center + corners[i] - Vector3.up,
+                center + corners[i] - Vector3.up * height,
                 center + corners[i + 1],
                 center + corners[i]
             );
             AddTriangle(
-                center + corners[i] - Vector3.up, 
-                center + corners[i + 1] - Vector3.up, 
+                center + corners[i] - Vector3.up * height, 
+                center + corners[i + 1] - Vector3.up * height, 
                 center + corners[i + 1]
             );
         }
@@ -139,7 +143,7 @@ public class HexMesh : MonoBehaviour {
     }
 
     public HexGridCoordinates[] SpawnNeighboursToDepth(int recursiveDepth) {
-        Region r = transform.parent.GetComponent<Region>();
+        RegionBuilder r = transform.parent.GetComponent<RegionBuilder>();
         HexGridGenerator grid = GameObject.Find("HexTileMom").GetComponent<HexGridGenerator>();
         if (grid == null && r != null)
         {
@@ -161,7 +165,7 @@ public class HexMesh : MonoBehaviour {
         return newCoords.ToArray();
     }
 
-    private List<HexGridCoordinates> spawnNeighboursRecursive(int depth, Region r, HexGridGenerator grid) {
+    private List<HexGridCoordinates> spawnNeighboursRecursive(int depth, RegionBuilder r, HexGridGenerator grid) {
         if (depth < 1) return new List<HexGridCoordinates>();
         if (depth > 1) Debug.Log("Spawning at depth " + depth);
         List<HexGridCoordinates> newCoords = new List<HexGridCoordinates>();
@@ -214,7 +218,7 @@ public class HexMesh : MonoBehaviour {
     [ContextMenu("Delete from board")]
     public void Delete() {
         HexGridGenerator gen = transform.parent.GetComponent<HexGridGenerator>();
-        Region r = transform.parent.GetComponent<Region>();
+        RegionBuilder r = transform.parent.GetComponent<RegionBuilder>();
         if (r != null && gen != null) Debug.LogError("Wtf that is definitely not supposed to happen");
         else if (r != null) r.ReleaseTile(gameObject);
         else if (gen != null) gen.ReleaseTile(Location);

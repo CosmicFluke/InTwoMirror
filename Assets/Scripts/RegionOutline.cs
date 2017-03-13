@@ -31,10 +31,12 @@ public class RegionOutline : MonoBehaviour {
     public GameObject terrainObject;
     [Range(0.1f, 5.0f), Tooltip("Maximum distance along y-axis for conforming to a surface; will throw error if distance is exceeded.")]
     public float surfaceConformMaxDistance = 5.0f;
+    public Vector3[] vertices;
 
     private float currLineSize;
-    private float growRate = 1.0f; // number of seconds per cycle
-    private float growFactor = 1.0f;
+    private float growRate = 1.0f; // number of cycles per second
+    private float growFactor = 2.0f; //
+    private bool isGrowing;
 
     // Use this for initialization
     void Start () {
@@ -45,18 +47,32 @@ public class RegionOutline : MonoBehaviour {
 	void Update () {
         if (IsActive)
         {
-            float deltaSize = (Time.deltaTime / growRate) * growFactor * lineBaseSize;
-            currLineSize += (currLineSize < growFactor * lineBaseSize ? 1 : -1) * deltaSize;
+            float deltaSize = (growRate * Time.deltaTime) * growFactor * lineBaseSize;
+            currLineSize += (isGrowing ? 1 : -1) * deltaSize;
+            if (currLineSize <= lineBaseSize)
+                isGrowing = true;
+            else if (currLineSize >= lineBaseSize + growFactor * lineBaseSize)
+                isGrowing = false;
+            refreshLineSize();
         }
-        else if (currLineSize != lineBaseSize) currLineSize = lineBaseSize;
+        else if (currLineSize != lineBaseSize)
+        {
+            currLineSize = lineBaseSize;
+            refreshLineSize();
+        }
 	}
 
-    public void Rebuild()
+    private void refreshLineSize()
     {
-        RegionBuilder region = GetComponent<RegionBuilder>();
-        Vector3[] vertices = region.GetBorderVertices(lineBaseSize).Select(v => v + Vector3.up * lineBaseSize / 2f).ToArray();
         LineRenderer outline = GetComponent<LineRenderer>();
-        outline.material = region.OutlineMaterials[(int)region.State];
+        outline.startWidth = currLineSize;
+        outline.endWidth = currLineSize;
+    }
+
+    public void Refresh()
+    {
+        LineRenderer outline = GetComponent<LineRenderer>();
+        outline.material = Material;
         outline.startWidth = lineBaseSize;
         outline.endWidth = lineBaseSize;
         if (outline.sharedMaterial == null)
@@ -66,8 +82,17 @@ public class RegionOutline : MonoBehaviour {
         }
 
         outline.numPositions = vertices.Length;
-        outline.SetPositions(vertices);
+        outline.SetPositions(vertices.Select(v => v + transform.position + Vector3.up * lineBaseSize / 2f).ToArray());
     }
+
+    public Vector3[] Vertices {
+        get { return vertices.ToArray(); }
+        set {
+            vertices = value.ToArray();
+            Debug.Log(string.Join(" / ", vertices.Select(v => v.ToString()).ToArray()));
+            Refresh();
+        }
+    } 
 
     [ContextMenu("Conform mesh to surface (doesn't work)")]
     public void ConformToSurface()

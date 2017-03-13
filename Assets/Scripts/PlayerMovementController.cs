@@ -37,10 +37,10 @@ public class PlayerMovementController : MonoBehaviour
     void Start()
     {
         if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
-
+        currentRegion = startingRegion.GetComponent<Region>();
+        GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
         // identify other player
         otherPlayer = player == PlayerID.P1 ? GameObject.Find("Player2") : player == PlayerID.P2 ? GameObject.Find("Player1") : null;
-        currentRegion = startingRegion.GetComponent<Region>();
 
     }
 
@@ -75,6 +75,14 @@ public class PlayerMovementController : MonoBehaviour
         if (deathCountdown <= 0) gameObject.SetActive(false);
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<Region>() == currentRegion) {
+            transform.GetComponent<Rigidbody>().velocity = - transform.GetComponent<Rigidbody>().velocity;
+        }
+
+    }
+
     // Use trigger callbacks to change the state of the character
     void OnTriggerEnter(Collider other)
     {
@@ -84,11 +92,12 @@ public class PlayerMovementController : MonoBehaviour
 
     private void changeRegion(Collider other) {
         Debug.Log(player.ToString() + " changing region to " + currentRegion.gameObject.name);
+        currentRegion.SetOccupied(false, player);
         if (other.gameObject.layer == LayerMask.NameToLayer("Regions"))
         {
             Region r = other.GetComponent<Region>();
-            if (r == null) return;
             currentRegion = r;
+            r.SetOccupied(true, player);
         }
     }
 
@@ -107,19 +116,11 @@ public class PlayerMovementController : MonoBehaviour
         if (Region.StateToEffect(currentRegion.State, player) == RegionEffect.Volatile)
         {
             collisionCurrentDuration = collisionTotalDuration + Time.time - collisionStartTime;
-            //CollisionText.text = collisionCurrentDuration.ToString();
 
             healthPoints = collisionCurrentDuration == 0 ? -25 * (collisionCurrentDuration - 4) : -25 * (Mathf.Pow(2, collisionCurrentDuration) - 4);
             if (healthPoints <= 0)
             {
-                Debug.Log(name + " has died.");
-                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, 0f);
                 Kill();
-            }
-            else
-            {
-                Debug.Log(name + " HP = " + healthPoints + " at collision duration: " + collisionCurrentDuration.ToString());
-                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
             }
         }
         else if (Region.StateToEffect(currentRegion.State, player) == RegionEffect.Unstable)
@@ -127,9 +128,15 @@ public class PlayerMovementController : MonoBehaviour
             healthPoints = 0;
             Kill();
         }
+        updateHealthBar();
+    }
+
+    public void updateHealthBar() {
+        GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
     }
 
     public void Kill() {
+        Debug.Log(name + " has died.");
         if (characterAnimation != null)
             characterAnimation.SetAnimation("Die");
         deathCountdown = 2f;

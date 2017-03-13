@@ -8,9 +8,10 @@ public class RegionBuilder : Region {
     [Header("Editor properties (board design)")]
     public GameObject[] hexTilesToAdd;
 
-    void Start () {
-        init();
-	}
+    new void Start ()
+    {
+        base.Start();
+    }
 
     void init()
     {
@@ -25,6 +26,8 @@ public class RegionBuilder : Region {
     {
         currentState = initialState;
         findNeighbours();
+        RegionOutline outline = GetComponent<RegionOutline>();
+        outline.Vertices = getBorderVertices(outline.lineBaseSize).ToArray();
         refresh(); // base class method
     }
 
@@ -79,7 +82,7 @@ public class RegionBuilder : Region {
         neighbours = neighboursTmp.ToArray();
     }
 
-    public List<Vector3> GetBorderVertices(float insideBorder)
+    private List<Vector3> getBorderVertices(float insideBorder)
     {
         insideBorder *= 0.95f;
         int tileNum = 0;
@@ -99,7 +102,7 @@ public class RegionBuilder : Region {
         int nextEdge = -1;
         bool concaveVertex = false;
         HexMesh hex = currTile.GetComponent<HexMesh>();
-        Vector3 vertex = hex.transform.position + hex.OuterVertices[currEdge];
+        Vector3 vertex = hex.transform.position - transform.position + hex.OuterVertices[currEdge];
         vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
         // Advance around hex edges in a clockwise direction
         while (currTile != startingTile || currEdge != startingEdge || vertices.Count == 1)
@@ -113,7 +116,7 @@ public class RegionBuilder : Region {
                 nextEdge = (nextEdge + 4) % 6;
             }
             else concaveVertex = false;
-            vertex = hex.transform.position + hex.OuterVertices[(currEdge + 1) % 6];
+            vertex = hex.transform.position - transform.position + hex.OuterVertices[(currEdge + 1) % 6];
             vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
             // Advance to the next edge on the hex
             currEdge = nextEdge;
@@ -125,7 +128,7 @@ public class RegionBuilder : Region {
 
     private Vector3 shiftPointInsideRegion(Vector3 vertex, HexMesh hex, int currEdge, bool concaveVertex, float amt)
     {
-        Vector3 shiftDirection = hex.transform.position + (concaveVertex ? hex.OuterVertices[(currEdge + 2) % 6] : Vector3.zero);
+        Vector3 shiftDirection = hex.transform.position - transform.position + (concaveVertex ? hex.OuterVertices[(currEdge + 2) % 6] : Vector3.zero);
         return Vector3.MoveTowards(vertex, shiftDirection, 0.5f * amt / Mathf.Cos(Mathf.Deg2Rad * 30));
     }
 

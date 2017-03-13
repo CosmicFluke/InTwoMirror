@@ -7,7 +7,7 @@ public enum RegionState { A, B, C }
 public enum RegionEffect { Stable, Unstable, Volatile }
 public enum Action { Useless, Swap, Shift }
 
-public abstract class Region : MonoBehaviour {
+public class Region : MonoBehaviour {
 
     public static RegionEffect StateToEffect(RegionState state, PlayerID player)
     {
@@ -27,6 +27,9 @@ public abstract class Region : MonoBehaviour {
         }
     }
 
+    public Material OutlineMaterial { get { return outlineMaterials[(int)currentState]; } }
+    public Material TileMaterial { get { return tileMaterials[(int)currentState]; } }
+
     [Header("Set-up properties")]
     public RegionState initialState = RegionState.A;
     [SerializeField]
@@ -40,16 +43,16 @@ public abstract class Region : MonoBehaviour {
 
     [Header("Runtime properties")]
     public RegionState currentState;
-    public Material material;
 
 
     // Use this for initialization
-    void Start () {
-		
+    protected void Start () {
+        refresh();
+        Debug.Log("Starting " + name);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -71,8 +74,8 @@ public abstract class Region : MonoBehaviour {
 
     protected void refresh() {
         refreshColliders();
-        GetComponent<RegionOutline>().Rebuild();
         updateMaterials();
+        GetComponent<RegionOutline>().Refresh();
     }
 
     /// <summary>
@@ -116,4 +119,5 @@ public abstract class Region : MonoBehaviour {
             mc.isTrigger = true;
         }
     }
+
 }

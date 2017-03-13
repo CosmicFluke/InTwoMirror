@@ -53,7 +53,7 @@ public class GameBoard : MonoBehaviour {
     [ContextMenu("Reset region outlines")]
     private void resetRegionOutlines() {
         foreach (RegionOutline outline in regions.Where(r => r != null).Select(obj => obj.GetComponent<RegionOutline>()).Where(r => r != null)) {
-            outline.Rebuild();
+            outline.Refresh();
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer), typeof(RegionBuilder))]
+[RequireComponent(typeof(LineRenderer), typeof(Region))]
 public class RegionOutline : MonoBehaviour {
 
     public Material Material {
@@ -51,7 +51,7 @@ public class RegionOutline : MonoBehaviour {
         else if (currLineSize != lineBaseSize) currLineSize = lineBaseSize;
 	}
 
-    public void Refresh()
+    public void Rebuild()
     {
         RegionBuilder region = GetComponent<RegionBuilder>();
         Vector3[] vertices = region.GetBorderVertices(lineBaseSize).Select(v => v + Vector3.up * lineBaseSize / 2f).ToArray();

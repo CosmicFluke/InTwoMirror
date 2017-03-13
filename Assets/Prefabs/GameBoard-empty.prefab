@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114935062552003102}
   m_Layer: 0
   m_Name: GameBoard-empty
-  m_TagString: Untagged
+  m_TagString: Board
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfaee3c74c485334da390fec40a645a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ActionDistance: 
   regions: []
   TileMaterials:
   - {fileID: 2100000, guid: d203388d5671f2946a4123602bd5a520, type: 2}
@@ -65,3 +66,4 @@ MonoBehaviour:
   shape: 0
   width: 5
   length: 7
+  StateChangePropagationDistance: 1

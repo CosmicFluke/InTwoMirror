@@ -11,6 +11,7 @@ TagManager:
   - Volatile
   - Region
   - LevelController
+  - Board
   layers:
   - Default
   - TransparentFX

@@ -10,6 +10,7 @@ public class PlayerMovementController : MonoBehaviour
     public float movementSpeed = 30f;
     // max distance player must be to interact with object
     public float maxActionDistance = 10f;
+    public GameObject startingRegion;
 
     public PlayerID player;
     private GameObject otherPlayer;
@@ -17,7 +18,7 @@ public class PlayerMovementController : MonoBehaviour
     public float healthPoints = 100f;
 
     // Current game board region of the player
-    private RegionBuilder currentRegion;
+    private Region currentRegion;
 
     // Temporary way to assign and access the two characters
     public AnimatedCharacter characterAnimation;
@@ -26,6 +27,8 @@ public class PlayerMovementController : MonoBehaviour
     private float collisionStartTime;
     private float collisionCurrentDuration;
     private float collisionTotalDuration = 0f;
+
+    private float deathCountdown = 10f;
 
     //public UnityEngine.UI.Text CollisionText; 
 
@@ -36,6 +39,7 @@ public class PlayerMovementController : MonoBehaviour
 
         // identify other player
         otherPlayer = player == PlayerID.P1 ? GameObject.Find("Player2") : player == PlayerID.P2 ? GameObject.Find("Player1") : null;
+        currentRegion = startingRegion.GetComponent<Region>();
 
     }
 
@@ -61,22 +65,27 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
+    // Use Update to execute ongoing/gradual effects
     void Update()
     {
-
+        ExecuteTileEffect();
+        if (deathCountdown < 10f && deathCountdown > 0f)
+            deathCountdown -= Time.deltaTime;
+        if (deathCountdown <= 0) gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
+    // Use trigger callbacks to change the state of the character
+    void OnTriggerEnter(Collider other)
     {
         changeRegion(other);
-            
         collisionStartTime = Time.time;
     }
 
     private void changeRegion(Collider other) {
+        Debug.Log(player.ToString() + " changing region to " + currentRegion.gameObject.name);
         if (other.gameObject.layer == LayerMask.NameToLayer("Regions"))
         {
-            RegionBuilder r = other.GetComponent<RegionBuilder>();
+            Region r = other.GetComponent<Region>();
             if (r == null) return;
             currentRegion = r;
         }
@@ -84,10 +93,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.GetComponent<RegionBuilder>() != null)
-        {
-            ExecuteTileEffect(other.gameObject);
-        }
     }
 
     private void OnTriggerExit()
@@ -95,19 +100,20 @@ public class PlayerMovementController : MonoBehaviour
         collisionTotalDuration = collisionCurrentDuration;
     }
 
-    private void ExecuteTileEffect(GameObject tile)
+    private void ExecuteTileEffect()
     {
         // Take damage from vola(tiles)^2
-        if (RegionBuilder.StateToEffect(tile.GetComponent<RegionBuilder>().State, player) == RegionEffect.Volatile)
+        if (Region.StateToEffect(currentRegion.State, player) == RegionEffect.Volatile)
         {
             collisionCurrentDuration = collisionTotalDuration + Time.time - collisionStartTime;
             //CollisionText.text = collisionCurrentDuration.ToString();
 
-            healthPoints = collisionCurrentDuration==0 ? -25 * (collisionCurrentDuration - 4) : -25 * (Mathf.Pow(2, collisionCurrentDuration) - 4);
+            healthPoints = collisionCurrentDuration == 0 ? -25 * (collisionCurrentDuration - 4) : -25 * (Mathf.Pow(2, collisionCurrentDuration) - 4);
             if (healthPoints <= 0)
             {
                 Debug.Log(name + " has died.");
                 GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, 0f);
+                Kill();
             }
             else
             {
@@ -115,29 +121,17 @@ public class PlayerMovementController : MonoBehaviour
                 GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
             }
         }
+        else if (Region.StateToEffect(currentRegion.State, player) == RegionEffect.Unstable)
+        {
+            healthPoints = 0;
+            Kill();
+        }
     }
 
-    // Find the closest interactive object
-    // From https://docs.unity3d.com/ScriptReference/GameObject.FindGameObjectsWithTag.html
-    // Not currently in use
-    GameObject FindClosestInteractive()
-    {
-        GameObject[] gos;
-        gos = GameObject.FindGameObjectsWithTag("Interactive");
-        GameObject closest = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = transform.position;
-        foreach (GameObject go in gos)
-        {
-            Vector3 diff = go.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < maxActionDistance && curDistance < distance)
-            {
-                closest = go;
-                distance = curDistance;
-            }
-        }
-        return closest;
+    public void Kill() {
+        if (characterAnimation != null)
+            characterAnimation.SetAnimation("Die");
+        deathCountdown = 2f;
     }
 
     // Checks distance between this and other player

@@ -33,44 +33,20 @@ public class PlayerActionController : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    void Update()
     {
         // NOTE: A = Stable, B = Unstable, C = Volatile
         if (Input.GetButtonDown(player.ToString() + "Action1"))
         {
-            Dictionary<RegionState, RegionState> ActionDictionary = new Dictionary<RegionState, RegionState>();
-            ActionDictionary.Add(RegionState.B, RegionState.C);
-            ActionDictionary.Add(RegionState.A, RegionState.C);
-            ActionDictionary.Add(RegionState.C, RegionState.B);
-
-            _soundController.startSound(1);
-            ExecuteRegionAction(ActionDictionary);
-
-            print(currentRegion.currentState);
+            ExecuteRegionAction(Action.Useless);
         }
         else if (Input.GetButtonDown(player.ToString() + "Action2"))
         {
-            Dictionary<RegionState, RegionState> ActionDictionary = new Dictionary<RegionState, RegionState>();
-            ActionDictionary.Add(RegionState.A, RegionState.B);
-            ActionDictionary.Add(RegionState.B, RegionState.A);
-            ActionDictionary.Add(RegionState.C, RegionState.C);
-
-            _soundController.startSound(2);
-            ExecuteRegionAction(ActionDictionary);
-
-            print(currentRegion.currentState);
+           ExecuteRegionAction(Action.Swap);
         }
         else if (Input.GetButtonDown(player.ToString() + "Action3"))
         {
-            Dictionary<RegionState, RegionState> ActionDictionary = new Dictionary<RegionState, RegionState>();
-            ActionDictionary.Add(RegionState.A, RegionState.B);
-            ActionDictionary.Add(RegionState.B, RegionState.C);
-            ActionDictionary.Add(RegionState.C, RegionState.A);
-
-            _soundController.startSound(3);
-            ExecuteRegionAction(ActionDictionary);
-
-            print(currentRegion.currentState);
+            ExecuteRegionAction(Action.Shift);
         }
     }
 
@@ -78,10 +54,10 @@ public class PlayerActionController : MonoBehaviour
     /// Executes a region action where regions change from one state to another using the key and values in the action dictionary.
     /// </summary>
     /// <param name="action"></param>
-    private void ExecuteRegionAction(Dictionary<RegionState, RegionState> action)
+    private void ExecuteRegionAction(Action action)
     {
         characterAnimation.SetAnimation("Yell");
-        currentRegion.State = action[currentRegion.currentState];
+        currentRegion.PropagateAction(action, player, GameObject.FindWithTag("Board").GetComponent<GameBoard>().ActionDistance[(int) action] + 1);
         foreach (GameObject neighbour in currentRegion.Neighbours)
         {
             // TODO: Fix this, neighbours are just empty now, they should be an array of Regions, then we just do same as above.

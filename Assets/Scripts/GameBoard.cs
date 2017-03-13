@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour {
 
+    public int[] ActionDistance = new int[] { 1, 1, 1 };
     public List<GameObject> regions;
     [Header("Materials")]
     public Material[] TileMaterials = new Material[3];
@@ -14,6 +15,7 @@ public class GameBoard : MonoBehaviour {
     public GameObject hexGeneratorPrefab;
     public BoardShape shape = BoardShape.Rectangle;
     public int width = 4, length = 6;
+    public int StateChangePropagationDistance = 1;
 
     public bool IsEmpty { get { return regions.Count == 0; } }
 
@@ -47,7 +49,7 @@ public class GameBoard : MonoBehaviour {
     [ContextMenu("Reset region outlines")]
     private void resetRegionOutlines() {
         foreach (RegionOutline outline in regions.Where(r => r != null).Select(obj => obj.GetComponent<RegionOutline>()).Where(r => r != null)) {
-            outline.Refresh();
+            outline.Rebuild();
         }
     }
 

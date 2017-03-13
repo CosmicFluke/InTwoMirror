@@ -5,16 +5,18 @@ using UnityEngine;
 
 public enum RegionState { A, B, C }
 public enum RegionEffect { Stable, Unstable, Volatile }
-public enum Actions { Shift, Flip, }
+public enum Action { Useless, Swap, Shift }
 
-public class Region : MonoBehaviour {
+public abstract class Region : MonoBehaviour {
 
     public static RegionEffect StateToEffect(RegionState state, PlayerID player)
     {
         if (state == RegionState.C) return RegionEffect.Volatile;
         else return player == PlayerID.P1 ? (RegionEffect)state : (RegionEffect)(((int)state - 1) * -1);
     }
+
     public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
+
     public RegionState State
     {
         get { return currentState; }
@@ -39,6 +41,17 @@ public class Region : MonoBehaviour {
     [Header("Runtime properties")]
     public RegionState currentState;
     public Material material;
+
+    public void PropagateAction(Action action, PlayerID player, int distance) {
+        State = ActionDictionary.Lookup(action, State, player);
+        if (distance == -1)
+            distance = GetComponentInParent<GameBoard>().StateChangePropagationDistance;
+        else if (distance <= 1) return;
+        foreach (Region r in Neighbours.Select(o => o.GetComponent<Region>()))
+        {
+            r.PropagateAction(action, player, distance - 1);
+        }
+    }
 
 
     // Use this for initialization
@@ -69,7 +82,7 @@ public class Region : MonoBehaviour {
 
     protected void refresh() {
         refreshColliders();
-        GetComponent<RegionOutline>().Refresh();
+        GetComponent<RegionOutline>().Rebuild();
         updateMaterials();
     }
 

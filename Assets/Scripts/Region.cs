@@ -80,11 +80,10 @@ public class Region : MonoBehaviour {
         foreach (HexMesh tile in newTiles)
         {   
             HexMesh tileHexMesh = tile.GetComponent<HexMesh>();
+            if (tileHexMesh == null) continue;
             // Release tile from current parent (either region or generator)
-            HexGridGenerator mom = tile.transform.parent.GetComponent<HexGridGenerator>();
-            Region dad = tile.transform.parent.GetComponent<Region>();
-            if (mom != null) mom.ReleaseTile(tileHexMesh.Location.row, tileHexMesh.Location.offset);
-            else if (dad != null) dad.ReleaseTile(tile.gameObject);
+            Region mom = tile.transform.parent.GetComponent<Region>();
+            if (mom != null) mom.ReleaseTile(tile.gameObject);
 
             if (Application.isPlaying)
                 Destroy(tile.GetComponent<LineRenderer>());
@@ -158,8 +157,10 @@ public class Region : MonoBehaviour {
 
     public void ReleaseTile(GameObject tile)
     {
-        hexTiles.Remove(tile);
-        refresh();
+        if (!hexTiles.Remove(tile)) return;
+        tile.transform.SetParent(transform.parent);
+        if (hexTiles.Count == 0) Delete();
+        else refresh();
     }
 
     [ContextMenu("Refresh")]

@@ -18,7 +18,7 @@ public class RegionOutline : MonoBehaviour {
 
     public Material material;
     [Range(0.05f, 1.0f)]
-    public float lineSize = 0.2f;
+    public float lineSize = 0.1f;
 
     /// <summary> Used if no material is given.</summary>
     public Color lineColor = Color.white;

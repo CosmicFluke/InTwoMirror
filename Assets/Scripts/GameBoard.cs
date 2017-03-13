@@ -4,13 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public struct RegionGroup
-{
-    public string regionID;
-    public Transform root;
-    public List<Transform> children;
-}
-
 public class GameBoard : MonoBehaviour {
 
     public List<GameObject> regions;
@@ -42,12 +35,20 @@ public class GameBoard : MonoBehaviour {
             else DestroyImmediate(genObj);
         // Instantiate the tile generator
         genObj = Instantiate(hexGeneratorPrefab, transform.position, Quaternion.identity, transform);
+        genObj.name = "HexTileMom";
         HexGridGenerator generator = genObj.GetComponent<HexGridGenerator>();
         generator.width = width;
         generator.length = length;
         generator.shape = shape;
         // Generate the Hex Grid
         generator.Generate();
+    }
+
+    [ContextMenu("Reset region outlines")]
+    private void resetRegionOutlines() {
+        foreach (RegionOutline outline in regions.Where(r => r != null).Select(obj => obj.GetComponent<RegionOutline>()).Where(r => r != null)) {
+            outline.Refresh();
+        }
     }
 
     /// <summary>
@@ -64,7 +65,6 @@ public class GameBoard : MonoBehaviour {
             if (r != null)
                 r.Consolidate();
         }
-        cleanUp();
     }
 
     private IEnumerable<Transform> transformIterator(Transform t) {
@@ -83,22 +83,12 @@ public class GameBoard : MonoBehaviour {
 
 
     private Region createEmptyRegion() {
-        Region region = new GameObject("Region " + regions.Count + 1, typeof(Region)).GetComponent<Region>();
+        Region region = new GameObject("Region " + (regions.Count + 1), typeof(Region)).GetComponent<Region>();
         region.transform.position = transform.position;
         region.transform.SetParent(transform);
         region.TileMaterials = (Material[])TileMaterials.Clone();
         region.OutlineMaterials = (Material[])OutlineMaterials.Clone();
         regions.Add(region.gameObject);
         return region;
-    }
-
-    /// <summary>
-    /// Destroy the initial hex grid after regions are created
-    /// </summary>
-    private void cleanUp()
-    {
-        genObj.GetComponent<HexGridGenerator>().DestroyAll();
-        if (Application.isPlaying) Destroy(genObj);
-        else DestroyImmediate(genObj);
     }
 }

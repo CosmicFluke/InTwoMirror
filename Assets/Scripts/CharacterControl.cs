@@ -51,8 +51,7 @@ public class CharacterControl : MonoBehaviour
     {
         Vector3 movement = new Vector3(Input.GetAxis(player.ToString() + "Horizontal"), 0f, Input.GetAxis(player.ToString() + "Vertical"));
         Rigidbody rb = GetComponent<Rigidbody>();
-        if (movement.magnitude > 0)
-        {
+        if (movement.magnitude > 0){
             rb.velocity = movement * movementSpeed;
 
             // Rotate the character towards the direction of movement
@@ -61,10 +60,10 @@ public class CharacterControl : MonoBehaviour
             transform.rotation = newRotation;
 
             // Call SetAnimation with parameter "Yell" to play the character's yelling animation
-            character.SetAnimation("Run");
+            if (character != null) character.SetAnimation("Run");
         } else {
-            character.SetAnimation("Idle");
-            rb.velocity = movement * movementSpeed;
+            if (character != null) character.SetAnimation("Idle");
+            rb.velocity = rb.velocity + (movement * movementSpeed);
         }
     }
 

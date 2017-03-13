@@ -36,6 +36,7 @@ Assets/Mixers.meta
 Assets/AnimationControllers.meta
 Assets/Scripts/TestScripts.meta
 Assets/Prefabs/Board\ Templates.meta
+Assets/Prefabs/Hex\ Maps.meta
 Assets/Standard\ Assets/Environment.meta
 Assets/Standard\ Assets/Environment/TerrainAssets.meta
 Assets/Standard\ Assets/Environment/Water.meta
@@ -54,6 +55,7 @@ Assets/Asset\ Store/Free\ Boulder\ Pack.meta
 Assets/Asset\ Store/InfinitaStudio\ -\ Mountains.meta
 Assets/Resources/-SOUND.meta
 Assets/Resources/-SOUND/-MUSIC.meta
+Assets/Resources/Materials.meta
 Assets/Scenes/Model\ Assembly.unity.meta
 
 
@@ -66,3 +68,5 @@ sysinfo.txt
 
 # OSX
 *.DS_Store
+
+Assets/Prefabs/Materials\.meta

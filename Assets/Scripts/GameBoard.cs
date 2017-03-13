@@ -1,84 +1,95 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public struct RegionGroup
 {
+    public string regionID;
     public Transform root;
     public List<Transform> children;
 }
 
 public class GameBoard : MonoBehaviour {
-    
-    /// Must have components: HexGridGenerator, BoardConfiguration
-    public GameObject hexTileGenerator;
-    public GameObject regionPrefab;
 
-    private GameObject generator;
+    public List<GameObject> regions;
+    [Header("Materials")]
+    public Material[] TileMaterials = new Material[3];
+    public Material[] OutlineMaterials = new Material[3];
+    [Header("Tile generator settings")]
+    public GameObject hexGeneratorPrefab;
+    public BoardShape shape = BoardShape.Rectangle;
+    public int width = 4, length = 6;
 
-    public Material tileA;
-    public Material tileB;
-    public Material tileC;
-    public Material outlineA;
-    public Material outlineB;
-    public Material outlineC;
+    public bool IsEmpty { get { return regions.Count == 0; } }
 
-    /// <summary>
-    /// Generate the board objects
-    /// </summary>
-    [ContextMenu("Generate Board")]
-    public void Generate() {
-        generateHexes();
-        ConsolidateRegions();
-        cleanUp();
+    private bool isGenerated = false;
+    private GameObject genObj;
+
+    private void init() {
+        if (regions == null) regions = new List<GameObject>();
     }
 
     /// <summary>
     /// Create the initial hex grid and group hex tiles into regions according to the board configuration
     /// </summary>
-    private void generateHexes() {
+    [ContextMenu("Generate hex grid")]
+    public void GenerateHexes() {
+        init();
+        if (genObj != null)
+            if (Application.isPlaying) Destroy(genObj);
+            else DestroyImmediate(genObj);
         // Instantiate the tile generator
-        generator = Instantiate(hexTileGenerator, transform, true);
+        genObj = Instantiate(hexGeneratorPrefab, transform.position, Quaternion.identity, transform);
+        HexGridGenerator generator = genObj.GetComponent<HexGridGenerator>();
+        generator.width = width;
+        generator.length = length;
+        generator.shape = shape;
         // Generate the Hex Grid
-        generator.GetComponent<HexGridGenerator>().Generate();
-        // Consolidate the hexes into region groups according to the board configuration
-        generator.GetComponent<BoardConfiguration>().Consolidate();
+        generator.Generate();
     }
 
     /// <summary>
-    /// Instantiate the regions of the board and use the hex grid groupings to create region meshes
+    /// Instantiate the regions of the board and use any remaining tiles in the generator to create one-tile regions
     /// </summary>
-    void ConsolidateRegions() {
-        List<RegionGroup> transforms = new List<RegionGroup>();
-        foreach (Transform child in generator.transform)
-        {
-            RegionGroup r;
-            r.root = child;
-            r.children = new List<Transform>();
-            if (child.childCount > 0)
-                foreach (Transform subChild in child)
-                    r.children.Add(subChild);
-            transforms.Add(r);
+    [ContextMenu("Consolidate all regions")]
+    public void ConsolidateRegions() {
+        if (genObj != null)
+            while (genObj.transform.childCount != 0)
+            {
+                CreateRegionWithTiles(new Transform[] { genObj.transform.GetChild(0) });
+            }
+        foreach (Region r in regions.Where(obj => obj != null).Select(obj => obj.GetComponent<Region>())) {
+            if (r != null)
+                r.Consolidate();
         }
-        foreach (RegionGroup r in transforms)
-        {
-            Region region = Instantiate(regionPrefab, transform, true).GetComponent<Region>();
-            region.transform.SetParent(transform);
-            foreach (Transform ch in r.children) ch.SetParent(region.transform);
-            r.root.SetParent(region.transform);
-            region.MakeRegionFromChildren();
+        cleanUp();
+    }
 
-            region.TileMaterials = new Material[] { tileA, tileB, tileC };
-            region.OutlineMaterials = new Material[] { outlineA, outlineB, outlineC };
-            region.ShiftState(Mathf.RoundToInt(Random.Range(0, 3)));
+    private IEnumerable<Transform> transformIterator(Transform t) {
+        foreach (Transform ch in t)
+            yield return ch;
+    }
 
-            if (Application.isPlaying) Destroy(r.root.gameObject);
-            else DestroyImmediate(r.root.gameObject);
+    public Region CreateRegionWithTiles(IEnumerable<Transform> tiles) {
+        tiles = tiles.Where(t => t.GetComponent<HexMesh>() != null);
+        if (tiles.Count() == 0) return null;
+        Region newRegion = createEmptyRegion();
+        newRegion.hexTilesToAdd = tiles.Select(t => t.gameObject).ToArray();
+        newRegion.Consolidate();
+        return newRegion;
+    }
 
-            foreach (Transform ch in r.children)
-                if (Application.isPlaying) Destroy(ch.gameObject);
-                else DestroyImmediate(ch.gameObject);
-        }
+
+    private Region createEmptyRegion() {
+        Region region = new GameObject("Region " + regions.Count + 1, typeof(Region)).GetComponent<Region>();
+        region.transform.position = transform.position;
+        region.transform.SetParent(transform);
+        region.TileMaterials = (Material[])TileMaterials.Clone();
+        region.OutlineMaterials = (Material[])OutlineMaterials.Clone();
+        regions.Add(region.gameObject);
+        return region;
     }
 
     /// <summary>
@@ -86,8 +97,8 @@ public class GameBoard : MonoBehaviour {
     /// </summary>
     private void cleanUp()
     {
-        generator.GetComponent<HexGridGenerator>().DestroyAll();
-        if (Application.isPlaying) Destroy(generator.gameObject);
-        else DestroyImmediate(generator.gameObject);
+        genObj.GetComponent<HexGridGenerator>().DestroyAll();
+        if (Application.isPlaying) Destroy(genObj);
+        else DestroyImmediate(genObj);
     }
 }

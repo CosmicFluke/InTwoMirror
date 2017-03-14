@@ -729,9 +729,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 10
   maxActionDistance: 10
+  startingRegion: {fileID: 0}
   player: 0
-  healthPoints: 0
-  character: {fileID: 114826662134749346}
+  healthPoints: 100
+  characterAnimation: {fileID: 114826662134749346}
 --- !u!114 &114447813512129744
 MonoBehaviour:
   m_ObjectHideFlags: 1

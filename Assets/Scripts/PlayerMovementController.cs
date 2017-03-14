@@ -21,7 +21,7 @@ public class PlayerMovementController : MonoBehaviour
     private Region currentRegion;
     public Region Region { get { return currentRegion; } }
 
-    // Temporary way to assign and access the two characters
+    // Temporary way to assign and access the two characters (??)
     public AnimatedCharacter characterAnimation;
 
     // Keeps track of volatile collision duration
@@ -38,10 +38,16 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
         currentRegion = startingRegion.GetComponent<Region>();
-        GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
+        try
+        { // TODO: pls fix this
+            GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
+        } catch { Debug.Log("bleh"); }
         // identify other player
         otherPlayer = player == PlayerID.P1 ? GameObject.Find("Player2") : player == PlayerID.P2 ? GameObject.Find("Player1") : null;
 
+        characterAnimation = GetComponentInChildren<AnimatedCharacter>();
+        if (characterAnimation == null)
+            throw new System.Exception("This player object does not have a child with AnimatedCharacter.");
     }
 
     // Update is called once per frame
@@ -59,9 +65,9 @@ public class PlayerMovementController : MonoBehaviour
             transform.rotation = newRotation;
 
             // Call SetAnimation with parameter "Yell" to play the character's yelling animation
-            if (characterAnimation != null) characterAnimation.SetAnimation("Run");
+            characterAnimation.SetAnimation("Run");
         } else {
-            if (characterAnimation != null) characterAnimation.SetAnimation("Idle");
+            characterAnimation.SetAnimation("Idle");
             rb.velocity = rb.velocity + (movement * movementSpeed);
         }
     }

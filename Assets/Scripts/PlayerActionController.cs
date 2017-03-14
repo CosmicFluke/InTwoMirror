@@ -8,7 +8,7 @@ public class PlayerActionController : MonoBehaviour
     public PlayerID player;
 
     public int[] actionInventory;
-    
+
     public Region Region { get { return currentRegion; } }
 
     private Region currentRegion;
@@ -27,9 +27,8 @@ public class PlayerActionController : MonoBehaviour
         }
 
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
-        if (characterAnimation == null) {
+        if (characterAnimation == null)
             throw new System.Exception("This player object does not have a child with AnimatedCharacter.");
-        }
 
 
     }
@@ -61,14 +60,24 @@ public class PlayerActionController : MonoBehaviour
         currentRegion = GetComponent<PlayerMovementController>().Region;
         characterAnimation.SetAnimation("Yell");
         GetComponent<SoundController>().startSound((int)action);
-        currentRegion.State = ActionDictionary.Lookup(action, currentRegion.State, player);
-        foreach (Region neighbour in currentRegion.Neighbours.Select(neighbour => neighbour.GetComponent<Region>()))
+        IEnumerable<Region> neighbours = currentRegion.Neighbours.Select(neighbour => neighbour.GetComponent<Region>());
+        foreach (Region neighbour in neighbours)
         {
             if (neighbour == null) {
                 Debug.Log("Neighbour doesn't have Region component?");
                 continue;
             }
             neighbour.State = ActionDictionary.Lookup(action, neighbour.State, player);
+            if (GameObject.FindWithTag("LevelController").GetComponent<LevelController>().actionPropagationDistance == 2)
+            {
+                foreach (Region neighbourNeighbour in neighbour.Neighbours.Select(neighbour2 => neighbour2.GetComponent<Region>()))
+                {
+                    if (!neighbours.Contains(neighbourNeighbour))
+                    {
+                        neighbour.State = ActionDictionary.Lookup(action, neighbour.State, player);
+                    }
+                }
+            }
         }
     }
 }

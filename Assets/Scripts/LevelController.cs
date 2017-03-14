@@ -9,6 +9,8 @@ public class LevelController : MonoBehaviour
     static GameController _gameController;
 
     private float _levelCompletion = 0;
+    [Range(1, 2)]
+    public int actionPropagationDistance = 1;
 
     private bool _musicPlaying = true;
     private const bool levelDebug = true;

@@ -10,7 +10,6 @@ public class CameraMover : MonoBehaviour{
 
 	// SD commented out as not required for InTwo public static CameraMover cTrack; //cFollow
 	public float dampTime = 0.15f; //figure out what this is
-	public float smoothing = 5.0f;
 	private Vector3 velocity = Vector3.zero;
 	public Transform target;
 
@@ -23,30 +22,41 @@ public class CameraMover : MonoBehaviour{
 
 	public Vector3 midPoint;
 	public Vector3 distance;
-	public Vector3 offset;
 	public float camDist;
 
 	public float camOffset;
 	public float bounds;
 
-	Camera camera;
+	Camera cam;
+
+
+	void Awake(){ //Startup of the game
+	/*  SD commented out as unnecessary for InTwo
+		if (cTrack == null) {
+			DontDestroyOnLoad (gameObject);
+			cTrack = this;
+
+		} else if (cTrack != this) {
+			Destroy (gameObject);
+		}
+        */
+	}
+
 
 	void Start(){
 		camDist = 9.0f;
 		bounds = 12.0f;
-		camera = GetComponent<Camera>();
+		cam = GetComponent<Camera>();
 	}
 
-	void LateUpdate(){
+	void Update(){
 
 		distance = player1.position - player2.position;
-		Debug.Log("distance " + distance);
-	
-		if (camDist >= 13.0f) {
-			camDist = 13.0f;
+		if (camDist >= 19.0f) {
+			camDist = 19.0f;
 		}
-		if (camDist <= 4.0f) {
-			camDist = 4.0f;
+		if (camDist <= 6.0f) {
+			camDist = 6.0f;
 		}
 		if (distance.x < 0) {
 			distance.x = distance.x * -1;
@@ -79,16 +89,15 @@ public class CameraMover : MonoBehaviour{
 			player2.position = pos;
 		}
 
-
-		if (distance.x > 13.0f) {
-			camOffset = distance.x * 0.3f;
+		if (distance.x > 15.0f) {
+			camOffset = distance.x * 0.9f;
 			if (camOffset >= 8.5f) {
 				camOffset = 8.5f;
 			}
 		} else if (distance.x <= 13.0f) {
-			camOffset = distance.x * 0.3f;
+			camOffset = distance.x * 0.9f;
 		} else if (distance.z <= 13.0f) {
-			camOffset = distance.x * 0.3f;
+			camOffset = distance.x * 0.9f;
 		}
 
 		midX = (player2.position.x + player1.position.x) /2; 
@@ -97,35 +106,10 @@ public class CameraMover : MonoBehaviour{
 
 		midPoint = new Vector3 (midX, midY, midZ);
 
-		Debug.Log ("midpoint " + midPoint);
-
-		float cameraZ = Camera.main.gameObject.transform.position.z;
-
-//		if(player1.position.z < cameraZ){
-////			print ("player1 z less than cameraZ");
-////			Debug.Log ("Before" + midZ);
-//			midZ = player1.position.z - 10;
-////			Debug.Log ("After" + midZ);
-//
-//		}
-//		else if(player2.position.z < cameraZ){
-////			print ("player2 z less than cameraZ");
-////			Debug.Log ("Before" + midZ);
-//			midZ = player2.position.z - 10;
-////			Debug.Log ("After" + midZ);
-//
-//		}
-
-//		Debug.Log ("cameraZ " + cameraZ + " PLAYER1Z " + player1.position.z);
-//		Debug.Log ("MidZ" + midZ);
-
 		if (player1) {
-			Vector3 point = camera.WorldToViewportPoint(midPoint);
-			Debug.Log (point);
-			Vector3 delta = midPoint - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
+			Vector3 delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
 			Vector3 destination = transform.position + delta;
 			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-			//transform.position = Vector3.(transform.position, midPoint, smoothing);
 		}
 
 	}

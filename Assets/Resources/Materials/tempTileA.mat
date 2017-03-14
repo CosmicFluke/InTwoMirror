@@ -215,8 +215,14 @@ Material:
         name: _Exposure
       second: 1
     - first:
+        name: _FrequencyX
+      second: 1
+    - first:
+        name: _FrequencyZ
+      second: 1
+    - first:
         name: _GlossMapScale
-      second: 0.547
+      second: 0.265
     - first:
         name: _Glossiness
       second: 0.586
@@ -260,6 +266,12 @@ Material:
         name: _Rotation
       second: 0
     - first:
+        name: _ScaleX
+      second: 0.5
+    - first:
+        name: _ScaleZ
+      second: 1
+    - first:
         name: _Shininess
       second: 0.078125
     - first:
@@ -281,6 +293,9 @@ Material:
         name: _SpecularHighlights
       second: 1
     - first:
+        name: _Speed
+      second: 0.5
+    - first:
         name: _SrcBlend
       second: 1
     - first:
@@ -301,10 +316,10 @@ Material:
       second: {r: 19, g: 9, b: -16, a: -7}
     - first:
         name: _Color
-      second: {r: 0.8778904, g: 0.6838235, b: 1, a: 1}
+      second: {r: 0.45334125, g: 0.9485294, b: 0.86838335, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0.17647058, g: 0.17647058, b: 0.17647058, a: 1}
+      second: {r: 0.11732267, g: 0.25735295, b: 0.23468909, a: 1}
     - first:
         name: _HorizonColor
       second: {r: 0.172, g: 0.463, b: 0.435, a: 1}
@@ -319,7 +334,7 @@ Material:
       second: {r: 0.34, g: 0.85, b: 0.92, a: 1}
     - first:
         name: _SpecColor
-      second: {r: 0.77205884, g: 0.096507356, b: 0.096507356, a: 1}
+      second: {r: 0.52205884, g: 0.52205884, b: 0.52205884, a: 1}
     - first:
         name: _Tint
       second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}

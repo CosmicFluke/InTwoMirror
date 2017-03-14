@@ -12,15 +12,25 @@ public class HexGridGenerator : MonoBehaviour {
     public BoardShape shape = BoardShape.Diamond;
 
     public bool IsGenerated { get { return isGenerated; } }
-    public GameObject this[int i, int j] { get {
+    public GameObject this[HexGridCoordinates i] {
+        get {
             if (!isGenerated) throw new Exception("Tiles not generated yet.");
-            GameObject tile = tiles[i, j];
+            GameObject tile = tiles[i];
             if (tile == null) Debug.Log("Indexer returning null tile");
             return tile;
-        }}
+        }
+        set {
+            if (tiles.ContainsKey(i) && tiles[i] != null) throw new Exception("Grid already contains tile at this location.");
+            tiles[i] = value;
+        }
+    }
+
+    public bool ContainsTileAt(HexGridCoordinates loc) {
+        return tiles.ContainsKey(loc) && this[loc] != null;
+    }
 
     [SerializeField]
-    private GameObject[,] tiles;
+    private Dictionary<HexGridCoordinates, GameObject> tiles;
     [SerializeField]
     private bool isGenerated = false;
 
@@ -33,8 +43,8 @@ public class HexGridGenerator : MonoBehaviour {
     }
 
     void Init() {
-        tiles = new GameObject[length, width + 1];
-        if (hexPrefab == null) hexPrefab = GameObject.Find("Hexagon");
+        Debug.Log("Initializing tiles!");
+        tiles = new Dictionary<HexGridCoordinates, GameObject>();
         setWidthFunctions();
     }
 
@@ -46,13 +56,14 @@ public class HexGridGenerator : MonoBehaviour {
     }
 
     void Start(){
-        if (tiles == null || tiles.Length == 0) Init();
+        if (tiles == null) Init();
     }
 
     [ContextMenu("Generate tiles")]
     public void Generate() {
         Debug.Log(string.Format("Generating hex grid: width={0}, length={1}, shape={2}", width, length, shape));
-        if (tiles == null || widthFunctions == null) Init();
+        if (tiles == null) Init();
+        if (widthFunctions == null) setWidthFunctions();
         if (hexPrefab == null) {
             Debug.Log("Attempted to generate tiles without hexagon prefab.");
             return;
@@ -66,17 +77,16 @@ public class HexGridGenerator : MonoBehaviour {
         foreach (int z in Enumerable.Range(0, length))
         {
             int rowWidth = widthFunctions[shape](z);
-            Debug.Log("Building row: " + z + ", rowWidth=" + rowWidth);
             if (rowWidth % 2 == 1)
-                makeTile(new HexTileLocation(z, 0, false), rowWidth);
+                makeTile(new HexGridCoordinates(z, 0, false), rowWidth);
             foreach (int x in Enumerable.Range(1, rowWidth / 2))
             {
-                makeTile(new HexTileLocation(z, x, rowWidth % 2 == 0), rowWidth);
-                makeTile(new HexTileLocation(z, -x, rowWidth % 2 == 0), rowWidth);
+                makeTile(new HexGridCoordinates(z, x, rowWidth % 2 == 0), rowWidth);
+                makeTile(new HexGridCoordinates(z, -x, rowWidth % 2 == 0), rowWidth);
             }
         }
         isGenerated = true;
-        makeGraph();
+        //refreshGraph();
     }
 
     /// <summary>
@@ -84,49 +94,50 @@ public class HexGridGenerator : MonoBehaviour {
     /// </summary>
     /// <param name="loc">Tile location, with a row number and centre-offset.</param>
     /// <param name="rowWidth">The width of the row this tile will be placed in.</param>
-    private void makeTile(HexTileLocation loc, int rowWidth) {
-        if (!loc.evenRowSize)
-            Debug.Log("Making hex tile at " + loc.ToString());
-        if (loc.offsetType != HexTileLocation.OffsetType.Centre) throw new Exception("New tiles must be specified using centre-offset.");
+    private void makeTile(HexGridCoordinates loc, int rowWidth) {
+        if (loc.offsetType != HexGridCoordinates.OffsetType.Centre) throw new Exception("New tiles must be specified using centre-offset.");
         float outerRadius = hexPrefab.GetComponent<HexMesh>().radius;
         float innerRadius = outerRadius * HexMesh.radiusRatio;
         Vector3 parentPos = gameObject.transform.position;
         float horizontalDistance = parentPos.x + loc.offset * 2 * innerRadius - innerRadius * Mathf.Abs(rowWidth % 2 - 1) * (loc.offset < 0 ? -1 : 1);
         Vector3 pos = new Vector3(horizontalDistance, parentPos.y, parentPos.z + loc.row * 1.5f * outerRadius);
-        int indexInRow = OffsetToIndexInRow(loc.offset);
         HexMesh tile = Instantiate(hexPrefab, pos, Quaternion.identity).GetComponent<HexMesh>();
-        MeshCollider c = tile.GetComponent<MeshCollider>();
-        c.sharedMesh = tile.GetComponent<MeshFilter>().sharedMesh;
         tile.transform.parent = gameObject.transform;
         tile.Location = loc;
-        tiles[loc.row, indexInRow] = tile.gameObject;
+        tile.spawnedBy = gameObject;
+        tile.SelfPrefab = hexPrefab;
+        tile.gameObject.name = "Hex tile, " + tile.Location.ToString();
+        tiles[tile.Location] = tile.gameObject;
         tile.DrawOutline();
+        LinkToNeighbours(tile);
     }
 
     /// <summary>
     /// Forms a graph using the HexMesh components as nodes, with edges to their neighbours
     /// </summary>
-    private void makeGraph() {
-        foreach (GameObject tile in tiles) {
+    private void refreshGraph() {
+        foreach (KeyValuePair<HexGridCoordinates, GameObject> pair in tiles) {
+            GameObject tile = pair.Value;
             if (tile == null) continue;
             HexMesh hex = tile.GetComponent<HexMesh>();
-            HexTileLocation loc = hex.Location;
-            GameObject[] edges = hex.Edges;
-            for (int edge = 0; edge < 6; edge++)
-            {
-                if (edges[edge] != null) continue;
-                HexTileLocation neighbourLoc = EdgeToLocation(hex.Location, edge);
-                int row = neighbourLoc.row, offset = neighbourLoc.offset;
-                if (row >= length || row < 0 || Mathf.Abs(offset) > widthFunctions[shape](row) / 2) continue;
-                edges[edge] = tiles[row, OffsetToIndexInRow(offset)];
-                if (edges[edge] == null) continue;
-                edges[edge].GetComponent<HexMesh>().Edges[(edge + 3) % 6] = hex.gameObject;
-            }
+            if (hex == null) { Debug.LogError("Generator contains object that is not a hex tile"); continue; }
+            if (hex.Location != pair.Key) { Debug.LogError("Location key & tile location property don't match"); }
+            HexGridCoordinates loc = pair.Key;
+            LinkToNeighbours(hex);
         }
     }
 
-    public int OffsetToIndexInRow(int offset) {
-        return (width + 1 + offset) % (width + 1);
+    public void LinkToNeighbours(HexMesh hex)
+    {
+        GameObject[] edges = hex.Edges;
+        for (int edge = 0; edge < 6; edge++)
+        {
+            if (edges[edge] != null) continue;
+            HexGridCoordinates neighbourLoc = EdgeToLocation(hex.Location, edge);
+            if (!tiles.TryGetValue(neighbourLoc, out edges[edge])) continue;
+            if (edges[edge] != null)
+                edges[edge].GetComponent<HexMesh>().Edges[(edge + 3) % 6] = hex.gameObject;
+        }
     }
 
     [ContextMenu("Destroy tiles")]
@@ -134,39 +145,24 @@ public class HexGridGenerator : MonoBehaviour {
     {
         if (tiles == null) return;
         Debug.Log("Destroying tiles");
-        foreach (GameObject tile in tiles) {
-            if (tile != null)
+        foreach (KeyValuePair<HexGridCoordinates, GameObject> tile in tiles) {
+            if (tile.Value != null)
             {
-                if (Application.isPlaying) Destroy(tile);
-                else DestroyImmediate(tile);
+                if (Application.isPlaying) Destroy(tile.Value);
+                else DestroyImmediate(tile.Value);
             }
+            tiles.Remove(tile.Key);
         }
         tiles = null;
         isGenerated = false;
     }
 
-    public GameObject ReleaseTile(int row, int offset)
-    {
-        GameObject tile;
-        try
-        {
-            tile = tiles[row, OffsetToIndexInRow(offset)];
-        }
-        catch (NullReferenceException e) {
-            Debug.Log(string.Format("Null ref at Release Tile.\nRow: {0}  Offset: {1}", row, offset));
-            throw e;
-        }
-        if (tile == null) Debug.Log("Tile not found.");
-        tiles[row, OffsetToIndexInRow(offset)] = null;
-        return tile;
+    public void ReleaseTile(HexGridCoordinates loc) {
+        if (tiles.ContainsKey(loc)) tiles.Remove(loc);
+        else Debug.Log("Trying to release tile that doesn't exist");
     }
 
-    public void DeleteTile(int row, int offset)
-    {
-        Destroy(ReleaseTile(row, offset));
-    }
-
-    public static HexTileLocation EdgeToLocation(HexTileLocation loc, int edge) {
+    public static HexGridCoordinates EdgeToLocation(HexGridCoordinates loc, int edge) {
         if (edge < 0 || edge > 5) throw new Exception("Edge number must be 0-5");
         int row, offset;
         switch (edge)
@@ -200,7 +196,7 @@ public class HexGridGenerator : MonoBehaviour {
                 offset = loc.offset;
                 break;
         }
-        return new HexTileLocation(row, offset, row == loc.row ? loc.evenRowSize : !loc.evenRowSize);
+        return new HexGridCoordinates(row, offset, row == loc.row ? loc.evenRowSize : !loc.evenRowSize);
     }
 
     //private void OnDrawGizmos()

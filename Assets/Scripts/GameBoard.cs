@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public struct RegionGroup
-{
-    public string regionID;
-    public Transform root;
-    public List<Transform> children;
-}
-
 public class GameBoard : MonoBehaviour {
 
+    /// <summary>
+    /// Specifies how far each of the actions (from Action enum) propagate.
+    /// Mappings to the int values of the actions.  Temporary solution.
+    /// </summary>
+    public int[] ActionDistance = new int[] { 1, 1, 1 };
     public List<GameObject> regions;
     [Header("Materials")]
     public Material[] TileMaterials = new Material[3];
@@ -21,6 +19,7 @@ public class GameBoard : MonoBehaviour {
     public GameObject hexGeneratorPrefab;
     public BoardShape shape = BoardShape.Rectangle;
     public int width = 4, length = 6;
+    public int StateChangePropagationDistance = 1;
 
     public bool IsEmpty { get { return regions.Count == 0; } }
 
@@ -42,12 +41,20 @@ public class GameBoard : MonoBehaviour {
             else DestroyImmediate(genObj);
         // Instantiate the tile generator
         genObj = Instantiate(hexGeneratorPrefab, transform.position, Quaternion.identity, transform);
+        genObj.name = "HexTileMom";
         HexGridGenerator generator = genObj.GetComponent<HexGridGenerator>();
         generator.width = width;
         generator.length = length;
         generator.shape = shape;
         // Generate the Hex Grid
         generator.Generate();
+    }
+
+    [ContextMenu("Reset region outlines")]
+    private void resetRegionOutlines() {
+        foreach (RegionOutline outline in regions.Where(r => r != null).Select(obj => obj.GetComponent<RegionOutline>()).Where(r => r != null)) {
+            outline.Refresh();
+        }
     }
 
     /// <summary>
@@ -60,11 +67,10 @@ public class GameBoard : MonoBehaviour {
             {
                 CreateRegionWithTiles(new Transform[] { genObj.transform.GetChild(0) });
             }
-        foreach (Region r in regions.Where(obj => obj != null).Select(obj => obj.GetComponent<Region>())) {
+        foreach (RegionBuilder r in regions.Where(obj => obj != null).Select(obj => obj.GetComponent<RegionBuilder>())) {
             if (r != null)
                 r.Consolidate();
         }
-        cleanUp();
     }
 
     private IEnumerable<Transform> transformIterator(Transform t) {
@@ -72,33 +78,26 @@ public class GameBoard : MonoBehaviour {
             yield return ch;
     }
 
-    public Region CreateRegionWithTiles(IEnumerable<Transform> tiles) {
+    public RegionBuilder CreateRegionWithTiles(IEnumerable<Transform> tiles) {
         tiles = tiles.Where(t => t.GetComponent<HexMesh>() != null);
         if (tiles.Count() == 0) return null;
-        Region newRegion = createEmptyRegion();
+        RegionBuilder newRegion = createEmptyRegion();
         newRegion.hexTilesToAdd = tiles.Select(t => t.gameObject).ToArray();
         newRegion.Consolidate();
         return newRegion;
     }
 
 
-    private Region createEmptyRegion() {
-        Region region = new GameObject("Region " + regions.Count + 1, typeof(Region)).GetComponent<Region>();
+    private RegionBuilder createEmptyRegion() {
+        RegionBuilder region = new GameObject("Region " + (regions.Count + 1), typeof(RegionBuilder)).GetComponent<RegionBuilder>();
         region.transform.position = transform.position;
         region.transform.SetParent(transform);
         region.TileMaterials = (Material[])TileMaterials.Clone();
         region.OutlineMaterials = (Material[])OutlineMaterials.Clone();
+        int layer = LayerMask.NameToLayer("Regions");
+        if (layer > 0)
+            region.gameObject.layer = LayerMask.NameToLayer("Regions");
         regions.Add(region.gameObject);
         return region;
-    }
-
-    /// <summary>
-    /// Destroy the initial hex grid after regions are created
-    /// </summary>
-    private void cleanUp()
-    {
-        genObj.GetComponent<HexGridGenerator>().DestroyAll();
-        if (Application.isPlaying) Destroy(genObj);
-        else DestroyImmediate(genObj);
     }
 }

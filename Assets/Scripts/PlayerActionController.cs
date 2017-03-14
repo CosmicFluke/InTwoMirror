@@ -57,8 +57,10 @@ public class PlayerActionController : MonoBehaviour
     /// <param name="action"></param>
     private void ExecuteRegionAction(Action action)
     {
+        Debug.Log(player.ToString() + " executing " + action.ToString());
         currentRegion = GetComponent<PlayerMovementController>().Region;
         characterAnimation.SetAnimation("Yell");
+        GetComponent<SoundController>().startSound((int)action);
         currentRegion.State = ActionDictionary.Lookup(action, currentRegion.State, player);
         foreach (Region neighbour in currentRegion.Neighbours.Select(neighbour => neighbour.GetComponent<Region>()))
         {

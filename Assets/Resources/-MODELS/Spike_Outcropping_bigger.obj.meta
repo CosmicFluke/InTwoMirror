@@ -1,0 +1,162 @@
+fileFormatVersion: 2
+guid: ec00eebb23cde41dd89b0222146086a6
+timeCreated: 1489509813
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Cone001
+    100002: Cone002
+    100004: Cone003
+    100006: Cone004
+    100008: Cone005
+    100010: Cone006
+    100012: Cone007
+    100014: Cone008
+    100016: Cone009
+    100018: Cone010
+    100020: Cone011
+    100022: Cone012
+    100024: Cone013
+    100026: Cone014
+    100028: Cone015
+    100030: Cone016
+    100032: Cone017
+    100034: //RootNode
+    400000: Cone001
+    400002: Cone002
+    400004: Cone003
+    400006: Cone004
+    400008: Cone005
+    400010: Cone006
+    400012: Cone007
+    400014: Cone008
+    400016: Cone009
+    400018: Cone010
+    400020: Cone011
+    400022: Cone012
+    400024: Cone013
+    400026: Cone014
+    400028: Cone015
+    400030: Cone016
+    400032: Cone017
+    400034: //RootNode
+    2300000: Cone001
+    2300002: Cone002
+    2300004: Cone003
+    2300006: Cone004
+    2300008: Cone005
+    2300010: Cone006
+    2300012: Cone007
+    2300014: Cone008
+    2300016: Cone009
+    2300018: Cone010
+    2300020: Cone011
+    2300022: Cone012
+    2300024: Cone013
+    2300026: Cone014
+    2300028: Cone015
+    2300030: Cone016
+    2300032: Cone017
+    3300000: Cone001
+    3300002: Cone002
+    3300004: Cone003
+    3300006: Cone004
+    3300008: Cone005
+    3300010: Cone006
+    3300012: Cone007
+    3300014: Cone008
+    3300016: Cone009
+    3300018: Cone010
+    3300020: Cone011
+    3300022: Cone012
+    3300024: Cone013
+    3300026: Cone014
+    3300028: Cone015
+    3300030: Cone016
+    3300032: Cone017
+    4300000: Cone001
+    4300002: Cone002
+    4300004: Cone003
+    4300006: Cone004
+    4300008: Cone005
+    4300010: Cone006
+    4300012: Cone007
+    4300014: Cone008
+    4300016: Cone009
+    4300018: Cone010
+    4300020: Cone011
+    4300022: Cone012
+    4300024: Cone013
+    4300026: Cone014
+    4300028: Cone015
+    4300030: Cone016
+    4300032: Cone017
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

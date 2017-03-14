@@ -1,0 +1,12 @@
+
+# backtrace
+0   blender                             0x00000001001442f7 blender_crash_handler_backtrace + 71
+1   blender                             0x0000000100143e94 blender_crash_handler + 644
+2   libsystem_platform.dylib            0x00007fff8dabf52a _sigtramp + 26
+3   ???                                 0x0000000107e9aa30 0x0 + 4427721264
+4   blender                             0x00000001004b87c0 fsmenu_read_system + 544
+5   blender                             0x00000001004b9f14 ED_file_read_bookmarks + 68
+6   blender                             0x00000001004b9ea9 ED_file_init + 9
+7   blender                             0x00000001001525ae WM_init + 142
+8   blender                             0x0000000100142cd2 main + 1026
+9   blender                             0x0000000100001734 start + 52

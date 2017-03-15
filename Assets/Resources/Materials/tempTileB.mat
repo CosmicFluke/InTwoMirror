@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: tempTileB
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -69,6 +69,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _SpecGlossMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
         name: _BumpScale
@@ -84,7 +90,7 @@ Material:
       second: 0
     - first:
         name: _GlossMapScale
-      second: 0.601
+      second: 0.207
     - first:
         name: _Glossiness
       second: 0.5
@@ -121,7 +127,10 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.99264705, g: 0.6831746, b: 0.5693123, a: 1}
+      second: {r: 0.8602941, g: 0.097, b: 0.116, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0.20588237, g: 0.20588237, b: 0.20588237, a: 1}
+      second: {r: 0.327, g: 0.263, b: 0.20453069, a: 1}
+    - first:
+        name: _SpecColor
+      second: {r: 0.451, g: 0.21647924, b: 0.159, a: 1}

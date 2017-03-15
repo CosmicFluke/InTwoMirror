@@ -29,7 +29,8 @@ Assets/Scenes.meta
 Assets/Scripts.meta
 Assets/Plugins.meta
 Assets/Materials.meta
-Assets/UISprites.meta
+Assets/UI.meta
+Assets/UI/UISprites.meta
 Assets/Terrain.meta
 Assets/Standard\ Assets.meta
 Assets/Mixers.meta
@@ -39,14 +40,15 @@ Assets/Prefabs/Board\ Templates.meta
 Assets/Prefabs/Hex\ Maps.meta
 Assets/Prefabs/Materials\.meta
 Assets/Prefabs/UI.meta
+Assets/Plugins/x64.meta
+Assets/Plugins/x64/ObeliskVoice_v1.004.unity.macos.x64.meta
 Assets/Standard\ Assets/Environment.meta
 Assets/Standard\ Assets/Environment/TerrainAssets.meta
 Assets/Standard\ Assets/Environment/Water.meta
 Assets/Standard\ Assets/Environment/Water\ (Basic).meta
-Assets/Plugins/x64.meta
-Assets/Plugins/x64/ObeliskVoice_v1.004.unity.macos.x64.meta
 Assets/Standard\ Assets/CrossPlatformInput.meta
 Assets/Standard\ Assets/Editor.meta
+Assets/Standard\ Assets/Effects.meta
 Assets/Standard\ Assets/ParticleSystems.meta
 Assets/Standard\ Assets/ParticleSystems/Materials.meta
 Assets/Standard\ Assets/ParticleSystems/Shaders.meta
@@ -59,6 +61,7 @@ Assets/Resources/-SOUND.meta
 Assets/Resources/-SOUND/-MUSIC.meta
 Assets/Resources/Materials.meta
 Assets/Resources/UI.meta
+Assets/Resources/-MODELS/Materials.meta
 Assets/Scenes/Model\ Assembly.unity.meta
 
 
@@ -71,4 +74,3 @@ sysinfo.txt
 
 # OSX
 *.DS_Store
-

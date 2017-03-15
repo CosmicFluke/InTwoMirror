@@ -38,9 +38,9 @@ GameObject:
   - component: {fileID: 82925646497514568}
   - component: {fileID: 54516550885764948}
   - component: {fileID: 136877231194300248}
-  - component: {fileID: 114849047423547594}
   - component: {fileID: 114873232754940246}
   - component: {fileID: 114425460703894336}
+  - component: {fileID: 114249149994812614}
   m_Layer: 0
   m_Name: P2GirlCharacter
   m_TagString: Player
@@ -727,7 +727,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1033746376312626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.33, y: 3.42, z: -15.09}
+  m_LocalPosition: {x: 44.634365, y: 1.68, z: 8.2}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4742565367047762}
@@ -874,7 +874,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0551461b1e7d8a143ba6cfeedbd37a39, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1016,6 +1016,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75c3bdf7254f4839b2d443f7c5d8137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114249149994812614
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033746376312626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9861cf64f1d8a48da9562765b8fe9592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 30
+  maxActionDistance: 10
+  startingRegion: {fileID: 0}
+  player: 1
+  healthPoints: 100
+  characterAnimation: {fileID: 114231891863582904}
 --- !u!114 &114425460703894336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1031,23 +1048,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e93f46d156586284da9c4060eff9938a, type: 3}
   - {fileID: 8300000, guid: 261f874eba0faa647b6710e55126b29e, type: 3}
   - {fileID: 8300000, guid: a570da636aba8d24ca5a7a19ea1a8c74, type: 3}
---- !u!114 &114849047423547594
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1033746376312626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 632ec2805726bfb48b57e11f619fe83a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 10
-  maxActionDistance: 10
-  startingRegion: {fileID: 0}
-  player: 1
-  healthPoints: 100
-  characterAnimation: {fileID: 114231891863582904}
 --- !u!114 &114873232754940246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1071,9 +1071,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.28
-  m_Height: 8.08
+  m_Height: 8.02
   m_Direction: 1
-  m_Center: {x: 0, y: 3.03, z: 0}
+  m_Center: {x: -0.11, y: 8.25, z: 0}
 --- !u!137 &137145871559150360
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

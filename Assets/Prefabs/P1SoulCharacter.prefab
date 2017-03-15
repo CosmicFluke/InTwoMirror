@@ -278,13 +278,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4555935479478338}
   - component: {fileID: 23158313982908700}
-  - component: {fileID: 114245176624344322}
   - component: {fileID: 114447813512129744}
   - component: {fileID: 82991181101062292}
   - component: {fileID: 54675284534610872}
   - component: {fileID: 136115469039535502}
   - component: {fileID: 136161116348918252}
   - component: {fileID: 114720773078032284}
+  - component: {fileID: 114366246073054832}
   m_Layer: 0
   m_Name: P1SoulCharacter
   m_TagString: Player
@@ -498,7 +498,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1830140541661348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.45, y: 3.27, z: -16}
+  m_LocalPosition: {x: 34.5, y: -2.01, z: 7.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4170841087502052}
@@ -585,7 +585,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0551461b1e7d8a143ba6cfeedbd37a39, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -716,7 +716,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114245176624344322
+--- !u!114 &114366246073054832
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -724,10 +724,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1830140541661348}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 632ec2805726bfb48b57e11f619fe83a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9861cf64f1d8a48da9562765b8fe9592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  movementSpeed: 30
   maxActionDistance: 10
   startingRegion: {fileID: 0}
   player: 0

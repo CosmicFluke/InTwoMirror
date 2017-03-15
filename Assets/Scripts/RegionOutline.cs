@@ -96,7 +96,7 @@ public class RegionOutline : MonoBehaviour {
         }
 
         outline.numPositions = vertices.Length;
-        outline.SetPositions(vertices.Select(v => v + transform.position + Vector3.up * baseLineSize / 2f).ToArray());
+        outline.SetPositions(vertices.Select(v => transform.rotation * v + transform.position + Vector3.up * baseLineSize / 2f).ToArray());
     }
 
     public Vector3[] Vertices {

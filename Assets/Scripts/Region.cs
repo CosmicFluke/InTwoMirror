@@ -21,8 +21,8 @@ public class Region : MonoBehaviour {
             if (currentState == value) return;
             currentState = value;
             updateMaterials();
-            if (currentPlayer != null)
-                refreshEffect();
+            if (currentPlayer == null) return;
+            refreshEffect();
             RegionOutline outline = GetComponent<RegionOutline>();
             if (State == RegionState.C)
                 outline.EnhancePulse(outline.initialGrowRate * 3, outline.initialGrowFactor * 2);
@@ -60,6 +60,7 @@ public class Region : MonoBehaviour {
     // Use this for initialization
     protected void Start () {
         State = initialState;
+        refresh();
 	}
 
     private float DamageRate(float time) {

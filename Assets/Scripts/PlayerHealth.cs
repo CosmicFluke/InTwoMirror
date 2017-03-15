@@ -31,6 +31,5 @@ public class PlayerHealth : MonoBehaviour
     private void UpdateHealthBar()
     {
         HealthBar.value = HealthPoints / 100;
-        print(HealthPoints);
     }
 }

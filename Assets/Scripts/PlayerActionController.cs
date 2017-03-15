@@ -29,8 +29,6 @@ public class PlayerActionController : MonoBehaviour
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
         if (characterAnimation == null)
             throw new System.Exception("This player object does not have a child with AnimatedCharacter.");
-
-
     }
 
     void Update()

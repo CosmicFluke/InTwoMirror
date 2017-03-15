@@ -1,12 +1,18 @@
-﻿﻿﻿using System.Collections;
+﻿﻿﻿
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerID { P1, P2, Both };
+public enum PlayerID
+{
+    P1,
+    P2,
+    Both
+};
 
 public class PlayerMovementController : MonoBehaviour
 {
-
     public float movementSpeed = 30f;
     // max distance player must be to interact with object
     public float maxActionDistance = 10f;
@@ -15,13 +21,16 @@ public class PlayerMovementController : MonoBehaviour
     public PlayerID player;
     private GameObject otherPlayer;
 
-    public float healthPoints = 100f;
 
     // Current game board region of the player
     private Region currentRegion;
-    public Region Region { get { return currentRegion; } }
 
-    // Temporary way to assign and access the two characters
+    public Region Region
+    {
+        get { return currentRegion; }
+    }
+
+    // Temporary way to assign and access the two characters (??)
     public AnimatedCharacter characterAnimation;
 
     // Keeps track of volatile collision duration
@@ -31,23 +40,40 @@ public class PlayerMovementController : MonoBehaviour
 
     private float deathCountdown = 10f;
 
-    //public UnityEngine.UI.Text CollisionText; 
+    private PlayerHealth PlayerHealth;
 
     // Use this for initialization
     void Start()
     {
         if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
         currentRegion = startingRegion.GetComponent<Region>();
-        GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
-        // identify other player
-        otherPlayer = player == PlayerID.P1 ? GameObject.Find("Player2") : player == PlayerID.P2 ? GameObject.Find("Player1") : null;
 
+        // Assign the PlayerHealth object
+        try
+        {
+            PlayerHealth = this.gameObject.GetComponent<PlayerHealth>();
+        }
+        catch
+        {
+            Debug.Log("No PlayerHealth object assigned to the GameObject!");
+        }
+
+
+        // identify other player
+        otherPlayer = player == PlayerID.P1
+            ? GameObject.Find("Player2")
+            : player == PlayerID.P2 ? GameObject.Find("Player1") : null;
+
+        characterAnimation = GetComponentInChildren<AnimatedCharacter>();
+        if (characterAnimation == null)
+            throw new System.Exception("This player object does not have a child with AnimatedCharacter.");
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(Input.GetAxis(player.ToString() + "Horizontal"), 0f, Input.GetAxis(player.ToString() + "Vertical"));
+        Vector3 movement = new Vector3(Input.GetAxis(player.ToString() + "Horizontal"), 0f,
+            Input.GetAxis(player.ToString() + "Vertical"));
         Rigidbody rb = GetComponent<Rigidbody>();
         if (movement.magnitude > 0)
         {
@@ -59,9 +85,11 @@ public class PlayerMovementController : MonoBehaviour
             transform.rotation = newRotation;
 
             // Call SetAnimation with parameter "Yell" to play the character's yelling animation
-            if (characterAnimation != null) characterAnimation.SetAnimation("Run");
-        } else {
-            if (characterAnimation != null) characterAnimation.SetAnimation("Idle");
+            characterAnimation.SetAnimation("Run");
+        }
+        else
+        {
+            characterAnimation.SetAnimation("Idle");
             rb.velocity = rb.velocity + (movement * movementSpeed);
         }
     }
@@ -77,10 +105,10 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Region>() == currentRegion) {
-            transform.GetComponent<Rigidbody>().velocity = - transform.GetComponent<Rigidbody>().velocity;
+        if (other.GetComponent<Region>() == currentRegion)
+        {
+            transform.GetComponent<Rigidbody>().velocity = -transform.GetComponent<Rigidbody>().velocity;
         }
-
     }
 
     // Use trigger callbacks to change the state of the character
@@ -90,7 +118,8 @@ public class PlayerMovementController : MonoBehaviour
         collisionStartTime = Time.time;
     }
 
-    private void changeRegion(Collider other) {
+    private void changeRegion(Collider other)
+    {
         Debug.Log(player.ToString() + " changing region to " + currentRegion.gameObject.name);
         currentRegion.SetOccupied(false, player);
         if (other.gameObject.layer == LayerMask.NameToLayer("Regions"))
@@ -113,29 +142,30 @@ public class PlayerMovementController : MonoBehaviour
     private void ExecuteTileEffect()
     {
         // Take damage from vola(tiles)^2
-        if (Region.StateToEffect(currentRegion.State, player) == RegionEffect.Volatile)
+        switch (Region.StateToEffect(currentRegion.State, player))
         {
-            collisionCurrentDuration = collisionTotalDuration + Time.time - collisionStartTime;
+            case RegionEffect.Volatile:
+                collisionCurrentDuration = collisionTotalDuration + Time.time - collisionStartTime;
 
-            healthPoints = collisionCurrentDuration == 0 ? -25 * (collisionCurrentDuration - 4) : -25 * (Mathf.Pow(2, collisionCurrentDuration) - 4);
-            if (healthPoints <= 0)
-            {
+                float amount = collisionCurrentDuration == 0
+                    ? -25 * (collisionCurrentDuration - 4)
+                    : -25 * (Mathf.Pow(2, collisionCurrentDuration) - 4);
+
+                if (PlayerHealth.TakeDamage(amount) <= 0)
+                {
+                    Kill();
+                }
+                break;
+            case RegionEffect.Unstable:
                 Kill();
-            }
+                break;
         }
-        else if (Region.StateToEffect(currentRegion.State, player) == RegionEffect.Unstable)
-        {
-            healthPoints = 0;
-            Kill();
-        }
-        updateHealthBar();
     }
 
-    public void updateHealthBar() {
-        GameObject.FindWithTag("LevelController").GetComponent<LevelController>().UpdatePlayerHealth(player, healthPoints);
-    }
+    public void Kill()
+    {
+        PlayerHealth.Kill();
 
-    public void Kill() {
         Debug.Log(name + " has died.");
         if (characterAnimation != null)
             characterAnimation.SetAnimation("Die");
@@ -151,6 +181,5 @@ public class PlayerMovementController : MonoBehaviour
         {
             // If players are within MaxActionDistance...
         }
-
     }
 }

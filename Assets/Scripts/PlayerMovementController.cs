@@ -1,4 +1,5 @@
 ﻿﻿﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,13 +40,24 @@ public class PlayerMovementController : MonoBehaviour
 
     private float deathCountdown = 10f;
 
-    public PlayerHealth PlayerHealth;
+    private PlayerHealth PlayerHealth;
 
     // Use this for initialization
     void Start()
     {
         if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
         currentRegion = startingRegion.GetComponent<Region>();
+
+        // Assign the PlayerHealth object
+        try
+        {
+            PlayerHealth = this.gameObject.GetComponent<PlayerHealth>();
+        }
+        catch
+        {
+            Debug.Log("No PlayerHealth object assigned to the GameObject!");
+        }
+
 
         // identify other player
         otherPlayer = player == PlayerID.P1

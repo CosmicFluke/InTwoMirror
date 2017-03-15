@@ -8,9 +8,16 @@ public class PlayerHealth : MonoBehaviour
     public float HealthPoints = 100f;
     public Slider HealthBar;
 
+    void Start()
+    {
+        UpdateHealthBar();
+    }
+
     public float TakeDamage(float amount)
     {
         HealthPoints -= amount;
+        if (HealthPoints < 0) HealthPoints = 0;
+
         UpdateHealthBar();
 
         return HealthPoints;
@@ -24,5 +31,6 @@ public class PlayerHealth : MonoBehaviour
     private void UpdateHealthBar()
     {
         HealthBar.value = HealthPoints / 100;
+        print(HealthPoints);
     }
 }

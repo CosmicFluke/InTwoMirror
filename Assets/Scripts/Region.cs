@@ -9,21 +9,23 @@ public enum Action { Useless, Swap, Shift }
 
 public class Region : MonoBehaviour {
 
-    public static RegionEffect StateToEffect(RegionState state, PlayerID player)
-    {
-        if (state == RegionState.C) return RegionEffect.Volatile;
-        else return player == PlayerID.P1 ? (RegionEffect)state : (RegionEffect)(((int)state - 1) * -1);
-    }
-
     public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
-
+    public GameObject this[int i] { get { return hexTiles[i]; } }
+    public bool IsOccupied { get { return currentPlayer != null; } }
+    public Transform CurrentPlayer { get { return currentPlayer; } }
     public RegionState State
     {
         get { return currentState; }
         set
         {
+            if (currentState == value) return;
             currentState = value;
             updateMaterials();
+            if (currentPlayer != null)
+                refreshEffect();
+            RegionOutline outline = GetComponent<RegionOutline>();
+            if (State == RegionState.C)
+                outline.EnhancePulse(outline.initialGrowRate * 3, outline.initialGrowFactor * 2);
         }
     }
 
@@ -31,7 +33,9 @@ public class Region : MonoBehaviour {
     public Material TileMaterial { get { return tileMaterials[(int)currentState]; } }
 
     [Header("Set-up properties")]
-    public RegionState initialState = RegionState.A;
+    public RegionState initialState;
+    [Range(1, 5)] public float volatileDurationUntilDeath = 2f;
+    [Range(1, 10)] public float initialDmgRate = 1f;
     [SerializeField]
     protected GameObject[] neighbours;
     [SerializeField]
@@ -41,35 +45,69 @@ public class Region : MonoBehaviour {
     [SerializeField]
     protected Material[] outlineMaterials = new Material[3];
 
-    [Header("Runtime properties")]
-    public RegionState currentState;
+    protected RegionState currentState;
 
+    // ax^2 + bx + c = 0
+
+    // null if no player is occupying the region
+    Transform currentPlayer = null;
+    // currentEffect is only used when the tile is occupied
+    private RegionEffect currentEffect;
+    // used only when the region is occupied and the tile effect is Volatile
+    float volatileTimer;
+    float prevTime;
 
     // Use this for initialization
     protected void Start () {
-        refresh();
-        Debug.Log("Starting " + name);
+        State = initialState;
 	}
+
+    private float DamageRate(float time) {
+        return (200 / Mathf.Pow(volatileDurationUntilDeath, 2) - 2 * initialDmgRate / volatileDurationUntilDeath) * time + initialDmgRate;
+    }
+
+    private float DamageOverInterval(float time, float prevTime) {
+        return time * DamageRate(time) - prevTime * DamageRate(prevTime);
+    }
 
     // Update is called once per frame
     void Update () {
-		
+        if (currentPlayer != null && currentEffect == RegionEffect.Volatile)
+            damagePlayer();
 	}
 
-    public void SetOccupied(bool isActive, PlayerID player)
-    {
-        if (isActive) {
-            GetComponent<RegionOutline>().IsActive = true;
-        }
-        else
+    /// <summary>
+    /// Is *only* called immediately after one of two events occurs:
+    ///   1) The region changes state while occupied by a player
+    ///   2) A player enters the region area
+    /// </summary>
+    private void refreshEffect() {
+        currentEffect = StateToEffect(State, currentPlayer.GetComponent<PlayerMovementController>().player);
+        if (currentEffect == RegionEffect.Unstable)
+            currentPlayer.GetComponent<PlayerHealth>().Die();
+        else if (currentEffect == RegionEffect.Volatile)
         {
-            GetComponent<RegionOutline>().IsActive = false;
+            prevTime = 0f;
+            volatileTimer = 0f;
         }
     }
 
-    public void ShiftState(int offset)
+    public void SetOccupied(bool isOccupied, Transform player)
     {
-        State = (RegionState)(((int)State + offset) % 3);
+        RegionOutline outline = GetComponent<RegionOutline>();
+        if (isOccupied && player != null) {
+            currentPlayer = player;
+            refreshEffect();
+            if (State == RegionState.C)
+                outline.EnhancePulse(outline.initialGrowRate * 3, outline.initialGrowFactor * 2);
+            outline.IsActive = true;
+        }
+        else if (!isOccupied)
+        {
+            currentPlayer = null;
+            outline.IsActive = false;
+            outline.ResetPulse();
+        }
     }
 
     protected void refresh() {
@@ -92,6 +130,13 @@ public class Region : MonoBehaviour {
         {
             outline.Material = outlineMaterials[(int)State];
         }
+    }
+
+    private void damagePlayer()
+    {
+        volatileTimer += Time.deltaTime;
+        CurrentPlayer.GetComponent<PlayerHealth>().ApplyDamage(DamageOverInterval(volatileTimer, prevTime));
+        prevTime = volatileTimer;
     }
 
     /// <summary>
@@ -118,6 +163,21 @@ public class Region : MonoBehaviour {
             mc.convex = true;
             mc.isTrigger = true;
         }
+    }
+
+    public static RegionEffect StateToEffect(RegionState state, PlayerID player)
+    {
+        if (state == RegionState.C)
+            return RegionEffect.Volatile;
+        else if ((player == PlayerID.P1 && state == RegionState.A) || (player == PlayerID.P2 && state == RegionState.B))
+            return RegionEffect.Stable;
+        else
+            return RegionEffect.Unstable;
+    }
+
+    public IEnumerator GetEnumerator()
+    {
+        return hexTiles.GetEnumerator();
     }
 
 }

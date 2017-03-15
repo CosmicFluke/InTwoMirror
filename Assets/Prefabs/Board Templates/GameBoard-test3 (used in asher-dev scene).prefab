@@ -5047,6 +5047,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1504232897299734}
   - {fileID: 1707709279124664}
@@ -5068,7 +5070,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114086364614695380
 MonoBehaviour:
@@ -5192,6 +5193,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1963013463299276}
   - {fileID: 1020919798946608}
@@ -5211,7 +5214,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
   hexTilesToAdd: []
 --- !u!114 &114109557868497716
 MonoBehaviour:
@@ -5391,6 +5393,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1247533564325790}
   - {fileID: 1566068749569002}
@@ -5405,7 +5409,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114210048958113064
 MonoBehaviour:
@@ -5419,6 +5422,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1633893530486068}
   - {fileID: 1346624484735108}
@@ -5433,7 +5438,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114220387212279496
 MonoBehaviour:
@@ -5478,6 +5482,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1566068749569002}
   - {fileID: 1247533564325790}
@@ -5491,7 +5497,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
   hexTilesToAdd: []
 --- !u!114 &114255680619701820
 MonoBehaviour:
@@ -5505,6 +5510,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1020919798946608}
   - {fileID: 1566068749569002}
@@ -5519,7 +5526,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114260441260506040
 MonoBehaviour:
@@ -5784,6 +5790,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1707709279124664}
   - {fileID: 1434276376367420}
@@ -5798,7 +5806,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
   hexTilesToAdd: []
 --- !u!114 &114367264427483554
 MonoBehaviour:
@@ -5840,6 +5847,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1306914532496438}
   - {fileID: 1723276378024438}
@@ -5853,7 +5862,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
   hexTilesToAdd: []
 --- !u!114 &114370918833465900
 MonoBehaviour:
@@ -5902,6 +5910,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1346624484735108}
   - {fileID: 1384242540966228}
@@ -5917,7 +5927,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114461937849455326
 MonoBehaviour:
@@ -6014,6 +6023,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1707709279124664}
   - {fileID: 1618459653749536}
@@ -6028,7 +6039,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114552842085973960
 MonoBehaviour:
@@ -6042,6 +6052,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1346624484735108}
   - {fileID: 1865508530138586}
@@ -6056,7 +6068,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
   hexTilesToAdd: []
 --- !u!114 &114576207698896606
 MonoBehaviour:
@@ -6353,6 +6364,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1384242540966228}
   - {fileID: 1346624484735108}
@@ -6366,7 +6379,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
   hexTilesToAdd: []
 --- !u!114 &114706465826494534
 MonoBehaviour:
@@ -6408,6 +6420,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1365148283219066}
   - {fileID: 1566068749569002}
@@ -6421,7 +6435,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114765458447187292
 MonoBehaviour:
@@ -6435,6 +6448,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1707709279124664}
   - {fileID: 1346624484735108}
@@ -6450,7 +6465,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
   hexTilesToAdd: []
 --- !u!114 &114766211321856352
 MonoBehaviour:
@@ -6866,6 +6880,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1963013463299276}
   - {fileID: 1566068749569002}
@@ -6881,7 +6897,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
   hexTilesToAdd: []
 --- !u!114 &114883638870645434
 MonoBehaviour:
@@ -6950,6 +6965,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1618459653749536}
   - {fileID: 1346624484735108}
@@ -6966,7 +6983,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
   hexTilesToAdd: []
 --- !u!114 &114916530207803490
 MonoBehaviour:
@@ -7007,6 +7023,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1633893530486068}
   - {fileID: 1870020344573664}
@@ -7029,7 +7047,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114924783360772824
 MonoBehaviour:
@@ -7043,6 +7060,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1247533564325790}
   - {fileID: 1670129568862512}
@@ -7058,7 +7077,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
   hexTilesToAdd: []
 --- !u!114 &114944177430572818
 MonoBehaviour:
@@ -7072,6 +7090,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1870020344573664}
   - {fileID: 1670129568862512}
@@ -7089,7 +7109,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
   hexTilesToAdd: []
 --- !u!114 &114944412882153350
 MonoBehaviour:
@@ -7158,6 +7177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1541103704878070}
   - {fileID: 1247533564325790}
@@ -7173,7 +7194,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
   hexTilesToAdd: []
 --- !u!114 &114963416049817676
 MonoBehaviour:
@@ -7187,6 +7207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1633893530486068}
   - {fileID: 1504232897299734}
@@ -7201,7 +7223,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
   hexTilesToAdd: []
 --- !u!114 &114995480619778758
 MonoBehaviour:
@@ -7215,6 +7236,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours:
   - {fileID: 1384242540966228}
   - {fileID: 1723276378024438}
@@ -7235,7 +7258,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
   hexTilesToAdd: []
 --- !u!120 &120077566803629606
 LineRenderer:

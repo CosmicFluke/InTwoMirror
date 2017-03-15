@@ -27,7 +27,7 @@ public class PlayerMovementController : MonoBehaviour
     public AnimatedCharacter characterAnimation;
 
 
-    private GameObject otherPlayer;
+    public GameObject otherPlayer;
     // Current game board region of the player
     private Region currentRegion;
 
@@ -51,10 +51,7 @@ public class PlayerMovementController : MonoBehaviour
         if (characterAnimation == null)
             throw new Exception("This player object does not have a child with AnimatedCharacter.");
 
-        if (gameObject.activeSelf)
-            gameObject.SetActive(false);
         Spawn();
-        gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -98,25 +95,9 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (currentRegion != null)
             currentRegion.SetOccupied(false, transform);
-        Region r = other.GetComponent<Region>();
-        currentRegion = r;
-        r.SetOccupied(true, transform);
+        currentRegion = other.GetComponent<Region>();
         Debug.Log(player.ToString() + " changing region to " + currentRegion.gameObject.name);
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-    }
-
-    // Checks distance between this and other player
-    // If within distance and both players make noise, will heal 1HP
-    private void CoopHeal()
-    {
-        Vector3 distance = otherPlayer.transform.position - transform.position;
-        if (distance.sqrMagnitude < actionDistance)
-        {
-            // If players are within MaxActionDistance...
-        }
+        currentRegion.SetOccupied(true, transform);
     }
 
     public void Spawn() {

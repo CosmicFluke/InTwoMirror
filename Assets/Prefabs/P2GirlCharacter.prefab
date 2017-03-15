@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 114873232754940246}
   - component: {fileID: 114425460703894336}
   - component: {fileID: 136779945565083448}
-  - component: {fileID: 114790987375714022}
+  - component: {fileID: 114785021276657274}
   m_Layer: 0
   m_Name: P2GirlCharacter
   m_TagString: Player
@@ -730,7 +730,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1033746376312626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.33, y: 2.65, z: -15.09}
+  m_LocalPosition: {x: 6.33, y: 3.42, z: -26.55}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4742565367047762}
@@ -786,7 +786,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1661773678639666}
-  m_LocalRotation: {x: 0.64137745, y: 0.64137834, z: 0.29771352, w: 0.2977174}
+  m_LocalRotation: {x: 0.6413774, y: 0.6413783, z: 0.2977135, w: 0.29771736}
   m_LocalPosition: {x: -0.05461863, y: 0.059486095, z: 0.06736647}
   m_LocalScale: {x: 0.99999994, y: 1, z: 0.9999998}
   m_Children: []
@@ -1018,7 +1018,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e93f46d156586284da9c4060eff9938a, type: 3}
   - {fileID: 8300000, guid: 261f874eba0faa647b6710e55126b29e, type: 3}
   - {fileID: 8300000, guid: a570da636aba8d24ca5a7a19ea1a8c74, type: 3}
---- !u!114 &114790987375714022
+--- !u!114 &114785021276657274
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1032,6 +1032,7 @@ MonoBehaviour:
   HealthPoints: 100
   HealthBar: {fileID: 0}
   RespawnDelay: 1
+  healingRate: 10
 --- !u!114 &114849047423547594
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1047,6 +1048,7 @@ MonoBehaviour:
   startingRegion: {fileID: 0}
   player: 1
   characterAnimation: {fileID: 114231891863582904}
+  otherPlayer: {fileID: 0}
 --- !u!114 &114873232754940246
 MonoBehaviour:
   m_ObjectHideFlags: 1

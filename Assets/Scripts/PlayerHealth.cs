@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public float HealthPoints = 100f;
     public Slider HealthBar;
     [Range(0, 10)] public float RespawnDelay = 1f; // TODO: replace with death animation time
+    [Range(0, 100)] public float healingRate = 10f; // points per second
     private float initialHealthPoints;
 
     private bool dying = false;
@@ -20,13 +22,19 @@ public class PlayerHealth : MonoBehaviour
 
     public void ApplyDamage(float amount)
     {
+        if (amount < 0 && amount + HealthPoints > initialHealthPoints)
+            amount = -(initialHealthPoints - HealthPoints);
         HealthPoints -= amount;
         if (HealthPoints <= 0) Die();
-
         UpdateHealthBar();
     }
 
-    public void Die()
+    public void Kill()
+    {
+        Die();
+    }
+
+    private void Die()
     {
         // Death lock
         if (!dying) dying = true;
@@ -43,11 +51,9 @@ public class PlayerHealth : MonoBehaviour
     IEnumerator death()
     {
         yield return new WaitForSeconds(RespawnDelay);
-        gameObject.SetActive(false);
         GetComponent<PlayerMovementController>().Spawn();
         HealthPoints = initialHealthPoints;
         UpdateHealthBar();
-        gameObject.SetActive(true);
         dying = false; // Death unlock
     }
 

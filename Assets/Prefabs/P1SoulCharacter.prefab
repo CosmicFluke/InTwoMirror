@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 54675284534610872}
   - component: {fileID: 114720773078032284}
   - component: {fileID: 136872656571987508}
-  - component: {fileID: 114212683929746774}
+  - component: {fileID: 114224162877698064}
   m_Layer: 0
   m_Name: P1SoulCharacter
   m_TagString: Player
@@ -500,7 +500,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1830140541661348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.45, y: 3.27, z: -16}
+  m_LocalPosition: {x: -4.45, y: 3.27, z: -23.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4170841087502052}
@@ -702,7 +702,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114212683929746774
+--- !u!114 &114224162877698064
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -716,6 +716,7 @@ MonoBehaviour:
   HealthPoints: 100
   HealthBar: {fileID: 0}
   RespawnDelay: 1
+  healingRate: 10
 --- !u!114 &114245176624344322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -731,6 +732,7 @@ MonoBehaviour:
   startingRegion: {fileID: 0}
   player: 0
   characterAnimation: {fileID: 114826662134749346}
+  otherPlayer: {fileID: 0}
 --- !u!114 &114447813512129744
 MonoBehaviour:
   m_ObjectHideFlags: 1

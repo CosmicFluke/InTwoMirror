@@ -16,7 +16,8 @@ public class RegionOutline : MonoBehaviour {
         }
     }
 
-    public bool IsActive;
+    public bool IsActive { get { return isActive; } set { isActive = value; } }
+    public bool isActive; // mirrored in property for setter debugging
 
     public Material material;
     [Range(0.05f, 1)]
@@ -40,11 +41,12 @@ public class RegionOutline : MonoBehaviour {
     private float lineSize;
     private float growRate;
     private float growFactor;
-    private bool isGrowing;
+    private bool isGrowing = false;
 
     // Use this for initialization
     void Start () {
         lineSize = baseLineSize;
+        ResetPulse();
 	}
 	
 	// Update is called once per frame

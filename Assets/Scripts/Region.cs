@@ -72,10 +72,13 @@ public class Region : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         if (currentPlayer != null && currentEffect == RegionEffect.Volatile)
+        {
             damagePlayer();
-	}
+        }
+    }
 
     /// <summary>
     /// Is *only* called immediately after one of two events occurs:
@@ -85,7 +88,7 @@ public class Region : MonoBehaviour {
     private void refreshEffect() {
         currentEffect = StateToEffect(State, currentPlayer.GetComponent<PlayerMovementController>().player);
         if (currentEffect == RegionEffect.Unstable)
-            currentPlayer.GetComponent<PlayerHealth>().Die();
+            currentPlayer.GetComponent<PlayerHealth>().Kill();
         else if (currentEffect == RegionEffect.Volatile)
         {
             prevTime = 0f;
@@ -97,6 +100,18 @@ public class Region : MonoBehaviour {
     {
         RegionOutline outline = GetComponent<RegionOutline>();
         if (isOccupied && player != null) {
+            if (player == currentPlayer)
+            {
+                Debug.LogError(string.Format("REGION[{0}] Occupied:", name) + string.Format("Player {0} is attempting to occupy {1} twice", player.name, name));
+                return;
+            }
+            else if (currentPlayer != null)
+            {
+                currentPlayer.GetComponent<PlayerHealth>().Kill();
+                player.GetComponent<PlayerHealth>().Kill();
+                // SetOccupied(false, currentPlayer); // Uncomment this if region remains active after players die.
+                return;
+            }
             currentPlayer = player;
             refreshEffect();
             if (State == RegionState.C)
@@ -105,6 +120,8 @@ public class Region : MonoBehaviour {
         }
         else if (!isOccupied)
         {
+            if (currentPlayer == null)
+                Debug.Log(string.Format("REGION[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
             currentPlayer = null;
             outline.IsActive = false;
             outline.ResetPulse();

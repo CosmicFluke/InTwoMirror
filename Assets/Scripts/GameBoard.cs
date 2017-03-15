@@ -6,25 +6,32 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour {
 
-    /// <summary>
-    /// Specifies how far each of the actions (from Action enum) propagate.
-    /// Mappings to the int values of the actions.  Temporary solution.
-    /// </summary>
-    public int[] ActionDistance = new int[] { 1, 1, 1 };
     public List<GameObject> regions;
+
+    /// <summary>
+    /// Materials for the tile meshes. Each element in this arrays corresponds to one of the three region states (A, B, C).
+    /// </summary>
     [Header("Materials")]
     public Material[] TileMaterials = new Material[3];
+    /// <summary>
+    /// Materials for the tile outlines. Each element in this arrays corresponds to one of the three region states (A, B, C).
+    /// </summary>
     public Material[] OutlineMaterials = new Material[3];
+
     [Header("Tile generator settings")]
     public GameObject hexGeneratorPrefab;
     public BoardShape shape = BoardShape.Rectangle;
     public int width = 4, length = 6;
-    public int StateChangePropagationDistance = 1;
+    /// <summary>
+    /// Denotes whether actions propragate a distance of 1 or 2 regions out from the source region.
+    /// </summary>
+    [Range(1, 2)] public int StateChangePropagationDistance = 1;
 
+    /// <summary>True iff the board has zero regions</summary>
     public bool IsEmpty { get { return regions.Count == 0; } }
 
-    private bool isGenerated = false;
-    private GameObject genObj;
+    // Tile generator
+    private GameObject generatorObj;
 
     private void init() {
         if (regions == null) regions = new List<GameObject>();
@@ -36,13 +43,13 @@ public class GameBoard : MonoBehaviour {
     [ContextMenu("Generate hex grid")]
     public void GenerateHexes() {
         init();
-        if (genObj != null)
-            if (Application.isPlaying) Destroy(genObj);
-            else DestroyImmediate(genObj);
+        if (generatorObj != null)
+            if (Application.isPlaying) Destroy(generatorObj);
+            else DestroyImmediate(generatorObj);
         // Instantiate the tile generator
-        genObj = Instantiate(hexGeneratorPrefab, transform.position, Quaternion.identity, transform);
-        genObj.name = "HexTileMom";
-        HexGridGenerator generator = genObj.GetComponent<HexGridGenerator>();
+        generatorObj = Instantiate(hexGeneratorPrefab, transform.position, Quaternion.identity, transform);
+        generatorObj.name = "HexTileMom";
+        HexGridGenerator generator = generatorObj.GetComponent<HexGridGenerator>();
         generator.width = width;
         generator.length = length;
         generator.shape = shape;
@@ -62,10 +69,10 @@ public class GameBoard : MonoBehaviour {
     /// </summary>
     [ContextMenu("Consolidate all regions")]
     public void ConsolidateRegions() {
-        if (genObj != null)
-            while (genObj.transform.childCount != 0)
+        if (generatorObj != null)
+            while (generatorObj.transform.childCount != 0)
             {
-                CreateRegionWithTiles(new Transform[] { genObj.transform.GetChild(0) });
+                CreateRegionWithTiles(new Transform[] { generatorObj.transform.GetChild(0) });
             }
         foreach (RegionBuilder r in regions.Where(obj => obj != null).Select(obj => obj.GetComponent<RegionBuilder>())) {
             if (r != null)

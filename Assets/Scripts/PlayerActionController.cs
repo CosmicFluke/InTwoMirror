@@ -29,8 +29,6 @@ public class PlayerActionController : MonoBehaviour
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
         if (characterAnimation == null)
             throw new System.Exception("This player object does not have a child with AnimatedCharacter.");
-
-
     }
 
     void Update()
@@ -42,7 +40,7 @@ public class PlayerActionController : MonoBehaviour
         }
         else if (Input.GetButtonDown(player.ToString() + "Action2"))
         {
-           ExecuteRegionAction(Action.Swap);
+            ExecuteRegionAction(Action.Swap);
         }
         else if (Input.GetButtonDown(player.ToString() + "Action3"))
         {
@@ -63,7 +61,8 @@ public class PlayerActionController : MonoBehaviour
         IEnumerable<Region> neighbours = currentRegion.Neighbours.Select(neighbour => neighbour.GetComponent<Region>());
         foreach (Region neighbour in neighbours)
         {
-            if (neighbour == null) {
+            if (neighbour == null)
+            {
                 Debug.Log("Neighbour doesn't have Region component?");
                 continue;
             }
@@ -79,5 +78,20 @@ public class PlayerActionController : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Checks distance between this and other player
+    // If on adjacent regions and both players make noise, will heal at healingRate
+    // Call this when both players are making noise.
+    public void CoopHeal()
+    {
+        // Coop healing (not working yet)
+        //PlayerMovementController movementController = GetComponent<PlayerMovementController>();
+        //if (movementController.Region != null &&
+        //    movementController.otherPlayer != null &&
+        //    movementController.Region.Neighbours.Any(obj => obj.GetComponent<Region>().IsOccupied))
+        //{
+        //    movementController.otherPlayer.GetComponent<PlayerHealth>().ApplyDamage(-healingRate * Time.deltaTime);
+        //}
     }
 }

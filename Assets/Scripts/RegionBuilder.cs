@@ -27,7 +27,7 @@ public class RegionBuilder : Region {
         currentState = initialState;
         findNeighbours();
         RegionOutline outline = GetComponent<RegionOutline>();
-        outline.Vertices = getBorderVertices(outline.lineBaseSize).ToArray();
+        outline.Vertices = getBorderVertices(outline.baseLineSize).ToArray();
         refresh(); // base class method
     }
 

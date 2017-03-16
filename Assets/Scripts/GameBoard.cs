@@ -59,14 +59,32 @@ public class GameBoard : MonoBehaviour {
 
     public void SpawnPlayers()
     {
-        Region p1Start = regions.Where(obj => obj != null).Where(obj => obj.name == "Region " + p1StartingRegion.ToString()).First().GetComponent<Region>();
-        Region p2Start = regions.Where(obj => obj != null).Where(obj => obj.name == "Region " + p2StartingRegion.ToString()).First().GetComponent<Region>();
-        PlayerMovementController p1 = GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerMovementController>();
-        p1.startingRegion = p1Start.gameObject;
-        PlayerMovementController p2 = GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerMovementController>();
-        p2.startingRegion = p2Start.gameObject;
-        p1.Spawn();
-        p2.Spawn();
+        Region p1Start = regions
+            .Where(obj => obj != null)
+            .Where(obj => obj.name == "Region " + p1StartingRegion.ToString())
+            .First()
+            .GetComponent<Region>();
+        Region p2Start = regions
+            .Where(obj => obj != null)
+            .Where(obj => obj.name == "Region " + p2StartingRegion.ToString())
+            .First()
+            .GetComponent<Region>();
+        try
+        {
+            PlayerMovementController p1 = GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerMovementController>();
+            p1.startingRegion =
+                p1Start.gameObject;
+            PlayerMovementController p2 = GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerMovementController>();
+            p2.startingRegion =
+                p2Start.gameObject;
+            p1.Spawn();
+            p2.Spawn();
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogError(e);
+
+        }
     }
 
     private void Update()

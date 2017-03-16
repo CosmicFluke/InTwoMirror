@@ -33203,7 +33203,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1938233794826058}
-  m_LocalRotation: {x: 0.6413774, y: 0.6413783, z: 0.2977135, w: 0.29771736}
+  m_LocalRotation: {x: 0.64137745, y: 0.64137834, z: 0.29771352, w: 0.2977174}
   m_LocalPosition: {x: -0.05461863, y: 0.059486095, z: 0.06736647}
   m_LocalScale: {x: 0.99999994, y: 1, z: 0.9999998}
   m_Children: []
@@ -73137,15 +73137,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1267879230766778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 632ec2805726bfb48b57e11f619fe83a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9861cf64f1d8a48da9562765b8fe9592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 10
-  startingRegion: {fileID: 0}
+  startingRegion: {fileID: 1870387409494042}
   player: 0
-  characterAnimation: {fileID: 114366151069958878}
-  selfSpawn: 0
+  characterAnimation: {fileID: 0}
+  selfSpawn: 1
   otherPlayer: {fileID: 0}
+  currentRegion: {fileID: 0}
 --- !u!114 &114396142810062408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73364,15 +73365,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1158284496223008}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 632ec2805726bfb48b57e11f619fe83a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9861cf64f1d8a48da9562765b8fe9592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 10
-  startingRegion: {fileID: 0}
+  startingRegion: {fileID: 1739928523214642}
   player: 1
-  characterAnimation: {fileID: 114528176715305642}
-  selfSpawn: 0
+  characterAnimation: {fileID: 0}
+  selfSpawn: 1
   otherPlayer: {fileID: 0}
+  currentRegion: {fileID: 0}
 --- !u!114 &114484636312937062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73577,7 +73579,7 @@ MonoBehaviour:
   length: 7
   p1StartingRegion: 37
   p2StartingRegion: 38
-  TimePressureEnabled: 1
+  TimePressureEnabled: 0
   timePressureDelay: 20
   timePressureInterval: 10
   StateChangePropagationDistance: 1

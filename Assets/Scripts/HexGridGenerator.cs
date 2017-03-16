@@ -24,19 +24,20 @@ public class HexGridGenerator : MonoBehaviour {
     private Dictionary<BoardShape, Func<int, int>> widthFunctions;
 
     public bool IsGenerated { get { return isGenerated; } }
-    public GameObject this[HexGridCoordinates i]
+    public GameObject this[HexGridCoordinates key]
     {
         get
         {
             if (!isGenerated) throw new Exception("Tiles not generated yet.");
-            GameObject tile = tiles[i];
+            // if (!tiles.ContainsKey(key)) return null;
+            GameObject tile = tiles[key];
             if (tile == null) Debug.Log("Indexer returning null tile");
             return tile;
         }
         set
         {
-            if (tiles.ContainsKey(i) && tiles[i] != null) throw new Exception("Grid already contains tile at this location.");
-            tiles[i] = value;
+            if (tiles.ContainsKey(key) && tiles[key] != null) throw new Exception("Grid already contains tile at this location.");
+            tiles[key] = value;
         }
     }
 

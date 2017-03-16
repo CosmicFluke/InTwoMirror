@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 64416111809152320}
   - component: {fileID: 64765405986893516}
   m_Layer: 9
-  m_Name: Region 31
+  m_Name: Region 3
   m_TagString: Region
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 64348412902674852}
   - component: {fileID: 64574348772258990}
   m_Layer: 9
-  m_Name: Region 01
+  m_Name: Region 0
   m_TagString: Region
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -651,7 +651,7 @@ GameObject:
   - component: {fileID: 64133325962644818}
   - component: {fileID: 64220019422496052}
   m_Layer: 9
-  m_Name: Region 11
+  m_Name: Region 1
   m_TagString: Region
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1292,7 +1292,7 @@ GameObject:
   - component: {fileID: 64202580613745026}
   - component: {fileID: 64227767943986336}
   m_Layer: 9
-  m_Name: Region 21
+  m_Name: Region 2
   m_TagString: Region
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10328,11 +10328,13 @@ MonoBehaviour:
   hexGeneratorPrefab: {fileID: 1590816459888886, guid: a8999b189d73b574ab6c92d0e2b54a81,
     type: 2}
   shape: 0
-  width: 6
-  length: 10
-  p1StartingRegion: 0
-  p2StartingRegion: 0
+  width: 7
+  length: 6
+  p1StartingRegion: -1
+  p2StartingRegion: -1
   TimePressureEnabled: 0
+  timePressureDelay: 20
+  timePressureInterval: 10
   StateChangePropagationDistance: 1
 --- !u!114 &114802685292576564
 MonoBehaviour:

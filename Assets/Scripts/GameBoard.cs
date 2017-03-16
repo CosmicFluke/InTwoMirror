@@ -45,10 +45,16 @@ public class GameBoard : MonoBehaviour {
     private int pressureRow = 0;
     private IEnumerable<HexGridCoordinates> tileLocationsByRow;
 
+    private float startTime;
+
     private void Start()
     {
         if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
             SpawnPlayers();
+        if (generatorObj == null)
+            generatorObj = GetComponentInChildren<HexGridGenerator>().gameObject;
+        initializeTimePressure();
+        startTime = Time.time;
     }
 
     public void SpawnPlayers()
@@ -70,33 +76,39 @@ public class GameBoard : MonoBehaviour {
 
     private void ApplyTimePressure()
     {
-        if (timePressureDelay < Time.timeSinceLevelLoad && timePressureDelay + timePressureInterval < Time.timeSinceLevelLoad)
+        if (Time.timeSinceLevelLoad >= timePressureDelay || Time.time - startTime > timePressureDelay)
+        {
             // Initial condition for starting time pressure
-            initializeTimePressure();
+            pressureCookerTimer += Time.deltaTime;
+            Debug.Log("increasing timer");
+        }
 
         if (pressureCookerTimer >= timePressureInterval)
         {
-            HexGridGenerator generator = generatorObj.GetComponent<HexGridGenerator>();
+            HexGridGenerator generator = generatorObj.GetComponentInChildren<HexGridGenerator>();
+            if (generator == null) { Debug.LogError("Missing tile mom!"); pressureCookerTimer = 0f; return; }
+            Debug.Log("Applying time pressure change.");
             IEnumerable<Region> firstRowRegions = tileLocationsByRow
                 .TakeWhile(loc => loc.row <= pressureRow)
+                .Where(loc => generator.ContainsTileAt(loc))
                 .Select(loc => generator[loc])
                 .Where(obj => obj != null)
                 .Select(obj => obj.GetComponent<HexMesh>().GetComponentInParent<Region>())
+                .Where(r => r != null)
                 .Distinct();
             foreach (Region r in firstRowRegions)
                 r.State = RegionState.C;
             pressureRow++;
             pressureCookerTimer = 0f;
         }
-        pressureCookerTimer += Time.deltaTime;
     }
 
     private void initializeTimePressure()
     {
-        pressureCookerTimer += Time.deltaTime;
+        Debug.Log("Initializing time pressure.");
         HexGridGenerator generator;
         if (generatorObj != null) generator = generatorObj.GetComponent<HexGridGenerator>();
-        else if ((generator = GetComponentInChildren<HexGridGenerator>()) == null)
+        else
         {
             generator = instantiateGenerator();
             generator.recoverLostTileGrid();
@@ -125,6 +137,7 @@ public class GameBoard : MonoBehaviour {
 
     private HexGridGenerator instantiateGenerator()
     {
+        Debug.Log("Instantiating generator");
         if (generatorObj != null)
             if (Application.isPlaying) Destroy(generatorObj);
             else DestroyImmediate(generatorObj);

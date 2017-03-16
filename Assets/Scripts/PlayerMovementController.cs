@@ -29,7 +29,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public GameObject otherPlayer;
     // Current game board region of the player
-    private Region currentRegion;
+    public Region currentRegion;
 
     private PlayerHealth playerHealth;
     private int actionDistance = 1;

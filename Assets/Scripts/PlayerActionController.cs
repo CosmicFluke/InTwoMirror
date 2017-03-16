@@ -8,12 +8,14 @@ public class PlayerActionController : MonoBehaviour
     public PlayerID player;
 
     public int[] actionInventory;
+    [Range(0, 5)] public float actionDelay = 1f;
 
     public Region Region { get { return currentRegion; } }
 
     private Region currentRegion;
     private SoundController _soundController;
     private AnimatedCharacter characterAnimation;
+    private float actionDelayCounter = 0f;
 
     // Use this for initialization
     void Start()
@@ -33,18 +35,24 @@ public class PlayerActionController : MonoBehaviour
 
     void Update()
     {
+        if (actionDelayCounter > 0f)
+            actionDelayCounter += Time.deltaTime;
+
         // NOTE: A = Stable, B = Unstable, C = Volatile
-        if (Input.GetButtonDown(player.ToString() + "Action1"))
+        if (Input.GetButtonDown(player.ToString() + "Action1") && actionDelayCounter == 0f)
         {
-            ExecuteRegionAction(Action.Useless);
-        }
-        else if (Input.GetButtonDown(player.ToString() + "Action2"))
-        {
+            actionDelayCounter += Time.deltaTime;
             ExecuteRegionAction(Action.Swap);
         }
-        else if (Input.GetButtonDown(player.ToString() + "Action3"))
+        else if (Input.GetButtonDown(player.ToString() + "Action2") && actionDelayCounter == 0f)
         {
-            ExecuteRegionAction(Action.Shift);
+            actionDelayCounter += Time.deltaTime;
+            ExecuteRegionAction(Action.Destabilize);
+        }
+
+        if (actionDelayCounter > actionDelay)
+        {
+            actionDelayCounter = 0f;
         }
     }
 
@@ -58,7 +66,8 @@ public class PlayerActionController : MonoBehaviour
         currentRegion = GetComponent<PlayerMovementController>().Region;
         characterAnimation.SetAnimation("Yell");
         GetComponent<SoundController>().startSound((int)action);
-        IEnumerable<Region> neighbours = currentRegion.Neighbours.Select(neighbour => neighbour.GetComponent<Region>());
+        if (action == Action.Swap) currentRegion.State = ActionDictionary.Lookup(action, currentRegion.State, player);
+        IEnumerable<Region> neighbours = currentRegion.Neighbours.Where(n => n != null).Select(neighbour => neighbour.GetComponent<Region>());
         foreach (Region neighbour in neighbours)
         {
             if (neighbour == null)

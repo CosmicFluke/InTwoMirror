@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +26,7 @@ public class PlayerMovementController : MonoBehaviour
 
     // Temporary way to assign and access the two characters (??)
     public AnimatedCharacter characterAnimation;
-
+    public bool selfSpawn = true;
 
     public GameObject otherPlayer;
     // Current game board region of the player
@@ -51,7 +52,7 @@ public class PlayerMovementController : MonoBehaviour
         if (characterAnimation == null)
             throw new Exception("This player object does not have a child with AnimatedCharacter.");
 
-        Spawn();
+        if (selfSpawn) Spawn();
     }
 
     // Update is called once per frame
@@ -105,5 +106,7 @@ public class PlayerMovementController : MonoBehaviour
         transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
         changeRegion(startingRegion.transform);
         currentRegion.State = (player == PlayerID.P1) ? RegionState.A : RegionState.B;
+        foreach (Region r in currentRegion.Neighbours.Select(n => n.GetComponent<Region>()).Where(r => r != null))
+            r.State = r.initialState;
     }
 }

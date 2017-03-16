@@ -5,32 +5,9 @@ using UnityEngine;
 
 public enum RegionState { A, B, C }
 public enum RegionEffect { Stable, Unstable, Volatile }
-public enum Action { Useless, Swap, Shift }
+public enum Action { Swap, Destabilize }
 
 public class Region : MonoBehaviour {
-
-    public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
-    public GameObject this[int i] { get { return hexTiles[i]; } }
-    public bool IsOccupied { get { return currentPlayer != null; } }
-    public Transform CurrentPlayer { get { return currentPlayer; } }
-    public RegionState State
-    {
-        get { return currentState; }
-        set
-        {
-            if (currentState == value) return;
-            currentState = value;
-            updateMaterials();
-            if (currentPlayer == null) return;
-            refreshEffect();
-            RegionOutline outline = GetComponent<RegionOutline>();
-            if (State == RegionState.C)
-                outline.EnhancePulse(outline.initialGrowRate * 3, outline.initialGrowFactor * 2);
-        }
-    }
-
-    public Material OutlineMaterial { get { return outlineMaterials[(int)currentState]; } }
-    public Material TileMaterial { get { return tileMaterials[(int)currentState]; } }
 
     [Header("Set-up properties")]
     public RegionState initialState;
@@ -56,6 +33,30 @@ public class Region : MonoBehaviour {
     // used only when the region is occupied and the tile effect is Volatile
     float volatileTimer;
     float prevTime;
+
+    public IEnumerable<GameObject> Tiles { get { return hexTiles.AsEnumerable(); } }
+    public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
+    public GameObject this[int i] { get { return hexTiles[i]; } }
+    public bool IsOccupied { get { return currentPlayer != null; } }
+    public Transform CurrentPlayer { get { return currentPlayer; } }
+    public Material OutlineMaterial { get { return outlineMaterials[(int)currentState]; } }
+    public Material TileMaterial { get { return tileMaterials[(int)currentState]; } }
+
+    public RegionState State
+    {
+        get { return currentState; }
+        set
+        {
+            if (currentState == value) return;
+            currentState = value;
+            updateMaterials();
+            if (currentPlayer == null) return;
+            refreshEffect();
+            RegionOutline outline = GetComponent<RegionOutline>();
+            if (State == RegionState.C)
+                outline.EnhancePulse(outline.initialGrowRate * 3, outline.initialGrowFactor * 2);
+        }
+    }
 
     // Use this for initialization
     protected void Start () {

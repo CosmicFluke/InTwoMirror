@@ -105,7 +105,6 @@ public class RegionOutline : MonoBehaviour {
         get { return vertices.ToArray(); }
         set {
             vertices = value.ToArray();
-            Debug.Log(string.Join(" / ", vertices.Select(v => v.ToString()).ToArray()));
             Refresh();
         }
     } 

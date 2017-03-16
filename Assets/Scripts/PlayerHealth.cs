@@ -22,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void ApplyDamage(float amount)
     {
+        if (dying == true) return;
         if (amount < 0 && amount + HealthPoints > initialHealthPoints)
             amount = -(initialHealthPoints - HealthPoints);
         HealthPoints -= amount;

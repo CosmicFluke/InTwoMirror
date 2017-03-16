@@ -22,6 +22,12 @@ public class GameBoard : MonoBehaviour {
     public GameObject hexGeneratorPrefab;
     public BoardShape shape = BoardShape.Rectangle;
     public int width = 4, length = 6;
+
+    public int p1StartingRegion;
+    public int p2StartingRegion;
+
+    public bool TimePressureEnabled = false;
+
     /// <summary>
     /// Denotes whether actions propragate a distance of 1 or 2 regions out from the source region.
     /// </summary>
@@ -32,6 +38,31 @@ public class GameBoard : MonoBehaviour {
 
     // Tile generator
     private GameObject generatorObj;
+    private float pressureCookerTimer = 0f;
+    private int pressureRow = 0;
+
+    private void Start()
+    {
+        Region p1Start = regions.Where(obj => obj != null).Where(obj => obj.name == "Region " + p1StartingRegion.ToString()).First().GetComponent<Region>();
+        Region p2Start = regions.Where(obj => obj != null).Where(obj => obj.name == "Region " + p2StartingRegion.ToString()).First().GetComponent<Region>();
+        GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerMovementController>().startingRegion = p1Start.gameObject;
+        GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerMovementController>().startingRegion = p2Start.gameObject;
+    }
+
+    private void Update()
+    {
+        if (TimePressureEnabled) ApplyTimePressure();
+    }
+
+    private void ApplyTimePressure()
+    {
+        if (Time.timeSinceLevelLoad >= 30)
+        {
+            pressureCookerTimer += Time.deltaTime;
+
+        }
+        if (pressureCookerTimer >= 10) ;
+    }
 
     private void init() {
         if (regions == null) regions = new List<GameObject>();
@@ -55,6 +86,18 @@ public class GameBoard : MonoBehaviour {
         generator.shape = shape;
         // Generate the Hex Grid
         generator.Generate();
+    }
+
+    [ContextMenu("Generate outer wall")]
+    private void generateWalls()
+    {
+        GetComponentInChildren<HexGridGenerator>().GenerateWalls();
+    }
+
+    [ContextMenu("Destroy outer wall")]
+    private void destroyWalls()
+    {
+        GetComponentInChildren<HexGridGenerator>().DestroyWalls();
     }
 
     [ContextMenu("Reset region outlines")]

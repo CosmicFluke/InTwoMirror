@@ -7,16 +7,22 @@ public class ActionDictionary {
     public static RegionState Lookup(Action action, RegionState fromState, PlayerID player) {
         switch (action)
         {
-            case Action.Shift:
-                return (RegionState)
-                    (((int)fromState + 1) % System.Enum.GetNames(typeof(RegionState)).Length);
+            case Action.Destabilize:
+                // Does not affect own tile
+                // Volatile -> Unstable
+                // Stable -> Unstable
+                // Unstable -> Unstable
+                return (player == PlayerID.P1) ? RegionState.B : RegionState.A;
+            //if (fromState == RegionState.C)
+            //    return (player == PlayerID.P1) ? RegionState.A : RegionState.B;
+            //else return (player == PlayerID.P1) ? RegionState.B : RegionState.A;
             case Action.Swap:
+                // Affects own tile
+                // Volatile -> Volatile
+                // Stable -> Unstable
+                // Unstable -> Stable
                 if (fromState == RegionState.C) return fromState;
-                return (RegionState)(Mathf.Abs((int)fromState - 1));
-            case Action.Useless:
-                if (fromState != RegionState.C) return RegionState.C;
-                if (Region.StateToEffect(RegionState.A, player) == RegionEffect.Unstable) return RegionState.A;
-                return RegionState.B;
+                else return (RegionState)((int)fromState ^ 1);
             default:
                 return RegionState.C;
         }

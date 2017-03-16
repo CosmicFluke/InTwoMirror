@@ -67,7 +67,7 @@ public class PlayerActionController : MonoBehaviour
         characterAnimation.SetAnimation("Yell");
         GetComponent<SoundController>().startSound((int)action);
         if (action == Action.Swap) currentRegion.State = ActionDictionary.Lookup(action, currentRegion.State, player);
-        IEnumerable<Region> neighbours = currentRegion.Neighbours.Select(neighbour => neighbour.GetComponent<Region>());
+        IEnumerable<Region> neighbours = currentRegion.Neighbours.Where(n => n != null).Select(neighbour => neighbour.GetComponent<Region>());
         foreach (Region neighbour in neighbours)
         {
             if (neighbour == null)
@@ -76,6 +76,7 @@ public class PlayerActionController : MonoBehaviour
                 continue;
             }
             neighbour.State = ActionDictionary.Lookup(action, neighbour.State, player);
+
             if (GameObject.FindWithTag("LevelController").GetComponent<LevelController>().actionPropagationDistance == 2)
             {
                 foreach (Region neighbourNeighbour in neighbour.Neighbours.Select(neighbour2 => neighbour2.GetComponent<Region>()))

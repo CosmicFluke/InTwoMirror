@@ -40,6 +40,8 @@ public class HexGridGenerator : MonoBehaviour {
         }
     }
 
+    public IEnumerable<HexGridCoordinates> TileLocations { get { return tiles.Keys; } }
+
     public IEnumerator GetEnumerator()
     {
         if (tiles == null) Init();
@@ -180,15 +182,15 @@ public class HexGridGenerator : MonoBehaviour {
 
     public void GenerateWalls()
     {
-        Debug.Log(string.Join(", ", tiles.Keys.Select(t => t.ToString()).ToArray()));
         if (hexWallPrefab == null) return;
         Dictionary<HexGridCoordinates, HexMesh> walls = new Dictionary<HexGridCoordinates, HexMesh>();
-        foreach (GameObject tile in tiles.Values.ToArray())
+        foreach (HexGridCoordinates location in tiles.Keys.ToArray())
         {
-            Debug.Log("GenerateWalls: checking tile for empty edges");
-            HexMesh hex = tile.GetComponent<HexMesh>();
-            if (hex.isWall)
-                continue;
+            if (!tiles.ContainsKey(location)) continue;
+            GameObject tile = tiles[location];
+            HexMesh hex;
+            if (tile == null) tiles.Remove(location);
+            if (tile == null || (hex = tile.GetComponent<HexMesh>()).isWall) continue;
             for (int i = 0; i < 6; i++)
             {
                 if (hex.Edges[i] != null) continue;
@@ -207,7 +209,7 @@ public class HexGridGenerator : MonoBehaviour {
         }
         foreach (KeyValuePair<HexGridCoordinates, HexMesh> entry in walls)
             if (tiles.ContainsKey(entry.Key))
-                Debug.Log("Duplicate keys!!!!");
+                Debug.Log("Duplicate keys: " + entry.Key + " / " + entry.Value.name);
             else tiles[entry.Key] = entry.Value.gameObject;
     }
 
@@ -276,19 +278,20 @@ public class HexGridGenerator : MonoBehaviour {
     }
 
     [ContextMenu("Patch!")]
-    private void recoverLostTileGrid()
+    public void recoverLostTileGrid()
     {
         GameBoard board = transform.parent.GetComponent<GameBoard>();
         if (board == null) throw new Exception("No board to recover tiles from.");
         Region r = board.regions.Where(robj => robj.GetComponent<Region>() != null).First().GetComponent<Region>();
         if (r == null) throw new Exception("No regions in board for tile recovery.");
         HexMesh startingTile = r[0].GetComponent<HexMesh>();
+        HexMesh hex;
         TileDictionary visited = new TileDictionary();
         Queue<HexMesh> q = new Queue<HexMesh>();
         q.Enqueue(startingTile);
         while (q.Count > 0)
         {
-            HexMesh hex = q.Dequeue();
+            hex = q.Dequeue();
             visited[hex.Location] = hex.gameObject;
             IEnumerable<HexMesh> neighbours = hex.Edges
                 .Where(n => n != null)
@@ -299,7 +302,11 @@ public class HexGridGenerator : MonoBehaviour {
                 q.Enqueue(neighbour);
             }
         }
-        int tilecount = board.regions.Where(obj => obj != null).Select(robj => robj.GetComponent<Region>()).Where(com => com != null).SelectMany(region => region.Tiles).Count();
+        int tilecount = board.regions
+            .Where(obj => obj != null)
+            .Select(robj => robj.GetComponent<Region>())
+            .Where(com => com != null)
+            .SelectMany(region => region.Tiles).Count();
         Debug.Log(tilecount);
         Debug.Assert(tilecount == visited.Count);
         tiles = visited;

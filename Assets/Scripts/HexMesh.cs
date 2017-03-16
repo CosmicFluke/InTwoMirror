@@ -196,7 +196,6 @@ public class HexMesh : MonoBehaviour {
                         }
                         else
                         {
-                            Debug.Log("Does this ever happen?");
                             hex.Edges[j] = grid[neighbourLoc];
                             hex.Edges[j].GetComponent<HexMesh>().Edges[(j + 3) % 6] = hex.gameObject;
                         }
@@ -214,12 +213,17 @@ public class HexMesh : MonoBehaviour {
 
     [ContextMenu("Delete from board")]
     public void Delete() {
-        HexGridGenerator gen = transform.parent.GetComponent<HexGridGenerator>();
+        HexGridGenerator gen;
         RegionBuilder r = transform.parent.GetComponent<RegionBuilder>();
-        if (r != null && gen != null) Debug.LogError("Wtf that is definitely not supposed to happen");
-        else if (r != null) r.ReleaseTile(gameObject);
-        else if (gen != null) gen.ReleaseTile(Location);
-        else Debug.LogError("Hex tile is not attached to region or generator (" + Location + ")");
+        if (r != null)
+        {
+            r.ReleaseTile(gameObject);
+            gen = transform.parent.GetComponentInChildren<HexGridGenerator>();
+        }
+        else gen = transform.parent.GetComponent<HexGridGenerator>();
+
+        if (gen != null) gen.ReleaseTile(Location);
+        else Debug.LogError("Hex tile is not attached to a generator: " + Location);
         foreach (GameObject edge in edges.Where(edge => edge != null)) {
             HexMesh neighbour = edge.GetComponent<HexMesh>();
             if (neighbour == null) continue;

@@ -60,10 +60,7 @@ public class PlayerActionController : MonoBehaviour
 				continue;
 			}
 
-			// Goal regions should never change states.
-			if (!neighbour.isGoal ()) {
-				neighbour.State = ActionDictionary.Lookup (action, neighbour.State, player);
-			}
+			neighbour.State = ActionDictionary.Lookup (action, neighbour.State, player);
 
 			if (GameObject.FindWithTag ("LevelController").GetComponent<LevelController> ().actionPropagationDistance == 2) {
 				foreach (Region neighbourNeighbour in neighbour.Neighbours.Select(neighbour2 => neighbour2.GetComponent<Region>())) {

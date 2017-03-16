@@ -18,7 +18,10 @@ public class Region : MonoBehaviour {
         get { return currentState; }
         set
         {
-            if (currentState == value) return;
+            // Cannot change goal region state
+			if (isGoal()) return;
+
+			if (currentState == value) return;
             currentState = value;
             updateMaterials();
             if (currentPlayer == null) return;

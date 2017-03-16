@@ -124,6 +124,7 @@ public class HexMesh : MonoBehaviour {
         c.sharedMesh = GetComponent<MeshFilter>().sharedMesh;
     }
 
+    [ContextMenu("Refresh outline")]
     public void DrawOutline() {
         if (isWall) return;
         if (lineRenderer != null || gameObject.GetComponent<LineRenderer>() != null)

@@ -68,12 +68,22 @@ public class RegionOutline : MonoBehaviour {
         }
 	}
 
-    public void EnhancePulse(float growRate, float growFactor) {
+    public void EnhancePulse(float growRate, float growFactor)
+    {
+        EnhancePulse(growRate, growFactor, Color.red);
+    }
+
+    public void EnhancePulse(float growRate, float growFactor, Color newLineColor)
+    {
+        LineRenderer outline = GetComponent<LineRenderer>();
+        outline.startColor = outline.endColor = newLineColor;
         this.growRate = growRate;
         this.growFactor = growFactor;
     }
 
     public void ResetPulse() {
+        LineRenderer outline = GetComponent<LineRenderer>();
+        outline.startColor = outline.endColor = lineColor;
         growFactor = initialGrowFactor;
         growRate = initialGrowRate;
     }

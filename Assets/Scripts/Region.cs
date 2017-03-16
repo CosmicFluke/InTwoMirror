@@ -9,7 +9,7 @@ public enum Action { Useless, Swap, Shift }
 
 public class Region : MonoBehaviour {
 
-    public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
+	public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
     public GameObject this[int i] { get { return hexTiles[i]; } }
     public bool IsOccupied { get { return currentPlayer != null; } }
     public Transform CurrentPlayer { get { return currentPlayer; } }
@@ -46,6 +46,9 @@ public class Region : MonoBehaviour {
     protected Material[] outlineMaterials = new Material[3];
 
     protected RegionState currentState;
+
+	public bool IsGoal;
+	public GameObject PlayerGoal;
 
     // ax^2 + bx + c = 0
 
@@ -128,7 +131,7 @@ public class Region : MonoBehaviour {
         }
     }
 
-    protected void refresh() {
+    	protected void refresh() {
         refreshColliders();
         updateMaterials();
         GetComponent<RegionOutline>().Refresh();
@@ -197,5 +200,13 @@ public class Region : MonoBehaviour {
     {
         return hexTiles.GetEnumerator();
     }
+
+	public bool isGoal() {
+		return IsGoal;
+	}
+
+	public GameObject getPlayerGoal() {
+		return PlayerGoal;
+	}
 
 }

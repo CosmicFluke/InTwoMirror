@@ -28,8 +28,24 @@ public class RegionBuilder : Region {
         findNeighbours();
         RegionOutline outline = GetComponent<RegionOutline>();
         outline.Vertices = getBorderVertices(outline.baseLineSize).ToArray();
+
+		addPlayerGoal ();
+	
         refresh(); // base class method
     }
+
+	void addPlayerGoal ()
+	{
+		if (!isGoal ())
+			return;
+
+		if (getPlayerGoal () == null) {
+			Debug.Log ("Player goal object is not set!");
+			return;
+		}
+
+		Instantiate (getPlayerGoal (), new Vector3(0, 0, 0), Quaternion.identity);
+	}
 
     /// <summary>
     /// Consolidates the tiles in `hexTilesToAdd` into the region.
@@ -56,7 +72,7 @@ public class RegionBuilder : Region {
             hexTiles.Add(tile.gameObject);
         }
         hexTilesToAdd = null;
-        rebuild();
+		rebuild();
     }
 
     [ContextMenu("Delete region")]

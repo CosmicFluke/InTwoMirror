@@ -133,7 +133,7 @@ Material:
       second: 1
     - first:
         name: _GlossMapScale
-      second: 0.815
+      second: 0.625
     - first:
         name: _Glossiness
       second: 1
@@ -145,7 +145,7 @@ Material:
       second: 1
     - first:
         name: _Metallic
-      second: 0.68
+      second: 0.356
     - first:
         name: _Mode
       second: 3
@@ -200,10 +200,10 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _Color
-      second: {r: 0.784, g: 0.45, b: 0, a: 1}
+      second: {r: 0.19852942, g: 0.14460835, b: 0.04817258, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0.008434253, g: 0.008680352, b: 0.04411763, a: 1}
+      second: {r: 0.014705896, g: 0.010887733, b: 0.0060553686, a: 1}
     - first:
         name: _OutlineColor
       second: {r: 0, g: 0, b: 0, a: 1}

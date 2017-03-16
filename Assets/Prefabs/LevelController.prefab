@@ -51,6 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c0964ebe51f1743b55320b7402f855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionPropagationDistance: 1
   StartActionOne: 3
   StartActionTwo: 3
-  canvas: {fileID: 0}

@@ -12,6 +12,7 @@ TagManager:
   - Region
   - LevelController
   - Board
+  - Goal
   layers:
   - Default
   - TransparentFX

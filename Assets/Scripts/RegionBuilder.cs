@@ -8,6 +8,8 @@ public class RegionBuilder : Region {
     [Header("Editor properties (board design)")]
     public GameObject[] hexTilesToAdd;
 
+    private GameObject goalGameObject;
+
     new void Start ()
     {
         base.Start();
@@ -44,7 +46,10 @@ public class RegionBuilder : Region {
 			return;
 		}
 
-		Instantiate (getPlayerGoal (), new Vector3(0, 0, 0), Quaternion.identity);
+
+		goalGameObject = Instantiate (getPlayerGoal (), this[0].transform.position, Quaternion.identity);
+	    goalGameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = tileMaterials[(int) State];
+
 	}
 
     /// <summary>

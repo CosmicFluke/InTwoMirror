@@ -97,6 +97,12 @@ public class Region : MonoBehaviour {
             prevTime = 0f;
             volatileTimer = 0f;
         }
+
+        // Region is stable
+        if (isGoal())
+        {
+            GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(50);
+        }
     }
 
     public void SetOccupied(bool isOccupied, Transform player)
@@ -128,6 +134,12 @@ public class Region : MonoBehaviour {
             currentPlayer = null;
             outline.IsActive = false;
             outline.ResetPulse();
+
+            // Update level completion percent if player leaves goal
+            if (isGoal())
+            {
+                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(-50);
+            }
         }
     }
 

@@ -22,6 +22,9 @@ public class GameBoard : MonoBehaviour {
     public GameObject hexGeneratorPrefab;
     public BoardShape shape = BoardShape.Rectangle;
     public int width = 4, length = 6;
+
+    public int p1StartingRegion;
+    public int p2StartingRegion;
     /// <summary>
     /// Denotes whether actions propragate a distance of 1 or 2 regions out from the source region.
     /// </summary>

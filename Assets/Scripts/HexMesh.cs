@@ -15,8 +15,6 @@ public class HexMesh : MonoBehaviour {
     [SerializeField]
     private GameObject[] edges = new GameObject[6];
 
-
-
     [Header("Tile generation/Spawning settings")]
     public GameObject hexPrefab;
     public bool spawnFractals = false;
@@ -117,6 +115,7 @@ public class HexMesh : MonoBehaviour {
         c.sharedMesh = GetComponent<MeshFilter>().sharedMesh;
     }
 
+    [ContextMenu("Refresh outline")]
     public void DrawOutline() {
         if (lineRenderer == null && gameObject.GetComponent<LineRenderer>() == null)
             lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -124,7 +123,7 @@ public class HexMesh : MonoBehaviour {
         {
             if (Application.isPlaying) Destroy(lineRenderer);
             else DestroyImmediate(lineRenderer);
-            lineRenderer = gameObject.GetComponent<LineRenderer>();
+            lineRenderer = gameObject.AddComponent<LineRenderer>();
         }
         lineRenderer.numPositions = corners.Length;
         lineRenderer.startWidth = 0.1f;

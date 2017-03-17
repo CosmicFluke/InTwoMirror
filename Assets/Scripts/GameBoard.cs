@@ -53,7 +53,8 @@ public class GameBoard : MonoBehaviour {
             SpawnPlayers();
         if (generatorObj == null)
             generatorObj = GetComponentInChildren<HexGridGenerator>().gameObject;
-        initializeTimePressure();
+        if (TimePressureEnabled)
+            initializeTimePressure();
         startTime = Time.time;
     }
 
@@ -132,7 +133,8 @@ public class GameBoard : MonoBehaviour {
             generator.recoverLostTileGrid();
         }
         tileLocationsByRow = generator.TileLocations.OrderBy(loc => loc.row);
-        pressureRow = tileLocationsByRow.Min(loc => loc.row);
+        if (tileLocationsByRow.Count() > 0)
+            pressureRow = tileLocationsByRow.Min(loc => loc.row);
     }
 
     private void init() {

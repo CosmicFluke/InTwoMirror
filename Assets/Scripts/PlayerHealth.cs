@@ -14,7 +14,6 @@ public class PlayerHealth : MonoBehaviour
 
     private float initialHealthPoints;
     private PlayerID player;
-    private bool dying = false;
     private Slider healthBar;
 
     public float HealthPoints {
@@ -30,23 +29,28 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
-        player = GetComponent<Player>().player;
+        player = GetComponent<Player>().playerID;
         // TODO: modify to get sliders from LevelController, once LevelController is modified to instantiate and/or find these
         Slider[] sliders = GameObject.FindGameObjectWithTag("MainHUD").GetComponentsInChildren<Slider>();
         if (sliders.Length == 0) throw new System.Exception("Could not find Health Bar sliders");
         healthBar = sliders
             .Where(s => s.name.Contains(player.ToString()))
             .First();
-        HealthPoints = initialHealthPoints;
     }
 
     /// <summary>Should only be called by Player component.</summary>
     public void ApplyDamage(float amount)
     {
+        Debug.LogError("STOP IT");
         if (amount < 0 && amount + HealthPoints > initialHealthPoints)
             amount = -(initialHealthPoints - HealthPoints);
         HealthPoints -= amount;
         if (HealthPoints <= 0) GetComponent<Player>().Kill();
+    }
+
+    public void InitializeHealth(float initialHP)
+    {
+        HealthPoints = initialHealthPoints = initialHP;
     }
 
     private void UpdateHealthBar()

@@ -16,29 +16,26 @@ public class PlayerActionController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = GetComponent<Player>().player;
+        player = GetComponent<Player>().playerID;
     }
 
     void Update()
     {
-        if (actionDelayCounter > 0f)
+        if (actionDelayCounter > actionDelay)
+            actionDelayCounter = 0f;
+        else if (actionDelayCounter > 0f)
             actionDelayCounter += Time.deltaTime;
 
         // NOTE: A = Stable, B = Unstable, C = Volatile
         if (Input.GetButtonDown(player.ToString() + "Action1") && actionDelayCounter == 0f)
         {
+            ExecuteRegionAction(ActionType.Destabilize);
             actionDelayCounter += Time.deltaTime;
-            ExecuteRegionAction(ActionType.Swap);
         }
         else if (Input.GetButtonDown(player.ToString() + "Action2") && actionDelayCounter == 0f)
         {
+            ExecuteRegionAction(ActionType.Swap);
             actionDelayCounter += Time.deltaTime;
-            ExecuteRegionAction(ActionType.Destabilize);
-        }
-
-        if (actionDelayCounter > actionDelay)
-        {
-            actionDelayCounter = 0f;
         }
     }
 

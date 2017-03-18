@@ -15,6 +15,9 @@ public class HexGridGenerator : MonoBehaviour {
     public int length = 5;
     public BoardShape shape = BoardShape.Diamond;
 
+    public HexGridCoordinates[] tileLocationsReadOnly;
+    public GameObject[] tileObjectsReadOnly;
+
     [SerializeField]
     private TileDictionary tiles = new TileDictionary();
     [SerializeField]
@@ -41,6 +44,13 @@ public class HexGridGenerator : MonoBehaviour {
         }
     }
 
+    [ContextMenu("Refresh public tile arrays (no state change)")]
+    public void RefreshPublicTileArrays()
+    {
+        tileLocationsReadOnly = tiles.Keys.ToArray();
+        tileObjectsReadOnly = tiles.Values.ToArray();
+    }
+
     public IEnumerable<HexGridCoordinates> TileLocations { get { return tiles.Keys; } }
 
     public IEnumerator GetEnumerator()
@@ -55,7 +65,7 @@ public class HexGridGenerator : MonoBehaviour {
     }
 
     void Init() {
-        Debug.Log("Initializing tiles!");
+        Debug.Log("Initializing tile data structure");
         if (tiles == null) tiles = new TileDictionary();
         setWidthFunctions();
     }
@@ -65,10 +75,6 @@ public class HexGridGenerator : MonoBehaviour {
             { BoardShape.Rectangle, (row) => row % 2 == 0 ? width - 1 : width },
             { BoardShape.Diamond, (row) => width - Mathf.Abs((length / 2) - row) }
         };
-    }
-
-    void Start(){
-        Init();
     }
 
     [ContextMenu("Generate tiles")]
@@ -97,7 +103,7 @@ public class HexGridGenerator : MonoBehaviour {
             }
         }
         isGenerated = true;
-        //refreshGraph();
+        RefreshPublicTileArrays();
     }
 
     /// <summary>
@@ -148,6 +154,7 @@ public class HexGridGenerator : MonoBehaviour {
             HexGridCoordinates loc = pair.Key;
             if (!hex.isWall) LinkToNeighbours(hex);
         }
+        RefreshPublicTileArrays();
     }
 
     public void LinkToNeighbours(HexMesh hex)
@@ -172,18 +179,21 @@ public class HexGridGenerator : MonoBehaviour {
     {
         foreach (HexGridCoordinates loc in tiles.Keys.ToArray())
         {
-            if (tiles[loc].GetComponent<HexMesh>().isWall)
+            if (!tiles.ContainsKey(loc)) continue;
+            if (tiles[loc] != null)
             {
+                if (!tiles[loc].GetComponent<HexMesh>().isWall) continue;
                 if (Application.isEditor) DestroyImmediate(tiles[loc]);
                 else Destroy(tiles[loc]);
-                if (tiles.ContainsKey(loc)) tiles.Remove(loc);
             }
+            tiles.Remove(loc);
         }
     }
 
     public void GenerateWalls()
     {
         if (hexWallPrefab == null) return;
+        DestroyWalls();
         Dictionary<HexGridCoordinates, HexMesh> walls = new Dictionary<HexGridCoordinates, HexMesh>();
         foreach (HexGridCoordinates location in tiles.Keys.ToArray())
         {
@@ -197,15 +207,13 @@ public class HexGridGenerator : MonoBehaviour {
                 if (hex.Edges[i] != null) continue;
                 HexGridCoordinates loc = EdgeToLocation(hex.Location, i);
                 HexMesh borderHex;
-                if (!tiles.ContainsKey(loc) && !walls.ContainsKey(loc))
+                if ((!tiles.ContainsKey(loc) || tiles[loc] == null) && !walls.ContainsKey(loc))
                 {
                     borderHex = makeTile(loc, hexWallPrefab, false);
                     walls[loc] = borderHex;
                     borderHex.isWall = true;
                     borderHex.transform.name = "Border Tile " + loc.ToString();
                 }
-                else if (tiles[loc] != null)
-                    continue;
             }
         }
         foreach (KeyValuePair<HexGridCoordinates, HexMesh> entry in walls)
@@ -293,6 +301,7 @@ public class HexGridGenerator : MonoBehaviour {
         while (q.Count > 0)
         {
             hex = q.Dequeue();
+            if (hex == null || hex.gameObject == null) continue;
             visited[hex.Location] = hex.gameObject;
             IEnumerable<HexMesh> neighbours = hex.Edges
                 .Where(n => n != null)
@@ -311,6 +320,7 @@ public class HexGridGenerator : MonoBehaviour {
         Debug.Log(tilecount);
         Debug.Assert(tilecount == visited.Count);
         tiles = visited;
+        RefreshPublicTileArrays();
     }
 
     //private void OnDrawGizmos()

@@ -86,7 +86,7 @@ public class Region : MonoBehaviour {
     ///   2) A player enters the region area
     /// </summary>
     private void refreshEffect() {
-        currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().player);
+        currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
         if (currentEffect == RegionEffect.Unstable)
             currentPlayer.GetComponent<Player>().Kill();
         else if (currentEffect == RegionEffect.Volatile)
@@ -105,10 +105,11 @@ public class Region : MonoBehaviour {
                 Debug.LogError(string.Format("REGION[{0}] Occupied:", name) + string.Format("Player {0} is attempting to occupy {1} twice", player.name, name));
                 return;
             }
-            else if (currentPlayer != null)
+            else if (player != currentPlayer && currentPlayer != null)
             {
                 currentPlayer.GetComponent<Player>().Kill();
                 player.GetComponent<Player>().Kill();
+                currentPlayer = null;
                 // SetOccupied(false, currentPlayer); // Uncomment this if bug occurs where region remains active after players die?
                 return;
             }
@@ -121,7 +122,7 @@ public class Region : MonoBehaviour {
         else if (!isOccupied)
         {
             if (currentPlayer == null)
-                Debug.Log(string.Format("REGION[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
+                Debug.LogError(string.Format("REGION[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
             currentPlayer = null;
             outline.IsActive = false;
             outline.ResetPulse();
@@ -185,7 +186,7 @@ public class Region : MonoBehaviour {
 
     public void ExecuteStateChange(ActionType action, PlayerID player, bool isSource = true)
     {
-        if(ActionDictionary.AffectsSourceRegion(action))
+        if(!isSource || ActionDictionary.AffectsSourceRegion(action))
         {
             State = ActionDictionary.GetActionEffect(action, State, player);
         }

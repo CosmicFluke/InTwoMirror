@@ -229,4 +229,9 @@ public class GameBoard : MonoBehaviour {
         regions.Add(region.gameObject);
         return region;
     }
+
+    [ContextMenu("Fix region list (if it has null values)")]
+    private void fixRegionList() {
+        regions = new List<GameObject>(regions.Where(r => r != null && r.GetComponent<Region>() != null));
+    }
 }

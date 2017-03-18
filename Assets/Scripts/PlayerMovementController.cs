@@ -4,44 +4,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerID
-{
-    P1,
-    P2,
-    Both
-};
-
+[RequireComponent(typeof(Player))]
 public class PlayerMovementController : MonoBehaviour
 {
     public float movementSpeed = 10f;
-    // max distance player must be to interact with object
-    public GameObject startingRegion;
-
-    public PlayerID player;
-
-    public Region Region
-    {
-        get { return currentRegion; }
-    }
 
     // Temporary way to assign and access the two characters (??)
     public AnimatedCharacter characterAnimation;
+    public GameObject otherPlayer;
+
+    // TODO: Will likely be deprecated when GameBoard has full control of spawning
     public bool selfSpawn = true;
 
-    public GameObject otherPlayer;
     // Current game board region of the player
-    public Region currentRegion;
-
-    private PlayerHealth playerHealth;
+    private Region currentRegion;
+    private PlayerID player;
     private int actionDistance = 1;
 
     // Use this for initialization
     void Start()
     {
-        if (player == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
-        playerHealth = GetComponent<PlayerHealth>();
-        if (playerHealth == null) Debug.LogError(player.ToString() + "Missing PlayerHealth component");
-
+        player = GetComponent<Player>().player;
 
         // identify other player
         otherPlayer = player == PlayerID.P1
@@ -52,7 +35,7 @@ public class PlayerMovementController : MonoBehaviour
         if (characterAnimation == null)
             throw new Exception("This player object does not have a child with AnimatedCharacter.");
 
-        if (selfSpawn) Spawn();
+        if (selfSpawn) GetComponent<Player>().Spawn();
     }
 
     // Update is called once per frame
@@ -89,24 +72,7 @@ public class PlayerMovementController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (gameObject.activeSelf && other.gameObject.layer == LayerMask.NameToLayer("Regions") && (currentRegion == null || other.transform != currentRegion.transform))
-            changeRegion(other.transform);
+            GetComponent<Player>().ChangeRegion(other.transform);
     }
 
-    private void changeRegion(Transform other)
-    {
-        if (currentRegion != null)
-            currentRegion.SetOccupied(false, transform);
-        currentRegion = other.GetComponent<Region>();
-        Debug.Log(player.ToString() + " changing region to " + currentRegion.gameObject.name);
-        currentRegion.SetOccupied(true, transform);
-    }
-
-    public void Spawn() {
-        transform.position = startingRegion.GetComponent<Region>()[0].transform.position + 2 * Vector3.up;
-        transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        changeRegion(startingRegion.transform);
-        currentRegion.State = (player == PlayerID.P1) ? RegionState.A : RegionState.B;
-        foreach (Region r in currentRegion.Neighbours.Select(n => n.GetComponent<Region>()).Where(r => r != null))
-            r.State = r.initialState;
-    }
 }

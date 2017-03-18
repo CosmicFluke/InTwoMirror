@@ -72,10 +72,10 @@ public class GameBoard : MonoBehaviour {
             .GetComponent<Region>();
         try
         {
-            PlayerMovementController p1 = GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerMovementController>();
+            Player p1 = GameObject.FindGameObjectWithTag("Player1").GetComponent<Player>();
             p1.startingRegion =
                 p1Start.gameObject;
-            PlayerMovementController p2 = GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerMovementController>();
+            Player p2 = GameObject.FindGameObjectWithTag("Player2").GetComponent<Player>();
             p2.startingRegion =
                 p2Start.gameObject;
             p1.Spawn();

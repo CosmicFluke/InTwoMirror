@@ -5,7 +5,6 @@ using UnityEngine;
 
 public enum RegionState { A, B, C }
 public enum RegionEffect { Stable, Unstable, Volatile }
-public enum Action { Swap, Destabilize }
 
 public class Region : MonoBehaviour {
 
@@ -87,9 +86,9 @@ public class Region : MonoBehaviour {
     ///   2) A player enters the region area
     /// </summary>
     private void refreshEffect() {
-        currentEffect = StateToEffect(State, currentPlayer.GetComponent<PlayerMovementController>().player);
+        currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().player);
         if (currentEffect == RegionEffect.Unstable)
-            currentPlayer.GetComponent<PlayerHealth>().Kill();
+            currentPlayer.GetComponent<Player>().Kill();
         else if (currentEffect == RegionEffect.Volatile)
         {
             prevTime = 0f;
@@ -108,9 +107,9 @@ public class Region : MonoBehaviour {
             }
             else if (currentPlayer != null)
             {
-                currentPlayer.GetComponent<PlayerHealth>().Kill();
-                player.GetComponent<PlayerHealth>().Kill();
-                // SetOccupied(false, currentPlayer); // Uncomment this if region remains active after players die.
+                currentPlayer.GetComponent<Player>().Kill();
+                player.GetComponent<Player>().Kill();
+                // SetOccupied(false, currentPlayer); // Uncomment this if bug occurs where region remains active after players die?
                 return;
             }
             currentPlayer = player;
@@ -154,7 +153,7 @@ public class Region : MonoBehaviour {
     private void damagePlayer()
     {
         volatileTimer += Time.deltaTime;
-        CurrentPlayer.GetComponent<PlayerHealth>().ApplyDamage(DamageOverInterval(volatileTimer, prevTime));
+        CurrentPlayer.GetComponent<Player>().TakeDamage(DamageOverInterval(volatileTimer, prevTime));
         prevTime = volatileTimer;
     }
 
@@ -181,6 +180,25 @@ public class Region : MonoBehaviour {
             mc.sharedMesh.triangles = oldMesh.triangles;
             mc.convex = true;
             mc.isTrigger = true;
+        }
+    }
+
+    public void ExecuteStateChange(ActionType action, PlayerID player, bool isSource = true)
+    {
+        if(ActionDictionary.AffectsSourceRegion(action))
+        {
+            State = ActionDictionary.GetActionEffect(action, State, player);
+        }
+        if (!isSource) return;
+        IEnumerable<Region> neighbours = Neighbours.Where(n => n != null).Select(neighbour => neighbour.GetComponent<Region>());
+        foreach (Region neighbour in neighbours)
+        {
+            if (neighbour == null)
+            {
+                Debug.Log("Neighbour doesn't have Region component?");
+                continue;
+            }
+            neighbour.ExecuteStateChange(action, player, false);
         }
     }
 

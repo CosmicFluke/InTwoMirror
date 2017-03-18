@@ -107,7 +107,6 @@ public class CameraMover : MonoBehaviour{
 		midPoint = new Vector3 (midX, midY, midZ);
 
 		if (player1) {
-			// Vector3 point = cam.WorldToViewportPoint(midPoint);
 			Vector3 delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
 			Vector3 destination = transform.position + delta;
 			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);

@@ -23,10 +23,10 @@ public class LevelController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-//        if (_gameController == null)
-//        {
-//            _gameController = GameObject.Find("GameController").GetComponent<GameController>();
-//        }
+        //if (_gameController == null)
+        //{
+        //    _gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        //}
 
         _levelCompletion = 0;
     }
@@ -36,16 +36,8 @@ public class LevelController : MonoBehaviour
         // On level complete
         if (_levelCompletion >= 100)
         {
-
             if (_gameController != null)
-            {
-                _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
-
+                _gameController.NextScene();
         }
 
         if (levelDebug)
@@ -53,13 +45,7 @@ public class LevelController : MonoBehaviour
             if (Input.GetButtonDown("Start"))
             {
                 if (_gameController != null)
-                {
-                    _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
-                }
-                else
-                {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-                }
+                    _gameController.NextScene();
             }
 
             if (Input.GetButtonDown("ToggleMusic"))
@@ -82,14 +68,12 @@ public class LevelController : MonoBehaviour
     public void ProgressLevel(float percent)
     {
         _levelCompletion += percent;
-
-        Debug.Log("Level is " + _levelCompletion + "% complete.");
     }
 
     public void ResetLevel()
     {
         _levelCompletion = 0;
-        if (_gameController != null)
-            _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
+        //if (_gameController != null)
+          //  _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

@@ -37,7 +37,7 @@ public class LevelController : MonoBehaviour
         if (_levelCompletion >= 100)
         {
             if (_gameController != null)
-                _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
+                _gameController.NextScene();
         }
 
         if (levelDebug)
@@ -45,7 +45,7 @@ public class LevelController : MonoBehaviour
             if (Input.GetButtonDown("Start"))
             {
                 if (_gameController != null)
-                    _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
+                    _gameController.NextScene();
             }
 
             if (Input.GetButtonDown("ToggleMusic"))
@@ -73,7 +73,7 @@ public class LevelController : MonoBehaviour
     public void ResetLevel()
     {
         _levelCompletion = 0;
-        if (_gameController != null)
-            _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
+        //if (_gameController != null)
+          //  _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

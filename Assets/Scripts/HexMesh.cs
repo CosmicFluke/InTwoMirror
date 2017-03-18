@@ -19,19 +19,22 @@ public class HexMesh : MonoBehaviour {
     public GameObject hexPrefab;
     public bool spawnFractals = false;
     public GameObject spawnedBy;
+    public bool isWall = false;
+
+    [SerializeField]
+    private Vector3[] corners;
+
+    private List<Vector3> vertices;
+    private List<int> triangles;
+    private Mesh mesh;
+    private LineRenderer lineRenderer;
+    private float innerRadius, outerRadius;
 
     public float OuterRadius { get { return outerRadius; } }
     public Vector3[] OuterVertices { get { return corners; } }
     public GameObject[] Edges { get { return edges; } }
     public HexGridCoordinates Location { get { return location; } set { location = value; } }
     public GameObject SelfPrefab { set { hexPrefab = value; } }
-
-    private List<Vector3> vertices;
-    private List<int> triangles;
-    private Mesh mesh;
-    private LineRenderer lineRenderer;
-    private Vector3[] corners;
-    private float innerRadius, outerRadius;
 
     private void Awake()
     {
@@ -74,6 +77,12 @@ public class HexMesh : MonoBehaviour {
         this.corners = corners;
 
         Vector3 center = new Vector3();
+        if (isWall) {
+            for (int k = 0; k < corners.Length; k++)
+                corners[k] += Vector3.up;
+            center += Vector3.up;
+            GetComponent<MeshRenderer>().enabled = false;
+        }
         // Top
         for (int i = 0; i < 6; i++)
         {
@@ -117,14 +126,11 @@ public class HexMesh : MonoBehaviour {
 
     [ContextMenu("Refresh outline")]
     public void DrawOutline() {
-        if (lineRenderer == null && gameObject.GetComponent<LineRenderer>() == null)
-            lineRenderer = gameObject.AddComponent<LineRenderer>();
-        else
-        {
+        if (isWall) return;
+        if (lineRenderer != null || gameObject.GetComponent<LineRenderer>() != null)
             if (Application.isPlaying) Destroy(lineRenderer);
             else DestroyImmediate(lineRenderer);
-            lineRenderer = gameObject.AddComponent<LineRenderer>();
-        }
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.numPositions = corners.Length;
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
@@ -136,12 +142,13 @@ public class HexMesh : MonoBehaviour {
         }
     }
 
-    [ContextMenu("Spawn neighbours")]
-    public HexGridCoordinates[] SpawnNeighbours() {
-        return SpawnNeighboursToDepth(1);
-    }
+    [ContextMenu("Spawn neighbours to depth 3")]
+    private HexGridCoordinates[] SpawnNeighboursOfNeighboursOfNeighbours() { return SpawnNeighboursToDepth(3); }
 
-    public HexGridCoordinates[] SpawnNeighboursToDepth(int recursiveDepth) {
+    [ContextMenu("Spawn neighbours")]
+    private void SpawnNeighbours() { SpawnNeighboursToDepth(1); }
+    
+    public HexGridCoordinates[] SpawnNeighboursToDepth(int recursiveDepth = 1) {
         RegionBuilder r = transform.parent.GetComponent<RegionBuilder>();
         HexGridGenerator grid = GameObject.Find("HexTileMom").GetComponent<HexGridGenerator>();
         if (grid == null && r != null)
@@ -174,22 +181,12 @@ public class HexMesh : MonoBehaviour {
             {
                 HexGridCoordinates loc = HexGridGenerator.EdgeToLocation(Location, i);
                 if (grid.ContainsTileAt(loc)) continue;
-                float horizontalShift = (i == 0 || i == 2) ? innerRadius : (i == 3 || i == 5) ? -innerRadius : (loc.offset - Location.offset) * 2 * innerRadius;
-                Vector3 pos = transform.position + new Vector3(horizontalShift, 0, (loc.row - Location.row) * 1.5f * outerRadius);
-                if (spawnFractals) hexPrefab.GetComponent<HexMesh>().radius = radius * 0.85f;
-                HexMesh hex = Instantiate(hexPrefab, pos, Quaternion.identity).GetComponent<HexMesh>();
-                hex.Location = loc;
-                hex.gameObject.name = "Hex tile, " + hex.Location.ToString();
-                hex.spawnedBy = gameObject;
-                hex.SelfPrefab = hexPrefab;
-                hex.transform.SetParent(grid.transform);
-                hex.DrawOutline();
-                grid[loc] = hex.gameObject;
+                HexMesh hex = grid.makeTile(loc);
                 newCoords.Add(loc);
-
+                HexGridCoordinates neighbourLoc;
                 for (int j = 0; j < 6; j++)
                 {
-                    HexGridCoordinates neighbourLoc = HexGridGenerator.EdgeToLocation(loc, j);
+                    neighbourLoc = HexGridGenerator.EdgeToLocation(loc, j);
                     try
                     {
                         if (!grid.ContainsTileAt(neighbourLoc))
@@ -205,7 +202,7 @@ public class HexMesh : MonoBehaviour {
                     }
                     catch (KeyNotFoundException)
                     {
-                        Debug.Log("Oooook");
+                        Debug.Log("Oooook that's not good");
                         hex.Edges[j] = null;
                     }
                 }
@@ -216,12 +213,17 @@ public class HexMesh : MonoBehaviour {
 
     [ContextMenu("Delete from board")]
     public void Delete() {
-        HexGridGenerator gen = transform.parent.GetComponent<HexGridGenerator>();
+        HexGridGenerator gen;
         RegionBuilder r = transform.parent.GetComponent<RegionBuilder>();
-        if (r != null && gen != null) Debug.LogError("Wtf that is definitely not supposed to happen");
-        else if (r != null) r.ReleaseTile(gameObject);
-        else if (gen != null) gen.ReleaseTile(Location);
-        else Debug.LogError("Hex tile is not attached to region or generator (" + Location + ")");
+        if (r != null)
+        {
+            r.ReleaseTile(gameObject);
+            gen = transform.parent.GetComponentInChildren<HexGridGenerator>();
+        }
+        else gen = transform.parent.GetComponent<HexGridGenerator>();
+
+        if (gen != null) gen.ReleaseTile(Location);
+        else Debug.LogError("Hex tile is not attached to a generator: " + Location);
         foreach (GameObject edge in edges.Where(edge => edge != null)) {
             HexMesh neighbour = edge.GetComponent<HexMesh>();
             if (neighbour == null) continue;

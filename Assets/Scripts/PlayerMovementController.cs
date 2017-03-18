@@ -13,36 +13,31 @@ public class PlayerMovementController : MonoBehaviour
     public AnimatedCharacter characterAnimation;
     public GameObject otherPlayer;
 
-    // TODO: Will likely be deprecated when GameBoard has full control of spawning
-    public bool selfSpawn = true;
-
     // Current game board region of the player
     private Region currentRegion;
-    private PlayerID player;
+    private PlayerID playerID;
     private int actionDistance = 1;
 
     // Use this for initialization
     void Start()
     {
-        player = GetComponent<Player>().player;
+        playerID = GetComponent<Player>().playerID;
 
         // identify other player
-        otherPlayer = player == PlayerID.P1
+        otherPlayer = (playerID == PlayerID.P1)
             ? GameObject.Find("Player2")
-            : player == PlayerID.P2 ? GameObject.Find("Player1") : null;
+            : (playerID == PlayerID.P2) ? GameObject.Find("Player1") : null;
 
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
         if (characterAnimation == null)
             throw new Exception("This player object does not have a child with AnimatedCharacter.");
-
-        if (selfSpawn) GetComponent<Player>().Spawn();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(Input.GetAxis(player.ToString() + "Horizontal"), 0f,
-            Input.GetAxis(player.ToString() + "Vertical"));
+        Vector3 movement = new Vector3(Input.GetAxis(playerID.ToString() + "Horizontal"), 0f,
+            Input.GetAxis(playerID.ToString() + "Vertical"));
         Rigidbody rb = GetComponent<Rigidbody>();
         if (movement.magnitude > 0)
         {

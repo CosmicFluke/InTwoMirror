@@ -64,7 +64,10 @@ Assets/Resources/Materials.meta
 Assets/Resources/UI.meta
 Assets/Resources/-MODELS/Materials.meta
 Assets/Scenes/Model\ Assembly.unity.meta
-
+Assets/Resources/-SOUND/-CHARACTER\ SOUNDS/C/Damage.meta
+Assets/Resources/-SOUND/-CHARACTER\ SOUNDS/NC/Death.meta
+Assets/Resources/-SOUND/-CHARACTER\ SOUNDS/C/Death.meta
+Assets/Resources/-SOUND/-CHARACTER\ SOUNDS/NC/Damage.meta
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt

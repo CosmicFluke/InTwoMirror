@@ -9,8 +9,7 @@ using UnityEngine;
 public class CameraMover : MonoBehaviour
 {
 
-    // SD commented out as not required for InTwo public static CameraMover cTrack; //cFollow
-    public float dampTime = 0.15f; //figure out what this is
+    public float dampTime = 0.15f;
     private Vector3 velocity = Vector3.zero;
     public Transform target;
 
@@ -36,17 +35,7 @@ public class CameraMover : MonoBehaviour
     Camera cam;
 
 
-    void Awake()
-    { //Startup of the game
-      /*  SD commented out as unnecessary for InTwo
-          if (cTrack == null) {
-              DontDestroyOnLoad (gameObject);
-              cTrack = this;
-
-          } else if (cTrack != this) {
-              Destroy (gameObject);
-          }
-          */
+    void Awake() {
     }
 
 
@@ -62,39 +51,43 @@ public class CameraMover : MonoBehaviour
 
         distance = player1.position - player2.position;
         // TODO: Delete this debug code
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Debug.Log("P1 viewport = " + cam.WorldToViewportPoint(player1.position));
-            Debug.Log("P1 cam diff = " + (transform.position - player1.position));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            Debug.Log("P2 viewport = " + cam.WorldToViewportPoint(player2.position));
-            Debug.Log("P2 cam diff = " + (transform.position - player2.position));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
-            allowPause = !allowPause;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            Debug.Log("Player distance = " + distance);
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    Debug.Log("P1 viewport = " + cam.WorldToViewportPoint(player1.position));
+        //    Debug.Log("P1 cam diff = " + (transform.position - player1.position));
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    Debug.Log("P2 viewport = " + cam.WorldToViewportPoint(player2.position));
+        //    Debug.Log("P2 cam diff = " + (transform.position - player2.position));
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
+        //    allowPause = !allowPause;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha4))
+        //{
+        //    Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha5))
+        //{
+        //    Debug.Log("Player distance = " + distance);
+        //}
 
         // Check P2 still in frame
         Vector3 viewportP1 = cam.WorldToViewportPoint(player1.position);
         Vector3 viewportP2 = cam.WorldToViewportPoint(player2.position);
+        if ((transform.position - player1.position).z >= -5)
+        {
+            pullBack.z = (transform.position - player1.position).z - 5f;
+            Debug.Log("<color=blue>Pulling back for player1. pullback = " + pullBack + "</color>");
+        } 
+
         if ((transform.position - player2.position).z >= -5)
         {
             pullBack.z = (transform.position - player2.position).z - 5f;
-            Debug.Log("pullback = " + pullBack);
-            //Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
-            //Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
+            Debug.Log("<color=blue>Pulling back for player2. pullback = " + pullBack + "</color>");
         }
 
 
@@ -158,11 +151,14 @@ public class CameraMover : MonoBehaviour
         }
         else if (distance.z <= 13.0f)
         { // if they're too close
+            Debug.Log("<color=blue>Resetting camera offset & Unlocking Z axis: They're close!</color>");
             camOffset = distance.x * 0.9f;
+            pullBack = Vector3.zero;
         }
 
         if (distance.z >= 19.0f)
         { // if they're too far
+            Debug.Log("<color=blue>Locking camera Z axis: They're far apart!</color>");
             isCameraZLocked = true;
             cameraZLock = transform.position.z;
         }
@@ -179,16 +175,8 @@ public class CameraMover : MonoBehaviour
 
         if (player1)
         {
-            // Vector3 point = cam.WorldToViewportPoint(midPoint);
             Vector3 delta;
             delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)) + transform.InverseTransformDirection(pullBack);
-            //(new Vector3(0.5, 0.5, point.z));
-            //delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
-            //if (allowPause && cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)).y != 0.9f)
-            //{
-            //    UnityEditor.EditorApplication.isPaused = true;
-            //}
-            //pullBack.z = 0;
 
             Vector3 destination = transform.position + delta;
             if (isCameraZLocked)

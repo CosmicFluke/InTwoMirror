@@ -114,7 +114,7 @@ public class Region : MonoBehaviour {
                 Debug.LogError(string.Format("REGION[{0}] Occupied:", name) + string.Format("Player {0} is attempting to occupy {1} twice", player.name, name));
                 return;
             }
-            else if (player != currentPlayer && currentPlayer != null)
+            else if (currentPlayer != null)
             {
                 currentPlayer.GetComponent<Player>().Kill();
                 player.GetComponent<Player>().Kill();

@@ -316,8 +316,10 @@ public class HexGridGenerator : MonoBehaviour {
             .Where(obj => obj != null)
             .Select(robj => robj.GetComponent<Region>())
             .Where(com => com != null)
-            .SelectMany(region => region.Tiles).Count();
-        Debug.Log(tilecount);
+            .SelectMany(region => region.Tiles)
+            .Where(t => t != null)
+            .Count();
+        Debug.Log(visited.Count);
         Debug.Assert(tilecount == visited.Count);
         tiles = visited;
         RefreshPublicTileArrays();

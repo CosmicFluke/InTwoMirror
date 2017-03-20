@@ -10,6 +10,8 @@ public class Region : MonoBehaviour {
 
     [Header("Set-up properties")]
     public RegionState initialState;
+    public bool doesDamageWhenStateC = false;
+    [Header("Damage parameters")]
     [Range(1, 5)] public float volatileDurationUntilDeath = 2f;
     [Range(1, 10)] public float initialDmgRate = 1f;
     [SerializeField]
@@ -92,7 +94,11 @@ public class Region : MonoBehaviour {
     ///   2) A player enters the region area
     /// </summary>
     private void refreshEffect() {
-        currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
+        if (State == RegionState.C && !doesDamageWhenStateC)
+            currentEffect = RegionEffect.Stable;
+        else
+            currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
+
         if (currentEffect == RegionEffect.Unstable)
             currentPlayer.GetComponent<Player>().Kill();
         else if (currentEffect == RegionEffect.Volatile)

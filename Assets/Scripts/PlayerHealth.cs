@@ -41,7 +41,6 @@ public class PlayerHealth : MonoBehaviour
     /// <summary>Should only be called by Player component.</summary>
     public void ApplyDamage(float amount)
     {
-        Debug.LogError("STOP IT");
         if (amount < 0 && amount + HealthPoints > initialHealthPoints)
             amount = -(initialHealthPoints - HealthPoints);
         HealthPoints -= amount;

@@ -12,6 +12,9 @@ TagManager:
   - Region
   - LevelController
   - Board
+  - Player1
+  - Player2
+  - MainHUD
   - Goal
   layers:
   - Default
@@ -24,7 +27,7 @@ TagManager:
   - 
   - Terrain
   - Regions
-  - 
+  - Players
   - 
   - 
   - 
@@ -50,3 +53,4 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+

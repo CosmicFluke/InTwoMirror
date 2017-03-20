@@ -9,13 +9,7 @@ public class GameController : MonoBehaviour
 {
 
     static GameController Instance;
-    public float FadeInDuration = 1000;
-    public float FadeOutDuration = 1000;
-    GameObject canvas;
-    GameObject panel;
-    private IEnumerator coroutine;
 
-    // Use this for initialization
     void Start()
     {
         if (Instance == null)
@@ -30,105 +24,61 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void GotoScene(int newSceneIndex)
+    public void NextScene()
     {
-        SceneManager.LoadScene(newSceneIndex);
-        //coroutine = LoadScene(newScene);
-        //StartCoroutine(coroutine);
+        Scene scene = SceneManager.GetActiveScene();
+
+        if (scene.name.Equals("Tutorial"))
+            GotoScene("Level1");
+        if (scene.name.Equals("Level1"))
+            GotoScene("Level2");
+        if (scene.name.Equals("Level2"))
+            GotoScene("Level3");
+        if (scene.name.Equals("Level3"))
+            GotoScene("ClosingScene");
+        if (scene.name.Equals("ClosingScene"))
+            GotoScene("OpeningScene");
+        if (scene.name.Equals("OpeningScene"))
+            GotoScene("Tutorial");
     }
 
-    IEnumerator LoadScene(int newSceneIndex)
+    public void GotoScene(int sceneIndex)
     {
-		Debug.Log("GotoScene "+ newSceneIndex);
-        fadeOutCamera();
-        yield return new WaitForSeconds(FadeOutDuration);
-		SceneManager.LoadScene(newSceneIndex);
-        fadeInCamera();
+        SceneManager.LoadScene(sceneIndex);
     }
 
+    public void GotoScene(string newScene)
+    {
+        SceneManager.LoadScene(newScene);
+    }
+    
     void Update()
     {
-		// TODO: Clean this up to use indices once level orders have been finalized
-        if (0 != Input.GetAxis("GameControlTutorial"))
+        // TODO: Clean this up to use indices once level orders have been finalized
+        if (0 != Input.GetAxis("GameControlTutorial")) //F9
         {
-			GotoScene(SceneManager.GetSceneByName("Tutorial").buildIndex);
+            GotoScene("Tutorial");
         }
         if (0 != Input.GetAxis("GameControlLevel1"))
         {
-			GotoScene(SceneManager.GetSceneByName("Level1").buildIndex);
+            GotoScene("Level1");
         }
         if (0 != Input.GetAxis("GameControlLevel2"))
         {
-			GotoScene(SceneManager.GetSceneByName("Level2").buildIndex);
+            GotoScene("Level2");
         }
         if (0 != Input.GetAxis("GameControlLevel3"))
         {
-			GotoScene(SceneManager.GetSceneByName("Level3").buildIndex);
+            GotoScene("Level3");
         }
         if (0 != Input.GetAxis("GameControlClosing"))
         {
-			GotoScene(SceneManager.GetSceneByName("ClosingScene").buildIndex);
+            GotoScene("ClosingScene");
         }
         if (0 != Input.GetAxis("GameControlOpening"))
         {
-			GotoScene(SceneManager.GetSceneByName("OpeningScene").buildIndex);
-        }
-    }
-
-    // Fades from black
-    public void fadeInCamera()
-    {
-        Debug.Log("Fade from black");
-        panelExist();
-
-        panel.GetComponent<Graphic>().CrossFadeAlpha(0.0f, FadeInDuration, true);
-    }
-
-    // Fades to black
-    public void fadeOutCamera()
-    {
-        Debug.Log("Fade to black");
-        panelExist();
-
-        panel.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-        panel.GetComponent<Image>().CrossFadeColor(Color.black, FadeOutDuration, true, true);
-    }
-
-    public void panelExist()
-    {
-        if(canvas == null)
-        {
-            canvas = GameObject.Find("Canvas"); // Canvas must exist in scene
+            GotoScene("OpeningScene");
         }
 
-        if(panel == null)
-        {
-            Debug.Log("Panel instatiated");
-            panel = (GameObject)Instantiate(Resources.Load("Prefabs/BlackPanel"));
-            panel.transform.SetParent(canvas.transform);
-        }
-
-        float canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
-        float canvasWidth = canvas.GetComponent<RectTransform>().rect.width;
-        panel.transform.localScale = new Vector3(canvasHeight, canvasWidth, 1);
     }
-/*
-
-    IEnumerator WaitAndFadeCamera(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        print("WaitAndPrint " + Time.time);
-    }
-
-    public IEnumerator loadScene(string sceneName) {
-        Debug.Log("Loading scene");
-        fadeOutCamera();
-        yield return new WaitForSeconds(FadeOutDuration);
-        SceneManager.LoadScene(sceneName);
-        Debug.Log("After wait");
-        // TODO: destroy panel on sceneLoad
-        // while (panel.GetComponent<Image>().color.a > 0) ;
-        //Destroy(panel);
-    }
-*/
 }

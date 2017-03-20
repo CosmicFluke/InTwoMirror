@@ -51,14 +51,15 @@ public class GameBoard : MonoBehaviour {
 
     private void Start()
     {
+        fixRegionList();
         if (GameObject.FindGameObjectWithTag("Player1") != null || GameObject.FindGameObjectWithTag("Player2") != null)
             Debug.LogError("Players are already placed in scene.  Remove players from the scene -- they will be spawned by the game board.");
-        if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
-            SpawnPlayers();
         if (generatorObj == null)
             generatorObj = GetComponentInChildren<HexGridGenerator>().gameObject;
         if (TimePressureEnabled)
             initializeTimePressure();
+        if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
+            StartCoroutine(SpawnPlayers());
         startTime = Time.time;
     }
 
@@ -72,8 +73,9 @@ public class GameBoard : MonoBehaviour {
         return playerObj;
     }
 
-    public void SpawnPlayers()
+    public IEnumerator SpawnPlayers()
     {
+        yield return new WaitUntil(() => regions.All(r => r.GetComponent<Region>().IsReady));
         GameObject players = new GameObject("Players");
         players.transform.position = transform.position;
 
@@ -248,6 +250,6 @@ public class GameBoard : MonoBehaviour {
 
     [ContextMenu("Fix region list (if it has null values)")]
     private void fixRegionList() {
-        regions = new List<GameObject>(regions.Where(r => r != null && r.GetComponent<Region>() != null));
+        regions.RemoveAll(r => r == null || r.GetComponent<Region>() == null);
     }
 }

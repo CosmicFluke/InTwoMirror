@@ -32,6 +32,7 @@ public class Region : MonoBehaviour {
     Transform currentPlayer = null;
     // currentEffect is only used when the tile is occupied
     private RegionEffect currentEffect;
+    private bool ready = false;
     // used only when the region is occupied and the tile effect is Volatile
     float volatileTimer;
     float prevTime;
@@ -43,6 +44,7 @@ public class Region : MonoBehaviour {
     public Transform CurrentPlayer { get { return currentPlayer; } }
     public Material OutlineMaterial { get { return outlineMaterials[(int)currentState]; } }
     public Material TileMaterial { get { return tileMaterials[(int)currentState]; } }
+    public bool IsReady { get { return ready; } }
 
     public RegionState State
     {
@@ -64,6 +66,7 @@ public class Region : MonoBehaviour {
     protected void Start () {
         State = initialState;
         refresh();
+        ready = true;
 	}
 
     private float DamageRate(float time) {

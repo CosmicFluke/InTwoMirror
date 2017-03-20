@@ -18,10 +18,6 @@ public class Player : MonoBehaviour {
     [Range(0, 10)] public float RespawnDelay = 0.5f; // TODO: replace with death animation time?
     public bool invulnerable = false;
 
-    // TODO: Will likely be deprecated when GameBoard has full control of spawning.
-    // When GameBoard does not have a starting region for the player, make this true and specify startingRegion
-    public bool selfSpawn = true;
-    // TODO: Deprecate this and specify starting region with GameBoard  (Let the board or the LevelController spawn the players)
     public GameObject startingRegion;
 
     private Region currentRegion;
@@ -34,7 +30,6 @@ public class Player : MonoBehaviour {
     void Start () {
         if (playerID == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
         GetComponent<PlayerHealth>().InitializeHealth(startingHealthPoints);
-        if (selfSpawn) Spawn();
     }
 	
 	// Update is called once per frame
@@ -86,5 +81,24 @@ public class Player : MonoBehaviour {
         Spawn();
         GetComponent<PlayerHealth>().HealthPoints = startingHealthPoints;
         dying = false; // Death unlock
+    }
+
+    public void SetActionType(int actionNumber, ActionType action)
+    {
+        PlayerActionController actionController = GetComponent<PlayerActionController>();
+        switch (actionNumber)
+        {
+            case 0:
+                actionController.action0 = action;
+                break;
+            case 1:
+                actionController.action1 = action;
+                break;
+            case 2:
+                actionController.action2 = action;
+                break;
+            default:
+                throw new System.ArgumentException("Action number out of range: must be in {0, 1, 2}");
+        }
     }
 }

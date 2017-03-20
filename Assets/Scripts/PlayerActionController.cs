@@ -25,14 +25,12 @@ public class PlayerActionController : MonoBehaviour
             actionDelayCounter = 0f;
         else if (actionDelayCounter > 0f)
             actionDelayCounter += Time.deltaTime;
-
-        // NOTE: A = Stable, B = Unstable, C = Volatile
-        if (Input.GetButtonDown(player.ToString() + "Action1") && actionDelayCounter == 0f)
+        else if (Input.GetButtonDown(player.ToString() + "Action0"))
         {
             ExecuteRegionAction(ActionType.Destabilize);
             actionDelayCounter += Time.deltaTime;
         }
-        else if (Input.GetButtonDown(player.ToString() + "Action2") && actionDelayCounter == 0f)
+        else if (Input.GetButtonDown(player.ToString() + "Action1"))
         {
             ExecuteRegionAction(ActionType.Swap);
             actionDelayCounter += Time.deltaTime;

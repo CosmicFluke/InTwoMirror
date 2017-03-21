@@ -7,6 +7,8 @@ using UnityEngine;
 public class GameBoard : MonoBehaviour {
 
     public List<GameObject> regions;
+    public GameObject player1prefab;
+    public GameObject player2prefab;
 
     /// <summary>
     /// Materials for the tile meshes. Each element in this arrays corresponds to one of the three region states (A, B, C).
@@ -49,6 +51,8 @@ public class GameBoard : MonoBehaviour {
 
     private void Start()
     {
+        if (GameObject.FindGameObjectWithTag("Player1") != null || GameObject.FindGameObjectWithTag("Player2") != null)
+            Debug.LogError("Players are already placed in scene.  Remove players from the scene -- they will be spawned by the game board.");
         if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
             SpawnPlayers();
         if (generatorObj == null)
@@ -56,6 +60,16 @@ public class GameBoard : MonoBehaviour {
         if (TimePressureEnabled)
             initializeTimePressure();
         startTime = Time.time;
+    }
+
+    private GameObject instantiatePlayer(PlayerID p, Vector3 position, Transform parent)
+    {
+        if (p == PlayerID.Both) throw new ArgumentException("Player cannot be 'both'");
+        GameObject prefab = (p == PlayerID.P1) ? player1prefab : player2prefab;
+        GameObject playerObj = Instantiate(prefab, position, Quaternion.identity, transform);
+        playerObj.name = p.ToString();
+        playerObj.transform.SetParent(parent);
+        return playerObj;
     }
 
     public void SpawnPlayers()
@@ -72,12 +86,26 @@ public class GameBoard : MonoBehaviour {
             .GetComponent<Region>();
         try
         {
-            Player p1 = GameObject.FindGameObjectWithTag("Player1").GetComponent<Player>();
-            p1.startingRegion =
-                p1Start.gameObject;
-            Player p2 = GameObject.FindGameObjectWithTag("Player2").GetComponent<Player>();
-            p2.startingRegion =
-                p2Start.gameObject;
+            GameObject players = new GameObject("Players");
+            players.transform.position = transform.position;
+
+            GameObject p1obj = GameObject.FindGameObjectWithTag("Player1");
+            GameObject p2obj = GameObject.FindGameObjectWithTag("Player2");
+
+            if (p1obj == null) p1obj = instantiatePlayer(PlayerID.P1, p1Start.transform.position, players.transform);
+            if (p2obj == null) p2obj = instantiatePlayer(PlayerID.P2, p2Start.transform.position, players.transform);
+
+            CameraMover cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMover>();
+            if (cam != null)
+            {
+                cam.player1 = p1obj.transform;
+                cam.player2 = p2obj.transform;
+            }
+
+            Player p1 = p1obj.GetComponent<Player>();
+            p1.startingRegion = p1Start.gameObject;
+            Player p2 = p2obj.GetComponent<Player>();
+            p2.startingRegion = p2Start.gameObject;
             p1.Spawn();
             p2.Spawn();
         }

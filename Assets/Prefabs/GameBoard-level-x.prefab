@@ -3584,6 +3584,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114118199326005200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3612,6 +3614,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114146138136425906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3624,6 +3628,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1699983787490218}
@@ -3637,8 +3643,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114152989260522562
 MonoBehaviour:
@@ -3651,12 +3655,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114171157973072372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3669,6 +3676,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1584438725718562}
@@ -3680,8 +3689,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114189070127141758
 MonoBehaviour:
@@ -3695,6 +3702,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1312006968822904}
@@ -3706,8 +3715,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114197362189480218
 MonoBehaviour:
@@ -3721,6 +3728,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1835912141015262}
@@ -3732,8 +3741,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114211073905863876
 MonoBehaviour:
@@ -3763,6 +3770,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114212852775544360
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3774,12 +3783,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114227748036988514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3808,6 +3820,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114257615588054992
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3819,12 +3833,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114268139967896860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3853,6 +3870,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114280833816071162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3881,6 +3900,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114280839397987542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3909,6 +3930,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114304751322034642
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3937,6 +3960,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114316797464963632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3948,12 +3973,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114323330673830368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3965,12 +3993,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114333231297715564
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3999,6 +4030,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114384564790588246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4010,12 +4043,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114488325398844382
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4044,6 +4080,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114496028994865096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4072,6 +4110,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114503308484229700
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4100,6 +4140,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114509001863683410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4111,7 +4153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfaee3c74c485334da390fec40a645a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActionDistance: 
   regions:
   - {fileID: 1256992188825792}
   - {fileID: 1916697536143914}
@@ -4126,6 +4167,10 @@ MonoBehaviour:
   - {fileID: 1739676336700610}
   - {fileID: 1000249868776712}
   - {fileID: 1387596743556914}
+  player1prefab: {fileID: 1830140541661348, guid: 3ab7adf52a29546aaa017517f84a005c,
+    type: 2}
+  player2prefab: {fileID: 1033746376312626, guid: ecc000ecd0dd2414e8bcc88cbccd0c3c,
+    type: 2}
   TileMaterials:
   - {fileID: 2100000, guid: d203388d5671f2946a4123602bd5a520, type: 2}
   - {fileID: 2100000, guid: 1f4636a63ea27d347a157d4b8b3e054f, type: 2}
@@ -4139,6 +4184,11 @@ MonoBehaviour:
   shape: 0
   width: 5
   length: 7
+  p1StartingRegion: -1
+  p2StartingRegion: -1
+  TimePressureEnabled: 0
+  timePressureDelay: 20
+  timePressureInterval: 10
   StateChangePropagationDistance: 1
 --- !u!114 &114514363866925978
 MonoBehaviour:
@@ -4151,12 +4201,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114522726749391360
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4185,6 +4238,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114523460494671828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4196,12 +4251,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114527903140213594
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4230,6 +4288,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114536866503980802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4242,6 +4302,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1796861446468330}
@@ -4253,8 +4315,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114546422167567412
 MonoBehaviour:
@@ -4284,6 +4344,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114546770499581632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4312,6 +4374,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114546965208265898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4340,6 +4404,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114555369857202694
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4368,6 +4434,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114563716678211726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4379,12 +4447,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114583937104256424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4413,6 +4484,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114629426294661368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4424,12 +4497,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114631930607315192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4441,12 +4517,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114656723822025972
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4458,12 +4537,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114720551552661560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4476,6 +4558,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1222391489993548}
@@ -4490,8 +4574,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114721063915292340
 MonoBehaviour:
@@ -4505,6 +4587,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1730479311086346}
@@ -4517,8 +4601,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114727621067295346
 MonoBehaviour:
@@ -4548,6 +4630,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114732351511006458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4576,6 +4660,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114747103632131866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4604,6 +4690,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114763344515954654
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4632,6 +4720,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114779941342881120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4644,6 +4734,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1303889412273852}
@@ -4655,8 +4747,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 0
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114794695916467588
 MonoBehaviour:
@@ -4686,6 +4776,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114797412542967752
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4714,6 +4806,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114814419117416948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4726,6 +4820,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1076247641704990}
@@ -4742,8 +4838,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114874882162141548
 MonoBehaviour:
@@ -4756,12 +4850,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0860299099bd0947b2e20d510cc3a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
+  isActive: 0
   material: {fileID: 0}
-  lineBaseSize: 0.1
+  baseLineSize: 0.1
+  initialGrowRate: 1
+  initialGrowFactor: 2
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   terrainObject: {fileID: 0}
   surfaceConformMaxDistance: 5
+  vertices: []
 --- !u!114 &114875784269828014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4790,6 +4887,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114930293711905092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4818,6 +4917,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114933207277347112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4830,6 +4931,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 1
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1856294744647888}
@@ -4845,8 +4948,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 1
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114939083375245488
 MonoBehaviour:
@@ -4876,6 +4977,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114946965208719226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4888,6 +4991,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1048121734398170}
@@ -4900,8 +5005,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114968913339878152
 MonoBehaviour:
@@ -4915,6 +5018,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1297259209273368}
@@ -4927,8 +5032,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114969597787018474
 MonoBehaviour:
@@ -4958,6 +5061,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114989438734482300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4970,6 +5075,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 2
+  volatileDurationUntilDeath: 2
+  initialDmgRate: 1
   neighbours: []
   hexTiles:
   - {fileID: 1916268139330586}
@@ -4982,8 +5089,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  currentState: 2
-  material: {fileID: 0}
   hexTilesToAdd: []
 --- !u!114 &114993332797203920
 MonoBehaviour:
@@ -5013,6 +5118,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!114 &114994983732493714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5041,6 +5148,8 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   spawnFractals: 0
   spawnedBy: {fileID: 0}
+  isWall: 0
+  corners: []
 --- !u!120 &120046636125237820
 LineRenderer:
   m_ObjectHideFlags: 1

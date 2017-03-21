@@ -11,7 +11,6 @@ public class PlayerMovementController : MonoBehaviour
 
     // Temporary way to assign and access the two characters (??)
     public AnimatedCharacter characterAnimation;
-    public GameObject otherPlayer;
 
     // Current game board region of the player
     private Region currentRegion;
@@ -22,11 +21,6 @@ public class PlayerMovementController : MonoBehaviour
     void Start()
     {
         playerID = GetComponent<Player>().playerID;
-
-        // identify other player
-        otherPlayer = (playerID == PlayerID.P1)
-            ? GameObject.Find("Player2")
-            : (playerID == PlayerID.P2) ? GameObject.Find("Player1") : null;
 
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
         if (characterAnimation == null)

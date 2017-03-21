@@ -731,7 +731,6 @@ MonoBehaviour:
   startingHealthPoints: 100
   RespawnDelay: 0.5
   invulnerable: 0
-  selfSpawn: 0
   startingRegion: {fileID: 0}
 --- !u!114 &114294157910429728
 MonoBehaviour:
@@ -757,6 +756,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3cec353406bcf747a4aaeac493eda45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  action0: 0
+  action1: 2
+  action2: 2
+  actions: 
   actionDelay: 1
 --- !u!114 &114720773078032284
 MonoBehaviour:

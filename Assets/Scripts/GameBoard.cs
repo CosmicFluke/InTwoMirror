@@ -63,13 +63,12 @@ public class GameBoard : MonoBehaviour {
         startTime = Time.time;
     }
 
-    private GameObject instantiatePlayer(PlayerID p, Vector3 position, Transform parent)
+    private GameObject instantiatePlayer(PlayerID p, Transform parent)
     {
         if (p == PlayerID.Both) throw new ArgumentException("Player cannot be 'both'");
         GameObject prefab = (p == PlayerID.P1) ? player1prefab : player2prefab;
-        GameObject playerObj = Instantiate(prefab, position, Quaternion.identity, transform);
+        GameObject playerObj = Instantiate(prefab, parent);
         playerObj.name = p.ToString();
-        playerObj.transform.SetParent(parent);
         return playerObj;
     }
 
@@ -78,26 +77,34 @@ public class GameBoard : MonoBehaviour {
         yield return new WaitUntil(() => regions.All(r => r.GetComponent<Region>().IsReady));
         GameObject players = new GameObject("Players");
         players.transform.position = transform.position;
+        Region p1Start, p2Start;
 
-        Region p1Start = regions
-            .Where(obj => obj != null)
-            .Where(obj => obj.name == "Region " + p1StartingRegion.ToString())
-            .First()
-            .GetComponent<Region>();
-        Region p2Start = regions
-            .Where(obj => obj != null)
-            .Where(obj => obj.name == "Region " + p2StartingRegion.ToString())
-            .First()
-            .GetComponent<Region>();
+        try
+        {
+            p1Start = regions
+                .Where(obj => obj != null)
+                .Where(obj => obj.name == "Region " + p1StartingRegion.ToString())
+                .First()
+                .GetComponent<Region>();
+            p2Start = regions
+                .Where(obj => obj != null)
+                .Where(obj => obj.name == "Region " + p2StartingRegion.ToString())
+                .First()
+                .GetComponent<Region>();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Could not find players' starting regions.  Ensure that starting region numbers are set, and that those regions exist.  The number should be in the name of the Region's GameObject (i.e. 'Region X').");
+            throw e;
+        }
 
-        Player p1 = instantiatePlayer(PlayerID.P1, p1Start.transform.position, players.transform).GetComponent<Player>();
-        Player p2 = instantiatePlayer(PlayerID.P2, p2Start.transform.position, players.transform).GetComponent<Player>();
+        Player p1 = instantiatePlayer(PlayerID.P1, players.transform).GetComponent<Player>();
+        Player p2 = instantiatePlayer(PlayerID.P2, players.transform).GetComponent<Player>();
 
         CameraMover cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMover>();
         if (cam != null)
         {
-            cam.player1 = p1.transform;
-            cam.player2 = p2.transform;
+            cam.SetPlayers(p1.transform, p2.transform);
         }
 
         p1.startingRegion = p1Start.gameObject;

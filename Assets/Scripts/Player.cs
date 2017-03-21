@@ -23,6 +23,9 @@ public class Player : MonoBehaviour {
     private Region currentRegion;
     private AnimatedCharacter characterAnimation;
     private bool dying = false;
+    private bool isReady = false;
+
+    private Vector3 spawnPoint;
 
     public Region Region { get { return currentRegion; } }
 
@@ -39,11 +42,12 @@ public class Player : MonoBehaviour {
 
     public void Spawn()
     {
-        transform.position = startingRegion.GetComponent<Region>()[0].transform.position + 2 * Vector3.up;
+        Region region = startingRegion.GetComponent<Region>();
+        transform.position = region[0].transform.position + 2 * Vector3.up;
+        spawnPoint = transform.position;
         transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        ChangeRegion(startingRegion.transform);
-        currentRegion.State = (playerID == PlayerID.P1) ? RegionState.A : RegionState.B;
-        foreach (Region r in currentRegion.Neighbours.Select(n => n.GetComponent<Region>()).Where(r => r != null))
+        region.State = (playerID == PlayerID.P1) ? RegionState.A : RegionState.B;
+        foreach (Region r in region.Neighbours.Select(n => n.GetComponent<Region>()).Where(r => r != null))
             r.State = r.initialState;
     }
 
@@ -58,7 +62,7 @@ public class Player : MonoBehaviour {
 
     public void TakeDamage(float amount) {
         if (dying || invulnerable) return;
-        Debug.Log(playerID + " takes " + amount + " damage");
+        // Debug.Log(playerID + " takes " + amount + " damage");
         GetComponent<PlayerHealth>().ApplyDamage(amount);
     }
 
@@ -102,4 +106,13 @@ public class Player : MonoBehaviour {
                 throw new System.ArgumentException("Action number out of range: must be in {0, 1, 2}");
         }
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    if (spawnPoint != null)
+    //    {
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawSphere(spawnPoint, 0.25f);
+    //    }
+    //}
 }

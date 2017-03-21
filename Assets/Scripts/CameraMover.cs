@@ -58,7 +58,7 @@ public class CameraMover : MonoBehaviour{
 
     void Update()
     {
-
+        if (player1 == null || player2 == null) return;
         distance = player1.position - player2.position;
         // TODO: Delete this debug code
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -197,6 +197,12 @@ public class CameraMover : MonoBehaviour{
             transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
         }
 
+    }
+
+    public void SetPlayers(Transform p1, Transform p2)
+    {
+        player1 = p1;
+        player2 = p2;
     }
 
 }

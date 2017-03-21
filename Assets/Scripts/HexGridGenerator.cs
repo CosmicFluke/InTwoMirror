@@ -319,7 +319,7 @@ public class HexGridGenerator : MonoBehaviour {
             .SelectMany(region => region.Tiles)
             .Where(t => t != null)
             .Count();
-        Debug.Log(visited.Count);
+        Debug.Log("Found " + visited.Count + " tiles");
         Debug.Assert(tilecount == visited.Count);
         tiles = visited;
         RefreshPublicTileArrays();

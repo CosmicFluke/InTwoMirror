@@ -63,6 +63,7 @@ public class Player : MonoBehaviour {
 
     public void TakeDamage(float amount) {
         if (dying || invulnerable) return;
+        Debug.Log(playerID + " takes " + amount + " damage");
         GetComponent<PlayerHealth>().ApplyDamage(amount);
     }
 

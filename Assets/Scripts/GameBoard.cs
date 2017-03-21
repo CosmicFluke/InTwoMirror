@@ -51,14 +51,15 @@ public class GameBoard : MonoBehaviour {
 
     private void Start()
     {
+        fixRegionList();
         if (GameObject.FindGameObjectWithTag("Player1") != null || GameObject.FindGameObjectWithTag("Player2") != null)
             Debug.LogError("Players are already placed in scene.  Remove players from the scene -- they will be spawned by the game board.");
-        if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
-            SpawnPlayers();
         if (generatorObj == null)
             generatorObj = GetComponentInChildren<HexGridGenerator>().gameObject;
         if (TimePressureEnabled)
             initializeTimePressure();
+        if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
+            StartCoroutine(SpawnPlayers());
         startTime = Time.time;
     }
 
@@ -72,8 +73,12 @@ public class GameBoard : MonoBehaviour {
         return playerObj;
     }
 
-    public void SpawnPlayers()
+    public IEnumerator SpawnPlayers()
     {
+        yield return new WaitUntil(() => regions.All(r => r.GetComponent<Region>().IsReady));
+        GameObject players = new GameObject("Players");
+        players.transform.position = transform.position;
+
         Region p1Start = regions
             .Where(obj => obj != null)
             .Where(obj => obj.name == "Region " + p1StartingRegion.ToString())
@@ -84,36 +89,21 @@ public class GameBoard : MonoBehaviour {
             .Where(obj => obj.name == "Region " + p2StartingRegion.ToString())
             .First()
             .GetComponent<Region>();
-        try
+
+        Player p1 = instantiatePlayer(PlayerID.P1, p1Start.transform.position, players.transform).GetComponent<Player>();
+        Player p2 = instantiatePlayer(PlayerID.P2, p2Start.transform.position, players.transform).GetComponent<Player>();
+
+        CameraMover cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMover>();
+        if (cam != null)
         {
-            GameObject players = new GameObject("Players");
-            players.transform.position = transform.position;
-
-            GameObject p1obj = GameObject.FindGameObjectWithTag("Player1");
-            GameObject p2obj = GameObject.FindGameObjectWithTag("Player2");
-
-            if (p1obj == null) p1obj = instantiatePlayer(PlayerID.P1, p1Start.transform.position, players.transform);
-            if (p2obj == null) p2obj = instantiatePlayer(PlayerID.P2, p2Start.transform.position, players.transform);
-
-            CameraMover cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMover>();
-            if (cam != null)
-            {
-                cam.player1 = p1obj.transform;
-                cam.player2 = p2obj.transform;
-            }
-
-            Player p1 = p1obj.GetComponent<Player>();
-            p1.startingRegion = p1Start.gameObject;
-            Player p2 = p2obj.GetComponent<Player>();
-            p2.startingRegion = p2Start.gameObject;
-            p1.Spawn();
-            p2.Spawn();
+            cam.player1 = p1.transform;
+            cam.player2 = p2.transform;
         }
-        catch (NullReferenceException e)
-        {
-            Debug.LogError(e);
 
-        }
+        p1.startingRegion = p1Start.gameObject;
+        p2.startingRegion = p2Start.gameObject;
+        p1.Spawn();
+        p2.Spawn();
     }
 
     private void Update()
@@ -260,6 +250,6 @@ public class GameBoard : MonoBehaviour {
 
     [ContextMenu("Fix region list (if it has null values)")]
     private void fixRegionList() {
-        regions = new List<GameObject>(regions.Where(r => r != null && r.GetComponent<Region>() != null));
+        regions.RemoveAll(r => r == null || r.GetComponent<Region>() == null);
     }
 }

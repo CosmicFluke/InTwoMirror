@@ -51,7 +51,7 @@ public class GameBoard : MonoBehaviour {
 
     private void Start()
     {
-        fixRegionList();
+        FixRegionList();
         if (GameObject.FindGameObjectWithTag("Player1") != null || GameObject.FindGameObjectWithTag("Player2") != null)
             Debug.LogError("Players are already placed in scene.  Remove players from the scene -- they will be spawned by the game board.");
         if (generatorObj == null)
@@ -256,7 +256,7 @@ public class GameBoard : MonoBehaviour {
     }
 
     [ContextMenu("Fix region list (if it has null values)")]
-    private void fixRegionList() {
+    public void FixRegionList() {
         regions.RemoveAll(r => r == null || r.GetComponent<Region>() == null);
     }
 }

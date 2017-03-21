@@ -10,6 +10,8 @@ public class Region : MonoBehaviour {
 
     [Header("Set-up properties")]
     public RegionState initialState;
+    public bool doesDamageWhenStateC = false;
+    [Header("Damage parameters")]
     [Range(1, 5)] public float volatileDurationUntilDeath = 2f;
     [Range(1, 10)] public float initialDmgRate = 1f;
     [SerializeField]
@@ -25,6 +27,8 @@ public class Region : MonoBehaviour {
 
 	public bool IsGoal;
 	public GameObject PlayerGoal;
+
+    public bool isFixedState = false;
 
     // ax^2 + bx + c = 0
 
@@ -66,6 +70,7 @@ public class Region : MonoBehaviour {
     protected void Start () {
         State = initialState;
         refresh();
+        isFixedState = isFixedState || isGoal();
         ready = true;
 	}
 
@@ -92,7 +97,11 @@ public class Region : MonoBehaviour {
     ///   2) A player enters the region area
     /// </summary>
     private void refreshEffect() {
-        currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
+        if (State == RegionState.C && !doesDamageWhenStateC)
+            currentEffect = RegionEffect.Stable;
+        else
+            currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
+
         if (currentEffect == RegionEffect.Unstable)
             currentPlayer.GetComponent<Player>().Kill();
         else if (currentEffect == RegionEffect.Volatile)
@@ -147,7 +156,7 @@ public class Region : MonoBehaviour {
         }
     }
 
-    	protected void refresh() {
+    protected void refresh() {
         refreshColliders();
         updateMaterials();
         GetComponent<RegionOutline>().Refresh();
@@ -204,9 +213,7 @@ public class Region : MonoBehaviour {
 
     public void ExecuteStateChange(ActionType action, PlayerID player, bool isSource = true)
     {
-        if (isGoal()) return; // Goal regions should never change.
-
-        if(!isSource || ActionDictionary.AffectsSourceRegion(action))
+        if(!isFixedState && (!isSource || ActionDictionary.AffectsSourceRegion(action)))
         {
             State = ActionDictionary.GetActionEffect(action, State, player);
         }

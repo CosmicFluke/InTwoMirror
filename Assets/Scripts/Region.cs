@@ -28,6 +28,8 @@ public class Region : MonoBehaviour {
 	public bool IsGoal;
 	public GameObject PlayerGoal;
 
+    public bool isFixedState = false;
+
     // ax^2 + bx + c = 0
 
     // null if no player is occupying the region
@@ -68,6 +70,7 @@ public class Region : MonoBehaviour {
     protected void Start () {
         State = initialState;
         refresh();
+        isFixedState = isFixedState || IsGoal;
         ready = true;
 	}
 
@@ -153,7 +156,7 @@ public class Region : MonoBehaviour {
         }
     }
 
-    	protected void refresh() {
+    protected void refresh() {
         refreshColliders();
         updateMaterials();
         GetComponent<RegionOutline>().Refresh();
@@ -212,7 +215,7 @@ public class Region : MonoBehaviour {
     {
         if (isGoal()) return; // Goal regions should never change.
 
-        if(!isSource || ActionDictionary.AffectsSourceRegion(action))
+        if(!isFixedState && (!isSource || ActionDictionary.AffectsSourceRegion(action)))
         {
             State = ActionDictionary.GetActionEffect(action, State, player);
         }

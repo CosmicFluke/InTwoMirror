@@ -204,11 +204,15 @@ public class Region : MonoBehaviour {
 
     public void ExecuteStateChange(ActionType action, PlayerID player, bool isSource = true)
     {
+        if (isGoal()) return; // Goal regions should never change.
+
         if(!isSource || ActionDictionary.AffectsSourceRegion(action))
         {
             State = ActionDictionary.GetActionEffect(action, State, player);
         }
-        if (!isSource || IsGoal) return;
+
+        if (!isSource) return;
+
         IEnumerable<Region> neighbours = Neighbours.Where(n => n != null).Select(neighbour => neighbour.GetComponent<Region>());
         foreach (Region neighbour in neighbours)
         {

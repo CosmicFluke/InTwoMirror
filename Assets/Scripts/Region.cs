@@ -70,7 +70,7 @@ public class Region : MonoBehaviour {
     protected void Start () {
         State = initialState;
         refresh();
-        isFixedState = isFixedState || IsGoal;
+        isFixedState = isFixedState || isGoal();
         ready = true;
 	}
 
@@ -213,8 +213,6 @@ public class Region : MonoBehaviour {
 
     public void ExecuteStateChange(ActionType action, PlayerID player, bool isSource = true)
     {
-        if (isGoal()) return; // Goal regions should never change.
-
         if(!isFixedState && (!isSource || ActionDictionary.AffectsSourceRegion(action)))
         {
             State = ActionDictionary.GetActionEffect(action, State, player);

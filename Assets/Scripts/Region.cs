@@ -23,6 +23,9 @@ public class Region : MonoBehaviour {
 
     protected RegionState currentState;
 
+	public bool IsGoal;
+	public GameObject PlayerGoal;
+
     // ax^2 + bx + c = 0
 
     // null if no player is occupying the region
@@ -94,6 +97,12 @@ public class Region : MonoBehaviour {
             prevTime = 0f;
             volatileTimer = 0f;
         }
+
+        // Region is stable
+        if (isGoal())
+        {
+            GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(50);
+        }
     }
 
     public void SetOccupied(bool isOccupied, Transform player)
@@ -126,10 +135,16 @@ public class Region : MonoBehaviour {
             currentPlayer = null;
             outline.IsActive = false;
             outline.ResetPulse();
+
+            // Update level completion percent if player leaves goal
+            if (isGoal())
+            {
+                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(-50);
+            }
         }
     }
 
-    protected void refresh() {
+    	protected void refresh() {
         refreshColliders();
         updateMaterials();
         GetComponent<RegionOutline>().Refresh();
@@ -190,7 +205,7 @@ public class Region : MonoBehaviour {
         {
             State = ActionDictionary.GetActionEffect(action, State, player);
         }
-        if (!isSource) return;
+        if (!isSource || IsGoal) return;
         IEnumerable<Region> neighbours = Neighbours.Where(n => n != null).Select(neighbour => neighbour.GetComponent<Region>());
         foreach (Region neighbour in neighbours)
         {
@@ -217,5 +232,13 @@ public class Region : MonoBehaviour {
     {
         return hexTiles.GetEnumerator();
     }
+
+	public bool isGoal() {
+		return IsGoal;
+	}
+
+	public GameObject getPlayerGoal() {
+		return PlayerGoal;
+	}
 
 }

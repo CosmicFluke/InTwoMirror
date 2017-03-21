@@ -41,8 +41,13 @@ public class GameController : MonoBehaviour
         if (scene.name.Equals("OpeningScene"))
             GotoScene("Tutorial");
     }
-    
-    public void GotoScene(String newScene)
+
+    public void GotoScene(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
+    }
+
+    public void GotoScene(string newScene)
     {
         SceneManager.LoadScene(newScene);
     }

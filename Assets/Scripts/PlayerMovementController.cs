@@ -11,22 +11,18 @@ public class PlayerMovementController : MonoBehaviour
 
     // Temporary way to assign and access the two characters (??)
     public AnimatedCharacter characterAnimation;
-    public GameObject otherPlayer;
 
     // Current game board region of the player
     private Region currentRegion;
     private PlayerID playerID;
     private int actionDistance = 1;
 
+    private Vector3 collisionLocation;
+
     // Use this for initialization
     void Start()
     {
         playerID = GetComponent<Player>().playerID;
-
-        // identify other player
-        otherPlayer = (playerID == PlayerID.P1)
-            ? GameObject.Find("Player2")
-            : (playerID == PlayerID.P2) ? GameObject.Find("Player1") : null;
 
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
         if (characterAnimation == null)
@@ -68,6 +64,16 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (gameObject.activeSelf && other.gameObject.layer == LayerMask.NameToLayer("Regions") && (currentRegion == null || other.transform != currentRegion.transform))
             GetComponent<Player>().ChangeRegion(other.transform);
+        collisionLocation = transform.position;
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    if (collisionLocation != null)
+    //    {
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawSphere(collisionLocation, 0.25f);
+    //    }
+    //}
 
 }

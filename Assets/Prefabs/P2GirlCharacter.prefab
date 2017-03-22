@@ -41,9 +41,10 @@ GameObject:
   - component: {fileID: 114425460703894336}
   - component: {fileID: 136779945565083448}
   - component: {fileID: 114785021276657274}
+  - component: {fileID: 114728532423519780}
   m_Layer: 0
   m_Name: P2GirlCharacter
-  m_TagString: Player
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1018,6 +1019,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e93f46d156586284da9c4060eff9938a, type: 3}
   - {fileID: 8300000, guid: 261f874eba0faa647b6710e55126b29e, type: 3}
   - {fileID: 8300000, guid: a570da636aba8d24ca5a7a19ea1a8c74, type: 3}
+--- !u!114 &114728532423519780
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033746376312626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9861cf64f1d8a48da9562765b8fe9592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 10
+  characterAnimation: {fileID: 0}
 --- !u!114 &114785021276657274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1029,9 +1043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e0484f28b69ce44b6bfd1477ce9e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthPoints: 100
-  HealthBar: {fileID: 0}
-  RespawnDelay: 1
+  healthpointsReadOnly: 0
   healingRate: 10
 --- !u!114 &114849047423547594
 MonoBehaviour:
@@ -1041,14 +1053,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1033746376312626}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 632ec2805726bfb48b57e11f619fe83a, type: 3}
+  m_Script: {fileID: 11500000, guid: 304ae8f6b4628cf469281dd17feec0ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  playerID: 1
+  startingHealthPoints: 100
+  RespawnDelay: 0.5
+  invulnerable: 0
   startingRegion: {fileID: 0}
-  player: 1
-  characterAnimation: {fileID: 114231891863582904}
-  otherPlayer: {fileID: 0}
 --- !u!114 &114873232754940246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1060,8 +1072,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3cec353406bcf747a4aaeac493eda45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: 1
-  actionInventory: 
+  action0: 0
+  action1: 2
+  action2: 2
+  actions: 
+  actionDelay: 1
 --- !u!136 &136779814607598274
 CapsuleCollider:
   m_ObjectHideFlags: 1

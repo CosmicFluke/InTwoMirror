@@ -10,6 +10,8 @@ public class Region : MonoBehaviour {
 
     [Header("Set-up properties")]
     public RegionState initialState;
+    public bool doesDamageWhenStateC = false;
+    [Header("Damage parameters")]
     [Range(1, 5)] public float volatileDurationUntilDeath = 2f;
     [Range(1, 10)] public float initialDmgRate = 1f;
     [SerializeField]
@@ -23,12 +25,18 @@ public class Region : MonoBehaviour {
 
     protected RegionState currentState;
 
+	public bool IsGoal;
+	public GameObject PlayerGoal;
+
+    public bool isFixedState = false;
+
     // ax^2 + bx + c = 0
 
     // null if no player is occupying the region
     Transform currentPlayer = null;
     // currentEffect is only used when the tile is occupied
     private RegionEffect currentEffect;
+    private bool ready = false;
     // used only when the region is occupied and the tile effect is Volatile
     float volatileTimer;
     float prevTime;
@@ -40,6 +48,7 @@ public class Region : MonoBehaviour {
     public Transform CurrentPlayer { get { return currentPlayer; } }
     public Material OutlineMaterial { get { return outlineMaterials[(int)currentState]; } }
     public Material TileMaterial { get { return tileMaterials[(int)currentState]; } }
+    public bool IsReady { get { return ready; } }
 
     public RegionState State
     {
@@ -61,6 +70,8 @@ public class Region : MonoBehaviour {
     protected void Start () {
         State = initialState;
         refresh();
+        isFixedState = isFixedState || isGoal();
+        ready = true;
 	}
 
     private float DamageRate(float time) {
@@ -86,13 +97,23 @@ public class Region : MonoBehaviour {
     ///   2) A player enters the region area
     /// </summary>
     private void refreshEffect() {
-        currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
+        if (State == RegionState.C && !doesDamageWhenStateC)
+            currentEffect = RegionEffect.Stable;
+        else
+            currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
+
         if (currentEffect == RegionEffect.Unstable)
             currentPlayer.GetComponent<Player>().Kill();
         else if (currentEffect == RegionEffect.Volatile)
         {
             prevTime = 0f;
             volatileTimer = 0f;
+        }
+
+        // Region is stable
+        if (isGoal())
+        {
+            GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(50);
         }
     }
 
@@ -105,7 +126,7 @@ public class Region : MonoBehaviour {
                 Debug.LogError(string.Format("REGION[{0}] Occupied:", name) + string.Format("Player {0} is attempting to occupy {1} twice", player.name, name));
                 return;
             }
-            else if (player != currentPlayer && currentPlayer != null)
+            else if (currentPlayer != null)
             {
                 currentPlayer.GetComponent<Player>().Kill();
                 player.GetComponent<Player>().Kill();
@@ -122,10 +143,16 @@ public class Region : MonoBehaviour {
         else if (!isOccupied)
         {
             if (currentPlayer == null)
-                Debug.LogError(string.Format("REGION[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
+                Debug.Log(string.Format("[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
             currentPlayer = null;
             outline.IsActive = false;
             outline.ResetPulse();
+
+            // Update level completion percent if player leaves goal
+            if (isGoal())
+            {
+                GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(-50);
+            }
         }
     }
 
@@ -186,11 +213,13 @@ public class Region : MonoBehaviour {
 
     public void ExecuteStateChange(ActionType action, PlayerID player, bool isSource = true)
     {
-        if(!isSource || ActionDictionary.AffectsSourceRegion(action))
+        if(!isFixedState && (!isSource || ActionDictionary.AffectsSourceRegion(action)))
         {
             State = ActionDictionary.GetActionEffect(action, State, player);
         }
+
         if (!isSource) return;
+
         IEnumerable<Region> neighbours = Neighbours.Where(n => n != null).Select(neighbour => neighbour.GetComponent<Region>());
         foreach (Region neighbour in neighbours)
         {
@@ -217,5 +246,13 @@ public class Region : MonoBehaviour {
     {
         return hexTiles.GetEnumerator();
     }
+
+	public bool isGoal() {
+		return IsGoal;
+	}
+
+	public GameObject getPlayerGoal() {
+		return PlayerGoal;
+	}
 
 }

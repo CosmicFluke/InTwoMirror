@@ -7,6 +7,8 @@ using UnityEngine;
 public class GameBoard : MonoBehaviour {
 
     public List<GameObject> regions;
+    public GameObject player1prefab;
+    public GameObject player2prefab;
 
     /// <summary>
     /// Materials for the tile meshes. Each element in this arrays corresponds to one of the three region states (A, B, C).
@@ -49,43 +51,66 @@ public class GameBoard : MonoBehaviour {
 
     private void Start()
     {
-        if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
-            SpawnPlayers();
+        FixRegionList();
+        if (GameObject.FindGameObjectWithTag("Player1") != null || GameObject.FindGameObjectWithTag("Player2") != null)
+            Debug.LogError("Players are already placed in scene.  Remove players from the scene -- they will be spawned by the game board.");
         if (generatorObj == null)
             generatorObj = GetComponentInChildren<HexGridGenerator>().gameObject;
         if (TimePressureEnabled)
             initializeTimePressure();
+        if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
+            StartCoroutine(SpawnPlayers());
         startTime = Time.time;
     }
 
-    public void SpawnPlayers()
+    private GameObject instantiatePlayer(PlayerID p, Transform parent)
     {
-        Region p1Start = regions
-            .Where(obj => obj != null)
-            .Where(obj => obj.name == "Region " + p1StartingRegion.ToString())
-            .First()
-            .GetComponent<Region>();
-        Region p2Start = regions
-            .Where(obj => obj != null)
-            .Where(obj => obj.name == "Region " + p2StartingRegion.ToString())
-            .First()
-            .GetComponent<Region>();
+        if (p == PlayerID.Both) throw new ArgumentException("Player cannot be 'both'");
+        GameObject prefab = (p == PlayerID.P1) ? player1prefab : player2prefab;
+        GameObject playerObj = Instantiate(prefab, parent);
+        playerObj.name = p.ToString();
+        return playerObj;
+    }
+
+    public IEnumerator SpawnPlayers()
+    {
+        yield return new WaitUntil(() => regions.All(r => r.GetComponent<Region>().IsReady));
+        GameObject players = new GameObject("Players");
+        players.transform.position = transform.position;
+        Region p1Start, p2Start;
+
         try
         {
-            Player p1 = GameObject.FindGameObjectWithTag("Player1").GetComponent<Player>();
-            p1.startingRegion =
-                p1Start.gameObject;
-            Player p2 = GameObject.FindGameObjectWithTag("Player2").GetComponent<Player>();
-            p2.startingRegion =
-                p2Start.gameObject;
-            p1.Spawn();
-            p2.Spawn();
+            p1Start = regions
+                .Where(obj => obj != null)
+                .Where(obj => obj.name == "Region " + p1StartingRegion.ToString())
+                .First()
+                .GetComponent<Region>();
+            p2Start = regions
+                .Where(obj => obj != null)
+                .Where(obj => obj.name == "Region " + p2StartingRegion.ToString())
+                .First()
+                .GetComponent<Region>();
         }
-        catch (NullReferenceException e)
+        catch (Exception e)
         {
-            Debug.LogError(e);
-
+            Debug.LogError("Could not find players' starting regions.  Ensure that starting region numbers are set, and that those regions exist.  The number should be in the name of the Region's GameObject (i.e. 'Region X').");
+            throw e;
         }
+
+        Player p1 = instantiatePlayer(PlayerID.P1, players.transform).GetComponent<Player>();
+        Player p2 = instantiatePlayer(PlayerID.P2, players.transform).GetComponent<Player>();
+
+        CameraMover cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMover>();
+        if (cam != null)
+        {
+            cam.SetPlayers(p1.transform, p2.transform);
+        }
+
+        p1.startingRegion = p1Start.gameObject;
+        p2.startingRegion = p2Start.gameObject;
+        p1.Spawn();
+        p2.Spawn();
     }
 
     private void Update()
@@ -231,7 +256,7 @@ public class GameBoard : MonoBehaviour {
     }
 
     [ContextMenu("Fix region list (if it has null values)")]
-    private void fixRegionList() {
-        regions = new List<GameObject>(regions.Where(r => r != null && r.GetComponent<Region>() != null));
+    public void FixRegionList() {
+        regions.RemoveAll(r => r == null || r.GetComponent<Region>() == null);
     }
 }

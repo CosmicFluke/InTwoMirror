@@ -51,8 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfaee3c74c485334da390fec40a645a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActionDistance: 
   regions: []
+  player1prefab: {fileID: 1830140541661348, guid: 3ab7adf52a29546aaa017517f84a005c,
+    type: 2}
+  player2prefab: {fileID: 1033746376312626, guid: ecc000ecd0dd2414e8bcc88cbccd0c3c,
+    type: 2}
   TileMaterials:
   - {fileID: 2100000, guid: d203388d5671f2946a4123602bd5a520, type: 2}
   - {fileID: 2100000, guid: 1f4636a63ea27d347a157d4b8b3e054f, type: 2}
@@ -63,7 +66,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
   hexGeneratorPrefab: {fileID: 1590816459888886, guid: a8999b189d73b574ab6c92d0e2b54a81,
     type: 2}
-  shape: 0
-  width: 5
-  length: 7
+  shape: 1
+  width: 12
+  length: 8
+  p1StartingRegion: 27
+  p2StartingRegion: 39
+  TimePressureEnabled: 0
+  timePressureDelay: 20
+  timePressureInterval: 10
   StateChangePropagationDistance: 1

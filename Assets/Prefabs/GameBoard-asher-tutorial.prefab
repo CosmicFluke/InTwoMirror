@@ -3609,6 +3609,10 @@ MonoBehaviour:
   - {fileID: 1124858233115514}
   - {fileID: 1796285825507966}
   - {fileID: 1157812798269630}
+  player1prefab: {fileID: 1830140541661348, guid: 3ab7adf52a29546aaa017517f84a005c,
+    type: 2}
+  player2prefab: {fileID: 1033746376312626, guid: ecc000ecd0dd2414e8bcc88cbccd0c3c,
+    type: 2}
   TileMaterials:
   - {fileID: 2100000, guid: d203388d5671f2946a4123602bd5a520, type: 2}
   - {fileID: 2100000, guid: 1f4636a63ea27d347a157d4b8b3e054f, type: 2}
@@ -3622,8 +3626,8 @@ MonoBehaviour:
   shape: 0
   width: 6
   length: 7
-  p1StartingRegion: 0
-  p2StartingRegion: 0
+  p1StartingRegion: -1
+  p2StartingRegion: -1
   TimePressureEnabled: 0
   timePressureDelay: 20
   timePressureInterval: 10
@@ -4618,6 +4622,8 @@ MonoBehaviour:
   width: 6
   length: 7
   shape: 0
+  tileLocationsReadOnly: []
+  tileObjectsReadOnly: []
   tiles:
     _Buckets: ffffffffffffffffffffffffffffffffffffffffffffffffffffffff140000000f000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1e0000001c0000002300000004000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff12000000ffffffff24000000ffffffffffffffffffffffff01000000ffffffffffffffff16000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff21000000ffffffff0d000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff13000000ffffffffffffffff1d000000ffffffffffffffffffffffff25000000ffffffffffffffffffffffffffffffff1b00000008000000ffffffffffffffffffffffffffffffffffffffff0300000022000000ffffffff1f000000ffffffff15000000
     _HashCodes: ffffffff86190000ffffffffa630000026cfff7fffffffffffffffff4e9a0100ce65fe7fffffffffffffffffffffffffffffffffeeee0100a6600300269ffc7fffffffffffffffff4eca0400ce35fb7f2eb10400ee4efb7f2e11fe7f86b906004646f97fa6900600266ff97f6e530800aeacf77f46e6ff7f06e4fc7fc61b0300ffffffff66f1090086e909004616f67fa6c00900263ff67f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

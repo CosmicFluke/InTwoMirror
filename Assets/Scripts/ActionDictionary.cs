@@ -8,8 +8,9 @@ public class ActionEffectMap : SerializableDictionary<RegionState, RegionState> 
 
 public enum ActionType
 {
+    Destabilize,
     Swap,
-    Destabilize
+    None,
 }
 
 /// <summary>
@@ -59,7 +60,7 @@ public struct ActionEffects : System.IEquatable<ActionEffects>
     public static ActionEffectMap StaticEffect {
         get {
             throw new System.NotImplementedException();
-            return (ActionEffectMap)(new SerializableDictionary<RegionState, RegionState> { });
+            //return (ActionEffectMap)(new SerializableDictionary<RegionState, RegionState> { });
         }
     }
 

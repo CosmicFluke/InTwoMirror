@@ -6,17 +6,28 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class PlayerActionController : MonoBehaviour
 {
-    private PlayerID player;
+    public ActionType action0 = ActionType.Destabilize;
+    public ActionType action1 = ActionType.None;
+    public ActionType action2 = ActionType.None;
 
     [Range(0, 5)] public float actionDelay = 1f;
 
+    private PlayerID player;
     private Region currentRegion;
+    private ActionType[] actions;
+    private string[] actionButtonNames;
     private float actionDelayCounter = 0f;
 
     // Use this for initialization
     void Start()
     {
-        player = GetComponent<Player>().playerID;
+        Player p = GetComponent<Player>();
+        player = p.playerID;
+        refreshActions();
+        // Pre-assemble the action button name strings
+        actionButtonNames = Enumerable.Range(0, 3)
+            .Select(i => player.ToString() + "Action" + i.ToString())
+            .ToArray();
     }
 
     void Update()
@@ -25,18 +36,24 @@ public class PlayerActionController : MonoBehaviour
             actionDelayCounter = 0f;
         else if (actionDelayCounter > 0f)
             actionDelayCounter += Time.deltaTime;
+        else
+            checkForAction();
+    }
 
-        // NOTE: A = Stable, B = Unstable, C = Volatile
-        if (Input.GetButtonDown(player.ToString() + "Action1") && actionDelayCounter == 0f)
-        {
-            ExecuteRegionAction(ActionType.Destabilize);
-            actionDelayCounter += Time.deltaTime;
-        }
-        else if (Input.GetButtonDown(player.ToString() + "Action2") && actionDelayCounter == 0f)
-        {
-            ExecuteRegionAction(ActionType.Swap);
-            actionDelayCounter += Time.deltaTime;
-        }
+    private void refreshActions()
+    {
+        actions = new ActionType[] { action0, action1, action2 };
+    }
+
+    private void checkForAction()
+    {
+        for (int i=0; i < 3; i++)
+            if (actions[i] != ActionType.None && Input.GetButtonDown(actionButtonNames[i]))
+            {
+                ExecuteRegionAction(actions[i]);
+                actionDelayCounter += Time.deltaTime;
+                break;
+            }
     }
 
     /// <summary>

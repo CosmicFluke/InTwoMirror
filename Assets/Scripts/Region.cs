@@ -10,6 +10,8 @@ public class Region : MonoBehaviour {
 
     [Header("Set-up properties")]
     public RegionState initialState;
+    public bool doesDamageWhenStateC = false;
+    [Header("Damage parameters")]
     [Range(1, 5)] public float volatileDurationUntilDeath = 2f;
     [Range(1, 10)] public float initialDmgRate = 1f;
     [SerializeField]
@@ -24,6 +26,8 @@ public class Region : MonoBehaviour {
     protected RegionState currentState;
 
     public bool IsGoal { get; set; }
+
+    public bool isFixedState = false;
 
     // ax^2 + bx + c = 0
 
@@ -65,6 +69,7 @@ public class Region : MonoBehaviour {
     protected void Start () {
         State = initialState;
         refresh();
+        isFixedState = isFixedState || IsGoal;
         ready = true;
 	}
 
@@ -91,7 +96,11 @@ public class Region : MonoBehaviour {
     ///   2) A player enters the region area
     /// </summary>
     private void refreshEffect() {
-        currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
+        if (State == RegionState.C && !doesDamageWhenStateC)
+            currentEffect = RegionEffect.Stable;
+        else
+            currentEffect = StateToEffect(State, currentPlayer.GetComponent<Player>().playerID);
+
         if (currentEffect == RegionEffect.Unstable)
             currentPlayer.GetComponent<Player>().Kill();
         else if (currentEffect == RegionEffect.Volatile)
@@ -133,7 +142,7 @@ public class Region : MonoBehaviour {
         else if (!isOccupied)
         {
             if (currentPlayer == null)
-                Debug.LogError(string.Format("REGION[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
+                Debug.Log(string.Format("[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
             currentPlayer = null;
             outline.IsActive = false;
             outline.ResetPulse();
@@ -146,7 +155,7 @@ public class Region : MonoBehaviour {
         }
     }
 
-    	protected void refresh() {
+    protected void refresh() {
         refreshColliders();
         updateMaterials();
         GetComponent<RegionOutline>().Refresh();
@@ -203,9 +212,7 @@ public class Region : MonoBehaviour {
 
     public void ExecuteStateChange(ActionType action, PlayerID player, bool isSource = true)
     {
-        if (IsGoal) return; // Goal regions should never change.
-
-        if(!isSource || ActionDictionary.AffectsSourceRegion(action))
+        if(!isFixedState && (!isSource || ActionDictionary.AffectsSourceRegion(action)))
         {
             State = ActionDictionary.GetActionEffect(action, State, player);
         }

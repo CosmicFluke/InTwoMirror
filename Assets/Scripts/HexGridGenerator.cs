@@ -291,6 +291,7 @@ public class HexGridGenerator : MonoBehaviour {
     {
         GameBoard board = transform.parent.GetComponent<GameBoard>();
         if (board == null) throw new Exception("No board to recover tiles from.");
+        board.FixRegionList();
         Region r = board.regions.Where(robj => robj.GetComponent<Region>() != null).First().GetComponent<Region>();
         if (r == null) throw new Exception("No regions in board for tile recovery.");
         HexMesh startingTile = r[0].GetComponent<HexMesh>();

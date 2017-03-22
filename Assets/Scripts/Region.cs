@@ -23,8 +23,7 @@ public class Region : MonoBehaviour {
 
     protected RegionState currentState;
 
-	public bool IsGoal;
-	public GameObject PlayerGoal;
+    public bool IsGoal { get; set; }
 
     // ax^2 + bx + c = 0
 
@@ -102,7 +101,7 @@ public class Region : MonoBehaviour {
         }
 
         // Region is stable
-        if (isGoal())
+        if (IsGoal)
         {
             GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(50);
         }
@@ -140,7 +139,7 @@ public class Region : MonoBehaviour {
             outline.ResetPulse();
 
             // Update level completion percent if player leaves goal
-            if (isGoal())
+            if (IsGoal)
             {
                 GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(-50);
             }
@@ -204,7 +203,7 @@ public class Region : MonoBehaviour {
 
     public void ExecuteStateChange(ActionType action, PlayerID player, bool isSource = true)
     {
-        if (isGoal()) return; // Goal regions should never change.
+        if (IsGoal) return; // Goal regions should never change.
 
         if(!isSource || ActionDictionary.AffectsSourceRegion(action))
         {
@@ -239,13 +238,4 @@ public class Region : MonoBehaviour {
     {
         return hexTiles.GetEnumerator();
     }
-
-	public bool isGoal() {
-		return IsGoal;
-	}
-
-	public GameObject getPlayerGoal() {
-		return PlayerGoal;
-	}
-
 }

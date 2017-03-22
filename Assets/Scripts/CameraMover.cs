@@ -62,39 +62,32 @@ public class CameraMover : MonoBehaviour
         if (player1 == null || player2 == null) return;
         distance = player1.position - player2.position;
         // TODO: Delete this debug code
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
+            Debug.Log("<color=blue>CameraMover Debug</color>");
             Debug.Log("P1 viewport = " + cam.WorldToViewportPoint(player1.position));
             Debug.Log("P1 cam diff = " + (transform.position - player1.position));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
             Debug.Log("P2 viewport = " + cam.WorldToViewportPoint(player2.position));
             Debug.Log("P2 cam diff = " + (transform.position - player2.position));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
             Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
-            allowPause = !allowPause;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
             Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
             Debug.Log("Player distance = " + distance);
         }
 
         // Check P2 still in frame
         Vector3 viewportP1 = cam.WorldToViewportPoint(player1.position);
         Vector3 viewportP2 = cam.WorldToViewportPoint(player2.position);
-        if ((transform.position - player2.position).z >= -5)
+        if ((transform.position - player1.position).z >= -5)
         {
-            pullBack.z = (transform.position - player2.position).z - 5f;
-            Debug.Log("pullback = " + pullBack);
+            pullBack.z = (transform.position - player1.position).z - 5f;
+            Debug.Log("Pulling back for Player 1. pullBack = " + pullBack);
             //Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
             //Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
+        }
+        if((transform.position - player2.position).z >= -5)
+        {
+            pullBack.z = (transform.position - player2.position).z - 5f;
+            Debug.Log("Pulling back for player2. pullBack = " + pullBack);
         }
 
 
@@ -159,6 +152,7 @@ public class CameraMover : MonoBehaviour
         else if (distance.z <= 13.0f)
         { // if they're too close
             camOffset = distance.x * 0.9f;
+            pullBack = Vector3.zero;
         }
 
         if (distance.z >= 19.0f)

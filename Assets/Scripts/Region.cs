@@ -135,17 +135,17 @@ public class Region : MonoBehaviour {
             }
             currentPlayer = player;
             refreshEffect();
-            if (State == RegionState.C && doesDamageWhenStateC)
-                outline.EnhancePulse(outline.initialGrowRate * 5, outline.initialGrowFactor * 3);
-            setNeighbourOutlines(true);
+            //if (State == RegionState.C && doesDamageWhenStateC)
+            //    outline.EnhancePulse(outline.initialGrowRate * 5, outline.initialGrowFactor * 3);
+            setNeighbourOutlines(true, player);
         }
         else if (!isOccupied)
         {
             if (currentPlayer == null)
                 Debug.Log(string.Format("[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
-            setNeighbourOutlines(false);
+            setNeighbourOutlines(false, player);
             currentPlayer = null;
-            outline.ResetPulse();
+            //outline.ResetPulse();
 
             // Update level completion percent if player leaves goal
             if (IsGoal)
@@ -155,7 +155,7 @@ public class Region : MonoBehaviour {
         }
     }
 
-    private void setNeighbourOutlines(bool isActive)
+    private void setNeighbourOutlines(bool isActive, Transform player)
     {
         RegionOutline outline;
         foreach (GameObject neighbour in Neighbours)
@@ -164,8 +164,7 @@ public class Region : MonoBehaviour {
             Region r = neighbour.GetComponent<Region>();
             if (r == null || r.isFixedState) continue;
             outline = r.GetComponent<RegionOutline>();
-            outline.IsActive = isActive;
-            PlayerID playerID = currentPlayer.GetComponent<Player>().playerID;
+            PlayerID playerID = player.GetComponent<Player>().playerID;
             if (isActive)
             {
                 outline.EnhancePulse(outline.initialGrowRate * 1.25f, outline.initialGrowFactor * 2.5f);
@@ -173,7 +172,6 @@ public class Region : MonoBehaviour {
             }
             else
             {
-                outline.ResetPulse();
                 outline.setActive(false, playerID);
             }
         }

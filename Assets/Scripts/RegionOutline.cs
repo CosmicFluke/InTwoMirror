@@ -18,6 +18,7 @@ public class RegionOutline : MonoBehaviour {
 
     public bool IsActive { get { return isActive; } set { isActive = value; } }
     public bool isActive; // mirrored in property for setter debugging
+
     private bool[] neighbourActive = new bool[] { false, false };
 
     public Material material;
@@ -101,6 +102,7 @@ public class RegionOutline : MonoBehaviour {
         neighbourActive[(int)player] = value;
         isActive = neighbourActive[0] || neighbourActive[1];
         setMaterial();
+        if (!isActive) ResetPulse();
     }
 
     private void setMaterial()

@@ -51,23 +51,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1003588030346252
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4692476674613842}
-  - component: {fileID: 33772058672855256}
-  - component: {fileID: 23869142284061926}
-  m_Layer: 0
-  m_Name: CrystalModel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1016925974441818
 GameObject:
   m_ObjectHideFlags: 1
@@ -512,22 +495,6 @@ GameObject:
   m_Layer: 0
   m_Name: 'Hex tile, HexTileLocation(row: 3, offset: 2 from Centre, evenRowWidth:
     False)'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1192629407350686
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4081984439011676}
-  - component: {fileID: 108540894632844200}
-  m_Layer: 0
-  m_Name: PointLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1348,23 +1315,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1505475741097502
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4527175912101580}
-  - component: {fileID: 33209172505975832}
-  - component: {fileID: 23300307121724088}
-  m_Layer: 0
-  m_Name: CrystalModel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1516740829103552
 GameObject:
   m_ObjectHideFlags: 1
@@ -1380,22 +1330,6 @@ GameObject:
   m_Layer: 0
   m_Name: 'Border Tile HexTileLocation(row: 4, offset: 1 from Centre, evenRowWidth:
     True)'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1518131772801888
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4272587348355576}
-  - component: {fileID: 108793573595822720}
-  m_Layer: 0
-  m_Name: PointLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1656,21 +1590,6 @@ GameObject:
   m_Name: 'Border Tile HexTileLocation(row: 5, offset: 3 from Centre, evenRowWidth:
     False)'
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1577038497215612
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4999280089142190}
-  m_Layer: 0
-  m_Name: GoalCrystal(Clone)
-  m_TagString: Goal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2247,21 +2166,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1818319046532326
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4244854503367220}
-  m_Layer: 0
-  m_Name: GoalCrystal(Clone)
-  m_TagString: Goal
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1835124475137706
 GameObject:
   m_ObjectHideFlags: 0
@@ -2711,19 +2615,6 @@ Transform:
   m_Father: {fileID: 4304899774574410}
   m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4081984439011676
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1192629407350686}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.3599997, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4244854503367220}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4103041964913058
 Transform:
   m_ObjectHideFlags: 1
@@ -2897,21 +2788,6 @@ Transform:
   m_Father: {fileID: 4304899774574410}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4244854503367220
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1818319046532326}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -23.382683, y: 0, z: 18}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4692476674613842}
-  - {fileID: 4081984439011676}
-  m_Father: {fileID: 4615783771057790}
-  m_RootOrder: 23
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4248402329603602
 Transform:
   m_ObjectHideFlags: 1
@@ -2963,19 +2839,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4304899774574410}
   m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4272587348355576
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1518131772801888}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.3599997, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4999280089142190}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4277748434176804
 Transform:
@@ -3549,19 +3412,6 @@ Transform:
   m_Father: {fileID: 4615783771057790}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4527175912101580
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1505475741097502}
-  m_LocalRotation: {x: -0.5213338, y: -0.15304592, z: 0.47771442, w: 0.6903455}
-  m_LocalPosition: {x: 0.20000076, y: -0.23000008, z: 0.17000008}
-  m_LocalScale: {x: 0.49999988, y: 0.5, z: 0.5}
-  m_Children: []
-  m_Father: {fileID: 4999280089142190}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4546112455160586
 Transform:
   m_ObjectHideFlags: 1
@@ -3756,8 +3606,6 @@ Transform:
   - {fileID: 4772647578928884}
   - {fileID: 4103041964913058}
   - {fileID: 4896334878564724}
-  - {fileID: 4244854503367220}
-  - {fileID: 4999280089142190}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3853,19 +3701,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4389371650594824}
   m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4692476674613842
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1003588030346252}
-  m_LocalRotation: {x: -0.5213338, y: -0.15304592, z: 0.47771442, w: 0.6903455}
-  m_LocalPosition: {x: 0.20000076, y: -0.23000008, z: 0.17000008}
-  m_LocalScale: {x: 0.49999988, y: 0.5, z: 0.5}
-  m_Children: []
-  m_Father: {fileID: 4244854503367220}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4704648318753008
 Transform:
@@ -4315,21 +4150,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4039675427295096}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4999280089142190
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1577038497215612}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -23.382685, y: 0, z: 36}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4527175912101580}
-  - {fileID: 4272587348355576}
-  m_Father: {fileID: 4615783771057790}
-  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23001736303169994
 MeshRenderer:
@@ -5331,37 +5151,6 @@ MeshRenderer:
   m_GameObject: {fileID: 1187399749560886}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: d203388d5671f2946a4123602bd5a520, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!23 &23300307121724088
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1505475741097502}
-  m_Enabled: 1
-  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -7059,37 +6848,6 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!23 &23869142284061926
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1003588030346252}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: 1f4636a63ea27d347a157d4b8b3e054f, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
 --- !u!23 &23873717262093058
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -7627,13 +7385,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1187399749560886}
   m_Mesh: {fileID: 0}
---- !u!33 &33209172505975832
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1505475741097502}
-  m_Mesh: {fileID: 4300000, guid: ea652fc618f414936a043cc33c3e5a43, type: 3}
 --- !u!33 &33218752906496502
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -7970,13 +7721,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1966191472556456}
   m_Mesh: {fileID: 0}
---- !u!33 &33772058672855256
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1003588030346252}
-  m_Mesh: {fileID: 4300000, guid: ea652fc618f414936a043cc33c3e5a43, type: 3}
 --- !u!33 &33774207212915176
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -10199,74 +9943,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!108 &108540894632844200
-Light:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1192629407350686}
-  m_Enabled: 1
-  serializedVersion: 7
-  m_Type: 2
-  m_Color: {r: 1, g: 0.8505623, b: 0.8505623, a: 1}
-  m_Intensity: 2.75
-  m_Range: 40
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!108 &108793573595822720
-Light:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1518131772801888}
-  m_Enabled: 1
-  serializedVersion: 7
-  m_Type: 2
-  m_Color: {r: 1, g: 0.8505623, b: 0.8505623, a: 1}
-  m_Intensity: 2.75
-  m_Range: 40
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!114 &114003744393322570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10296,8 +9972,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114010284078900982
@@ -10602,8 +10276,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114057528939025870
@@ -10646,8 +10318,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114061591121912814
@@ -10825,8 +10495,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 1
   hexTilesToAdd: []
 --- !u!114 &114098538164688556
@@ -10961,8 +10629,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 1
   hexTilesToAdd: []
 --- !u!114 &114106867534965872
@@ -11327,8 +10993,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 1
   hexTilesToAdd: []
 --- !u!114 &114185089916922468
@@ -11619,8 +11283,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114217307086086178
@@ -11926,8 +11588,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 1
   hexTilesToAdd: []
 --- !u!114 &114250910337533790
@@ -12177,8 +11837,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114319217040400988
@@ -12247,8 +11905,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114326003382847806
@@ -12385,8 +12041,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 1
   hexTilesToAdd: []
 --- !u!114 &114386969521998962
@@ -12691,6 +12345,9 @@ MonoBehaviour:
   length: 8
   p1StartingRegion: 11
   p2StartingRegion: 28
+  p1GoalRegion: 38
+  p2GoalRegion: 19
+  PlayerGoal: {fileID: 1125979376182650, guid: 919a175ab2896468a9f5a8b011126ad6, type: 2}
   TimePressureEnabled: 0
   timePressureDelay: 20
   timePressureInterval: 10
@@ -12722,8 +12379,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 1
-  PlayerGoal: {fileID: 1125979376182650, guid: 919a175ab2896468a9f5a8b011126ad6, type: 2}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114454958366960484
@@ -12755,8 +12410,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114456671342092542
@@ -13208,8 +12861,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114554898234451276
@@ -13353,8 +13004,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114584124887248860
@@ -13570,8 +13219,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114619648695021022
@@ -14467,8 +14114,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114661429267085888
@@ -14993,8 +14638,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114794268330456900
@@ -15248,8 +14891,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114858813033247184
@@ -15640,8 +15281,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!114 &114937498626751040
@@ -15773,8 +15412,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 0
-  PlayerGoal: {fileID: 0}
   isFixedState: 1
   hexTilesToAdd: []
 --- !u!114 &114980096524289744
@@ -16057,8 +15694,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
-  IsGoal: 1
-  PlayerGoal: {fileID: 1125979376182650, guid: 919a175ab2896468a9f5a8b011126ad6, type: 2}
   isFixedState: 0
   hexTilesToAdd: []
 --- !u!120 &120052985691438518

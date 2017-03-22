@@ -143,7 +143,7 @@ public class Region : MonoBehaviour {
         else if (!isOccupied)
         {
             if (currentPlayer == null)
-                Debug.LogError(string.Format("REGION[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
+                Debug.Log(string.Format("[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
             currentPlayer = null;
             outline.IsActive = false;
             outline.ResetPulse();

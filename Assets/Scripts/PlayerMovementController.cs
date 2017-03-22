@@ -17,6 +17,8 @@ public class PlayerMovementController : MonoBehaviour
     private PlayerID playerID;
     private int actionDistance = 1;
 
+    private Vector3 collisionLocation;
+
     // Use this for initialization
     void Start()
     {
@@ -62,6 +64,16 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (gameObject.activeSelf && other.gameObject.layer == LayerMask.NameToLayer("Regions") && (currentRegion == null || other.transform != currentRegion.transform))
             GetComponent<Player>().ChangeRegion(other.transform);
+        collisionLocation = transform.position;
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    if (collisionLocation != null)
+    //    {
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawSphere(collisionLocation, 0.25f);
+    //    }
+    //}
 
 }

@@ -3628,6 +3628,9 @@ MonoBehaviour:
   length: 7
   p1StartingRegion: -1
   p2StartingRegion: -1
+  p1GoalRegion: -1
+  p2GoalRegion: -1
+  PlayerGoal: {fileID: 1125979376182650, guid: 919a175ab2896468a9f5a8b011126ad6, type: 2}
   TimePressureEnabled: 0
   timePressureDelay: 20
   timePressureInterval: 10

@@ -31,11 +31,19 @@ public class PlayerHealth : MonoBehaviour
     {
         player = GetComponent<Player>().playerID;
         // TODO: modify to get sliders from LevelController, once LevelController is modified to instantiate and/or find these
-        Slider[] sliders = GameObject.FindGameObjectWithTag("MainHUD").GetComponentsInChildren<Slider>();
-        if (sliders.Length == 0) throw new System.Exception("Could not find Health Bar sliders");
-        healthBar = sliders
-            .Where(s => s.name.Contains(player.ToString()))
-            .First();
+        if (!!GameObject.FindGameObjectWithTag("MainHUD"))
+        {
+            Slider[] sliders = GameObject.FindGameObjectWithTag("MainHUD").GetComponentsInChildren<Slider>();
+            if (sliders.Length == 0)
+                throw new System.Exception("Could not find Health Bar sliders");
+            healthBar = sliders
+                .Where(s => s.name.Contains(player.ToString()))
+                .First();
+        }
+        else
+        {
+            healthBar = null;
+        }
     }
 
     /// <summary>Should only be called by Player component.</summary>

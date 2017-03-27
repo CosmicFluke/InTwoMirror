@@ -28,6 +28,10 @@ public class GameBoard : MonoBehaviour {
     public int p1StartingRegion = -1;
     public int p2StartingRegion = -1;
 
+    public int p1GoalRegion = -1;
+    public int p2GoalRegion = -1;
+    public GameObject PlayerGoal;
+
     [Header("Time Pressure")]
     public bool TimePressureEnabled = false;
     public float timePressureDelay = 20f; // time before time pressure is first initiated (interval countdown starts)
@@ -60,6 +64,8 @@ public class GameBoard : MonoBehaviour {
             initializeTimePressure();
         if (p1StartingRegion >= 0 && p2StartingRegion >= 0)
             StartCoroutine(SpawnPlayers());
+        if (p1GoalRegion >= 0 && p2GoalRegion >= 0)
+            StartCoroutine(SpawnGoals());
         startTime = Time.time;
     }
 
@@ -111,6 +117,39 @@ public class GameBoard : MonoBehaviour {
         p2.startingRegion = p2Start.gameObject;
         p1.Spawn();
         p2.Spawn();
+    }
+
+    public IEnumerator SpawnGoals()
+    {
+        yield return new WaitUntil(() => regions.All(r => r.GetComponent<Region>().IsReady));
+        GameObject goals = new GameObject("Goals");
+        goals.transform.position = transform.position;
+
+        Region p1Goal = regions
+            .Where(obj => obj != null)
+            .First(obj => obj.name == "Region " + p1GoalRegion.ToString())
+            .GetComponent<Region>();
+        Region p2Goal = regions
+            .Where(obj => obj != null)
+            .First(obj => obj.name == "Region " + p2GoalRegion.ToString())
+            .GetComponent<Region>();
+
+        GameObject p1GoalObject = instantiateGoal(p1Goal, goals.transform, "P1Goal");
+
+        GameObject p2GoalObject = instantiateGoal(p2Goal, goals.transform, "P2Goal");
+    }
+
+    private GameObject instantiateGoal(Region goalRegion, Transform parent, String name)
+    {
+        GameObject goalObject = Instantiate(PlayerGoal, goalRegion.transform.GetChild(0).transform.position, Quaternion.identity, parent);
+        goalObject.transform.GetChild(0).GetComponent<MeshRenderer>().material =
+            TileMaterials[(int) goalRegion.State];
+        goalObject.transform.SetParent(parent);
+        goalObject.name = name;
+
+        goalRegion.IsGoal = true;
+
+        return goalObject;
     }
 
     private void Update()

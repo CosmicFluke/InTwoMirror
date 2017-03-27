@@ -19,6 +19,8 @@ public class RegionOutline : MonoBehaviour {
     public bool IsActive { get { return isActive; } set { isActive = value; } }
     public bool isActive; // mirrored in property for setter debugging
 
+    private bool[] neighbourActive = new bool[] { false, false };
+
     public Material material;
     [Range(0.05f, 1)]
     public float baseLineSize = 0.1f;
@@ -42,12 +44,19 @@ public class RegionOutline : MonoBehaviour {
     private float growRate;
     private float growFactor;
     private bool isGrowing = false;
+    private Material bothMaterial;
 
     // Use this for initialization
     void Start () {
+        GameBoard board = GetComponentInParent<GameBoard>();
         lineSize = baseLineSize;
         ResetPulse();
-	}
+        float h, s, v;
+        bothMaterial = Instantiate(Material);
+        Color between = Color.Lerp(board.OutlineMaterials[0].color, board.OutlineMaterials[1].color, 0.5f);
+        Color.RGBToHSV(between, out h, out s, out v);
+        bothMaterial.color = Color.HSVToRGB(h, s * 1.1f, v * 1.1f);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -86,6 +95,25 @@ public class RegionOutline : MonoBehaviour {
         outline.startColor = outline.endColor = lineColor;
         growFactor = initialGrowFactor;
         growRate = initialGrowRate;
+    }
+
+    public void setActive(bool value, PlayerID player)
+    {
+        neighbourActive[(int)player] = value;
+        isActive = neighbourActive[0] || neighbourActive[1];
+        setMaterial();
+        if (!isActive) ResetPulse();
+    }
+
+    private void setMaterial()
+    {
+        if (neighbourActive[0] && neighbourActive[1])
+            Material = bothMaterial;
+        else if (neighbourActive[0])
+            Material = GetComponentInParent<GameBoard>().OutlineMaterials[1];
+        else if (neighbourActive[1])
+            Material = GetComponentInParent<GameBoard>().OutlineMaterials[0];
+        else Material = GetComponent<Region>().OutlineMaterial;
     }
 
     private void refreshLineSize()

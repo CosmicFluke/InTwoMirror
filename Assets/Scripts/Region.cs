@@ -25,8 +25,7 @@ public class Region : MonoBehaviour {
 
     protected RegionState currentState;
 
-	public bool IsGoal;
-	public GameObject PlayerGoal;
+    public bool IsGoal { get; set; }
 
     public bool isFixedState = false;
 
@@ -70,7 +69,7 @@ public class Region : MonoBehaviour {
     protected void Start () {
         State = initialState;
         refresh();
-        isFixedState = isFixedState || isGoal();
+        isFixedState = isFixedState || IsGoal;
         ready = true;
 	}
 
@@ -111,7 +110,7 @@ public class Region : MonoBehaviour {
         }
 
         // Region is stable
-        if (isGoal())
+        if (IsGoal)
         {
             GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(50);
         }
@@ -136,22 +135,44 @@ public class Region : MonoBehaviour {
             }
             currentPlayer = player;
             refreshEffect();
-            if (State == RegionState.C)
-                outline.EnhancePulse(outline.initialGrowRate * 3, outline.initialGrowFactor * 2);
-            outline.IsActive = true;
+            //if (State == RegionState.C && doesDamageWhenStateC)
+            //    outline.EnhancePulse(outline.initialGrowRate * 5, outline.initialGrowFactor * 3);
+            setNeighbourOutlines(true, player);
         }
         else if (!isOccupied)
         {
             if (currentPlayer == null)
                 Debug.Log(string.Format("[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
+            setNeighbourOutlines(false, player);
             currentPlayer = null;
-            outline.IsActive = false;
-            outline.ResetPulse();
+            //outline.ResetPulse();
 
             // Update level completion percent if player leaves goal
-            if (isGoal())
+            if (IsGoal)
             {
                 GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(-50);
+            }
+        }
+    }
+
+    private void setNeighbourOutlines(bool isActive, Transform player)
+    {
+        RegionOutline outline;
+        foreach (GameObject neighbour in Neighbours)
+        {
+            GameBoard gb = GetComponentInParent<GameBoard>();
+            Region r = neighbour.GetComponent<Region>();
+            if (r == null || r.isFixedState) continue;
+            outline = r.GetComponent<RegionOutline>();
+            PlayerID playerID = player.GetComponent<Player>().playerID;
+            if (isActive)
+            {
+                outline.EnhancePulse(outline.initialGrowRate * 1.25f, outline.initialGrowFactor * 2.5f);
+                outline.setActive(true, playerID);
+            }
+            else
+            {
+                outline.setActive(false, playerID);
             }
         }
     }
@@ -246,13 +267,4 @@ public class Region : MonoBehaviour {
     {
         return hexTiles.GetEnumerator();
     }
-
-	public bool isGoal() {
-		return IsGoal;
-	}
-
-	public GameObject getPlayerGoal() {
-		return PlayerGoal;
-	}
-
 }

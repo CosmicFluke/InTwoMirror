@@ -21,17 +21,20 @@ public class CameraMover : MonoBehaviour
     public Transform player1; //target1
     public Transform player2; //target2
 
-    public Vector3 midPoint;
-    public Vector3 distance;
-    public float camDist;
+    public Vector3 midPoint; // the middle point between players
+    public Vector3 distance; // distance between players
+    public float camDist = 9.0f; // distance of the camera from the middle point
 
-    public float camOffset;
-    public float bounds;
+    public float ZcamOffset; // offset applied to Z axis to camera from distance to middle point
+    public float XcamOffset = 0; // offset applied to X axis to camera from distance to middle point
+    public float bounds = 12.0f; // bounds before camera adjustment?
 
     private Vector3 pullBack = Vector3.zero;
     private bool allowPause = false;
     private bool isCameraZLocked = false;
+    private bool isCameraYLocked = false;
     private float cameraZLock;
+    private float cameraYLimit = 12f;
 
     Camera cam;
 
@@ -52,8 +55,6 @@ public class CameraMover : MonoBehaviour
 
     void Start()
     {
-        camDist = 9.0f;
-        bounds = 12.0f;
         cam = GetComponent<Camera>();
     }
 
@@ -69,9 +70,10 @@ public class CameraMover : MonoBehaviour
             Debug.Log("P1 cam diff = " + (transform.position - player1.position));
             Debug.Log("P2 viewport = " + cam.WorldToViewportPoint(player2.position));
             Debug.Log("P2 cam diff = " + (transform.position - player2.position));
-            Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
+            Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + ZcamOffset)));
             Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
             Debug.Log("Player distance = " + distance);
+            Debug.Log("Midpoint to Cam distance: " + (cam.transform.position - midPoint));
         }
 
         // Check P2 still in frame
@@ -100,11 +102,13 @@ public class CameraMover : MonoBehaviour
         {
             camDist = 6.0f;
         }
-        if (distance.x < 0)
+
+        if (distance.x < 0) // invert the distance if they cross
         {
             distance.x = distance.x * -1;
         }
-        if (distance.z < 0)
+
+        if (distance.z < 0) // invert the distance if they cross
         {
             distance.z = distance.z * -1;
         }
@@ -137,21 +141,25 @@ public class CameraMover : MonoBehaviour
             player2.position = pos;
         }
 
+        if((cam.transform.position - midPoint).y <= cameraYLimit)
+        {
+            isCameraYLocked = true; // activate camera X lock if it's below threshold
+        }
         if (distance.x > 15.0f)
         {
-            camOffset = distance.x * 0.9f; // 90% of x difference
-            if (camOffset >= 8.5f)
+            ZcamOffset = distance.x * 0.9f; // 90% of x difference
+            if (ZcamOffset >= 8.5f)
             {
-                camOffset = 8.5f;
+                ZcamOffset = 8.5f;
             }
         }
         else if (distance.x <= 13.0f)
         {
-            camOffset = distance.x * 0.9f;
+            ZcamOffset = distance.x * 0.9f;
         }
         else if (distance.z <= 13.0f)
         { // if they're too close
-            camOffset = distance.x * 0.9f;
+            ZcamOffset = distance.x * 0.9f;
             pullBack = Vector3.zero;
         }
 
@@ -173,22 +181,16 @@ public class CameraMover : MonoBehaviour
 
         if (player1)
         {
-            // Vector3 point = cam.WorldToViewportPoint(midPoint);
             Vector3 delta;
-            delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)) + transform.InverseTransformDirection(pullBack);
-            //(new Vector3(0.5, 0.5, point.z));
-            //delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
-            //if (allowPause && cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)).y != 0.9f)
-            //{
-            //    UnityEditor.EditorApplication.isPaused = true;
-            //}
-            //pullBack.z = 0;
-
+            delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f + XcamOffset, camDist + ZcamOffset)) + transform.InverseTransformDirection(pullBack);
             Vector3 destination = transform.position + delta;
+
+            // Apply axis locks
             if (isCameraZLocked)
-            {
                 destination.z = cameraZLock;
-            }
+            if (isCameraYLocked)
+                destination.y = midPoint.y + cameraYLimit;
+
             transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
         }
 

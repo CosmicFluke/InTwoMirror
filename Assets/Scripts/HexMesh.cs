@@ -11,6 +11,7 @@ public class HexMesh : MonoBehaviour {
     [Header("State/position info")]
     public float radius = 4f;
     public float height = 100f;
+    public float chamfer = 0.2f;
     public HexGridCoordinates location;
     [SerializeField]
     private GameObject[] edges = new GameObject[6];
@@ -40,6 +41,7 @@ public class HexMesh : MonoBehaviour {
     {
         height = 100f;
         outerRadius = radius;
+        innerRadius = outerRadius * radiusRatio;
         vertices = new List<Vector3>();
         triangles = new List<int>();
         Generate();
@@ -56,66 +58,70 @@ public class HexMesh : MonoBehaviour {
         triangles.Add(vertexIndex + 2);
     }
 
+    private Vector3[] makeHexVertices(float faceInnerRadius, float faceOuterRadius)
+    {
+        return new Vector3[]
+        {
+            new Vector3(0f, 0f, faceOuterRadius),
+            new Vector3(faceInnerRadius, 0f, 0.5f * faceOuterRadius),
+            new Vector3(faceInnerRadius, 0f, -0.5f * faceOuterRadius),
+            new Vector3(0f, 0f, -faceOuterRadius),
+            new Vector3(-faceInnerRadius, 0f, -0.5f * faceOuterRadius),
+            new Vector3(-faceInnerRadius, 0f, 0.5f * faceOuterRadius),
+            new Vector3(0f, 0f, faceOuterRadius)
+        };
+    }
+
     private void Generate()
     {
-        // WaitForSeconds wait = new WaitForSeconds(0.05f);
-
         GetComponent<MeshFilter>().sharedMesh = mesh = new Mesh();
         mesh.name = "hexagon";
 
-        innerRadius = outerRadius * radiusRatio;
-
-        Vector3[] corners = {
-        new Vector3(0f, 0f, outerRadius),
-        new Vector3(innerRadius, 0f, 0.5f * outerRadius),
-        new Vector3(innerRadius, 0f, -0.5f * outerRadius),
-        new Vector3(0f, 0f, -outerRadius),
-        new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
-        new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
-        new Vector3(0f, 0f, outerRadius)
-        };
-
-        this.corners = corners;
+        Vector3[] corners = makeHexVertices(innerRadius, outerRadius);
+        Vector3[] faceCorners = makeHexVertices(innerRadius - chamfer, outerRadius - chamfer);
+        this.corners = faceCorners;
 
         Vector3 center = new Vector3();
         if (isWall) {
             for (int k = 0; k < corners.Length; k++)
-                corners[k] += Vector3.up;
+                corners[k] += 2 * Vector3.up;
             center += Vector3.up;
             GetComponent<MeshRenderer>().enabled = false;
         }
-        // Top
+
+        vertices.Add(center);
+        vertices.AddRange(faceCorners);
+        // Top (face)
         for (int i = 0; i < 6; i++)
         {
-            AddTriangle(
-                center,
-                center + corners[i],
-                center + corners[i + 1]
-            );
+            triangles.AddRange(new int[] {0, i + 1, 1 + (i + 1) % 6});
         }
-        // Bottom
+
+        int vertexOffset = vertices.Count;
+
+        // Top outer corners (chamfered)
+        vertices.AddRange(corners.Select(v => v + Vector3.down * chamfer));
+        // Chamfered edge faces
         for (int i = 0; i < 6; i++)
         {
-            AddTriangle(
-                center - Vector3.up * height,
-                center + corners[i + 1] - Vector3.up * height,
-                center + corners[i] - Vector3.up * height
-            );
+            triangles.AddRange(new int[] {vertexOffset + i, vertexOffset + (i + 1) % 6, 1 + i});
+            triangles.AddRange(new int[] {vertexOffset + (i + 1) % 6, 1 + (i + 1) % 6, 1 + i});
+        }
+
+        vertexOffset = vertices.Count;
+        // Bottom (face)
+        vertices.Add(center + Vector3.down * height);
+        vertices.AddRange(corners.Select(v => v + Vector3.down * height));
+        for (int i = 0; i < 6; i++)
+        {
+            triangles.AddRange(new int[] {vertexOffset, vertexOffset + 1 + (i + 1) % 6, vertexOffset + 1 + i});
         }
 
         // Sides
         for (int i = 0;i < 6; i++)
         {
-            AddTriangle(
-                center + corners[i] - Vector3.up * height,
-                center + corners[i + 1],
-                center + corners[i]
-            );
-            AddTriangle(
-                center + corners[i] - Vector3.up * height, 
-                center + corners[i + 1] - Vector3.up * height, 
-                center + corners[i + 1]
-            );
+            triangles.AddRange(new int[] {vertexOffset + i + 1, vertexOffset + 1 + (i + 1) % 6, vertexOffset - 7 + i});
+            triangles.AddRange(new int[] {vertexOffset + 1 + (i + 1) % 6, vertexOffset - 7 + (i + 1) % 6, vertexOffset - 7 + i});
         }
 
         mesh.vertices = vertices.ToArray();

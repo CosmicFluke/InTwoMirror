@@ -22,6 +22,7 @@ public class CameraMover : MonoBehaviour
 
     public float MidpointOffset;
     public float MarginOffset;
+    public float PullbackThreshold = 5; // Distance between player and cam before pullback is applied
 
 
     public Transform player1; //target1
@@ -35,9 +36,7 @@ public class CameraMover : MonoBehaviour
     public float XCamOffset = 0; // offset applied to X axis to camera from distance to middle point
     public float bounds = 12.0f; // bounds before camera adjustment?
 
-    public float PullbackThreshold = 5;
 
-    private Vector3 pullBack = Vector3.zero;
     private bool allowPause = false;
     private bool isCameraZLocked = false;
     private bool isCameraYLocked = false;
@@ -73,34 +72,10 @@ public class CameraMover : MonoBehaviour
             Debug.Log("P2 viewport = " + cam.WorldToViewportPoint(player2.position));
             Debug.Log("P2 cam diff = " + (transform.position - player2.position));
             Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + ZCamOffset)));
-            Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
             Debug.Log("Player distance = " + distance);
             Debug.Log("Midpoint to Cam distance: " + (cam.transform.position - midPoint));
         }
 
-        //// Pullback if player is far from camera
-
-        //p1PullBack = (transform.position - player1.position).z >= -PullbackThreshold;
-        //p2PullBack = (transform.position - player2.position).z >= -PullbackThreshold;
-
-        //if (p1PullBack && p2PullBack) // pullback for both players
-        //{
-        //    pullBack.z = (transform.position - player1.position).z - PullbackThreshold;
-        //    Debug.Log("Pulling back for Player 1. pullBack = " + pullBack);
-        //    Debug.Log("PullbackThresh = " + PullbackThreshold);
-        //}
-        //else if (p1PullBack)
-        //{
-        //    pullBack.z = (transform.position - player1.position).z - PullbackThreshold;
-        //    Debug.Log("Pulling back for Player 1. pullBack = " + pullBack);
-        //    //Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
-        //    //Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
-        //}
-        //else if (p2PullBack)
-        //{
-        //    pullBack.z = (transform.position - player2.position).z - PullbackThreshold;
-        //    Debug.Log("Pulling back for player2. pullBack = " + pullBack);
-        //}
 
 
         if (distance.x < 0) // invert the distance if they cross
@@ -135,22 +110,24 @@ public class CameraMover : MonoBehaviour
         //}
 
 
-        //// Camera Locks
+        // Camera Locks
 
-        //// activate camera X lock if it's below threshold
-        //if ((cam.transform.position - midPoint).y <= cameraYLimit)
-        //{
-        //    isCameraYLocked = true;
-        //}
-        //if (distance.z >= 19.0f)
-        //{ // if they're too far
-        //    isCameraZLocked = true;
-        //    cameraZLock = transform.position.z;
-        //}
-        //else
-        //{
-        //    isCameraZLocked = false;
-        //}
+        // activate camera X lock if it's below threshold
+        if ((cam.transform.position - midPoint).y <= cameraYLimit)
+        {
+            isCameraYLocked = true;
+        }
+
+
+        if (distance.z >= 19.0f)
+        { // if they're too far
+            isCameraZLocked = true;
+            cameraZLock = transform.position.z;
+        }
+        else
+        {
+            isCameraZLocked = false;
+        }
 
         midX = (player2.position.x + player1.position.x) / 2;
         midY = (player2.position.y + player1.position.y) / 2;
@@ -173,6 +150,22 @@ public class CameraMover : MonoBehaviour
                 destination.x += MarginOffset;
             if (marginDirection == MarginDirection.West)
                 destination.x -= MarginOffset;
+
+
+            // Pullback if player is far from camera (North/South)
+            p1PullBack = (transform.position - player1.position).z >= -PullbackThreshold;
+            p2PullBack = (transform.position - player2.position).z >= -PullbackThreshold;
+
+            if (p1PullBack)
+            {
+                destination.z += transform.position.z - PullbackThreshold;
+                Debug.Log("P1 Pullback");
+            }
+            else if (p2PullBack)
+            {
+                destination.z += transform.position.z - PullbackThreshold;
+                Debug.Log("P2 Pullback");
+            }
 
             // Apply axis locks
             if (isCameraZLocked)

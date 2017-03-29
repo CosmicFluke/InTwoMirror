@@ -10,6 +10,7 @@ public class RegionBuilder : Region {
 
     new void Start ()
     {
+        init();
         base.Start();
     }
 
@@ -26,6 +27,7 @@ public class RegionBuilder : Region {
     {
         currentState = initialState;
         findNeighbours();
+        refreshColliders();
         refresh(); // base class method
     }
 

@@ -40,6 +40,7 @@ public class Region : MonoBehaviour {
     float volatileTimer;
     float prevTime;
     float originalHeight;
+    [SerializeField]
     bool isOriginalHeight = true;
 
     public IEnumerable<GameObject> Tiles { get { return hexTiles.AsEnumerable(); } }
@@ -58,7 +59,7 @@ public class Region : MonoBehaviour {
         {
             if (currentState == value) return;
             currentState = value;
-            adjustHeight();
+            refresh();
             if (currentPlayer == null) return;
             refreshEffect();
         }
@@ -120,12 +121,12 @@ public class Region : MonoBehaviour {
     private void adjustHeight()
     {
         Vector3 amountToMove = Vector3.zero;
-        if (isOriginalHeight && State == RegionState.B)
+        if (isOriginalHeight && (State == RegionState.B || (CurrentPlayer != null && CurrentPlayer.GetComponent<Player>().playerID == PlayerID.P2)))
         {
             amountToMove = Vector3.up * GetComponentInParent<GameBoard>().redRegionHeightOffset;
             isOriginalHeight = false;
         }
-        else if (!isOriginalHeight && State == RegionState.A)
+        else if (!isOriginalHeight && (State == RegionState.A || (CurrentPlayer == null && State == RegionState.C)))
         {
             amountToMove = Vector3.down * GetComponentInParent<GameBoard>().redRegionHeightOffset;
             isOriginalHeight = true;
@@ -136,7 +137,6 @@ public class Region : MonoBehaviour {
     IEnumerator moveToHeight(Vector3 changeInPosition)
     {
         if (changeInPosition == Vector3.zero) {
-            refresh();
             yield break;
         }
         Vector3 targetPos = transform.position + changeInPosition;
@@ -145,7 +145,7 @@ public class Region : MonoBehaviour {
             yield return new WaitForSeconds(1f / 60f);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, changeInPosition.magnitude / 30f);
         }
-        refresh();
+        GetComponent<RegionOutline>().Refresh();
     }
 
     public void SetOccupied(bool isOccupied, Transform player)
@@ -177,7 +177,6 @@ public class Region : MonoBehaviour {
                 Debug.Log(string.Format("[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
             setNeighbourOutlines(false, player);
             currentPlayer = null;
-            //outline.ResetPulse();
 
             // Update level completion percent if player leaves goal
             if (IsGoal)
@@ -185,6 +184,8 @@ public class Region : MonoBehaviour {
                 GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(-50);
             }
         }
+
+        refresh();
     }
 
     private void setNeighbourOutlines(bool isActive, Transform player)
@@ -210,8 +211,8 @@ public class Region : MonoBehaviour {
     }
 
     protected void refresh() {
-        refreshColliders();
         updateMaterials();
+        adjustHeight();
         GetComponent<RegionOutline>().Refresh();
     }
 

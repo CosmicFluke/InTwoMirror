@@ -12,13 +12,13 @@ public class CameraMover : MonoBehaviour
 
     // Public variables to adjust camera movement
 
-    public MarginDirection marginDirection;
+    public MarginDirection marginDirection; // The direction of the goals
 
     public float dampTime = 0.15f; // Speed of camera adjustment
     public Transform target;
 
     public float MidpointOffset; // Distance of camera to midpoint in +Z direction
-    public float MarginOffset;
+    public float MarginOffset; // How large margin should be in marginDirection
     public float PullbackThreshold = 5; // Distance between player and cam before pullback is applied
 
     public Transform player1; //target1
@@ -104,19 +104,21 @@ public class CameraMover : MonoBehaviour
             destination.z = midPoint.z - MidpointOffset;
             destination.x = midPoint.x;
 
-            // If there's a player behind the pullback threshold, base camera Z pos on player
+            // If there's a player behind the pullback threshold, base camera Z pos on that player
             if ((closestPlayer.position - transform.position).z <= PullbackThreshold)
             {
                 destination.z = closestPlayer.position.z - PullbackThreshold;
             }
 
-
-            if (marginDirection == MarginDirection.North || marginDirection == MarginDirection.South)
+            // Apply Margin Offset
+            if (marginDirection == MarginDirection.North)
                 destination.z += MarginOffset;
+            if (marginDirection == MarginDirection.South)
+                destination.z -= MarginOffset;
             if (marginDirection == MarginDirection.East)
-                destination.x += MarginOffset;
-            if (marginDirection == MarginDirection.West)
                 destination.x -= MarginOffset;
+            if (marginDirection == MarginDirection.West)
+                destination.x += MarginOffset;
 
             transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
         }

@@ -26,13 +26,8 @@ public class RegionBuilder : Region {
     {
         currentState = initialState;
         findNeighbours();
-        RegionOutline outline = GetComponent<RegionOutline>();
-        outline.Vertices = getBorderVertices(outline.baseLineSize).ToArray();
-	
         refresh(); // base class method
     }
-
-
 
     /// <summary>
     /// Consolidates the tiles in `hexTilesToAdd` into the region.
@@ -41,7 +36,7 @@ public class RegionBuilder : Region {
     public void Consolidate() {
         if (hexTilesToAdd == null || hexTilesToAdd.Length == 0) return;
         IEnumerable<HexMesh> newTiles = hexTilesToAdd.Select(t => t.GetComponent<HexMesh>()).Where(hex => hex != null);
-        if (!isContiguous(hexTilesToAdd)) throw new System.Exception("Region tiles must be contiguous.");
+        if (!isContiguous(hexTiles.Concat(hexTilesToAdd).ToArray())) throw new System.Exception("Region tiles must be contiguous.");
 
         foreach (HexMesh tile in newTiles)
         {   
@@ -83,56 +78,6 @@ public class RegionBuilder : Region {
             neighboursTmp.UnionWith(hex.Edges.Where(obj => obj == null ? false : obj.transform.parent != transform));
         }
         neighbours = neighboursTmp.ToArray();
-    }
-
-    private List<Vector3> getBorderVertices(float insideBorder)
-    {
-        insideBorder *= 0.95f;
-        int tileNum = 0;
-        GameObject startingTile = null;
-        int startingEdge = -1;
-        while (startingEdge < 0) {
-            if (tileNum >= hexTiles.Count) throw new System.Exception("Could not find a suitable outer tile for the region. Data error.");
-            startingTile = hexTiles[tileNum];
-            tileNum++;
-            startingEdge = findOuterEdge(startingTile.GetComponent<HexMesh>());
-        }
-
-        List<Vector3> vertices = new List<Vector3>();
-        GameObject currTile = startingTile;
-        GameObject nextTile = null;
-        int currEdge = startingEdge;
-        int nextEdge = -1;
-        bool concaveVertex = false;
-        HexMesh hex = currTile.GetComponent<HexMesh>();
-        Vector3 vertex = hex.transform.position - transform.position + hex.OuterVertices[currEdge];
-        vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
-        // Advance around hex edges in a clockwise direction
-        while (currTile != startingTile || currEdge != startingEdge || vertices.Count == 1)
-        {
-            nextTile = currTile;
-            nextEdge = (currEdge + 1) % 6;
-            if (hexTiles.Contains(hex.Edges[nextEdge]))
-            {
-                concaveVertex = true;
-                nextTile = hex.Edges[nextEdge];
-                nextEdge = (nextEdge + 4) % 6;
-            }
-            else concaveVertex = false;
-            vertex = hex.transform.position - transform.position + hex.OuterVertices[(currEdge + 1) % 6];
-            vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
-            // Advance to the next edge on the hex
-            currEdge = nextEdge;
-            currTile = nextTile;
-            hex = currTile.GetComponent<HexMesh>();
-        }
-        return vertices;
-    }
-
-    private Vector3 shiftPointInsideRegion(Vector3 vertex, HexMesh hex, int currEdge, bool concaveVertex, float amt)
-    {
-        Vector3 shiftDirection = hex.transform.position - transform.position + (concaveVertex ? hex.OuterVertices[(currEdge + 2) % 6] : Vector3.zero);
-        return Vector3.MoveTowards(vertex, shiftDirection, 0.5f * amt / Mathf.Cos(Mathf.Deg2Rad * 30));
     }
 
     public void ReleaseTile(GameObject tile)
@@ -181,15 +126,6 @@ public class RegionBuilder : Region {
             .Where(t => t != transform && t.GetComponent<Region>() != null)
             .Select(t => t.gameObject)
             .ToArray();
-    }
-
-    private int findOuterEdge(HexMesh hex) {
-        for (int i = 0; i < 6; i++) {
-            if (hex.Edges[i] == null) continue;
-            if (!hexTiles.Contains(hex.Edges[i]))
-                return i;
-        }
-        return -1;
     }
 
     /// <summary>

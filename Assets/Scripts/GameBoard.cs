@@ -10,6 +10,8 @@ public class GameBoard : MonoBehaviour {
     public GameObject player1prefab;
     public GameObject player2prefab;
 
+    public float redRegionHeightOffset = 0.5f;
+
     /// <summary>
     /// Materials for the tile meshes. Each element in this arrays corresponds to one of the three region states (A, B, C).
     /// </summary>

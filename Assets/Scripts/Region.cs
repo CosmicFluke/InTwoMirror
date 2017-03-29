@@ -39,6 +39,8 @@ public class Region : MonoBehaviour {
     // used only when the region is occupied and the tile effect is Volatile
     float volatileTimer;
     float prevTime;
+    float originalHeight;
+    bool isOriginalHeight = true;
 
     public IEnumerable<GameObject> Tiles { get { return hexTiles.AsEnumerable(); } }
     public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
@@ -56,12 +58,9 @@ public class Region : MonoBehaviour {
         {
             if (currentState == value) return;
             currentState = value;
-            updateMaterials();
+            adjustHeight();
             if (currentPlayer == null) return;
             refreshEffect();
-            RegionOutline outline = GetComponent<RegionOutline>();
-            if (State == RegionState.C)
-                outline.EnhancePulse(outline.initialGrowRate * 3, outline.initialGrowFactor * 2);
         }
     }
 
@@ -70,6 +69,8 @@ public class Region : MonoBehaviour {
         State = initialState;
         refresh();
         isFixedState = isFixedState || IsGoal;
+        //GetComponent<RegionOutline>().enabled = false;
+        //GetComponent<LineRenderer>().enabled = false;
         ready = true;
 	}
 
@@ -114,6 +115,37 @@ public class Region : MonoBehaviour {
         {
             GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(50);
         }
+    }
+
+    private void adjustHeight()
+    {
+        Vector3 amountToMove = Vector3.zero;
+        if (isOriginalHeight && State == RegionState.B)
+        {
+            amountToMove = Vector3.up * GetComponentInParent<GameBoard>().redRegionHeightOffset;
+            isOriginalHeight = false;
+        }
+        else if (!isOriginalHeight && State == RegionState.A)
+        {
+            amountToMove = Vector3.down * GetComponentInParent<GameBoard>().redRegionHeightOffset;
+            isOriginalHeight = true;
+        }
+        StartCoroutine(moveToHeight(amountToMove)); 
+    }
+
+    IEnumerator moveToHeight(Vector3 changeInPosition)
+    {
+        if (changeInPosition == Vector3.zero) {
+            refresh();
+            yield break;
+        }
+        Vector3 targetPos = transform.position + changeInPosition;
+        foreach (int t in Enumerable.Range(0, 30))
+        {
+            yield return new WaitForSeconds(1f / 60f);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, changeInPosition.magnitude / 30f);
+        }
+        refresh();
     }
 
     public void SetOccupied(bool isOccupied, Transform player)

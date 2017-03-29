@@ -10,38 +10,32 @@ public class CameraMover : MonoBehaviour
 {
     public enum MarginDirection { North,East,South,West }
 
+    // Public variables to adjust camera movement
+
     public MarginDirection marginDirection;
+
+    public float dampTime = 0.15f; // Speed of camera adjustment
+    public Transform target;
+
+    public float MidpointOffset; // Distance of camera to midpoint in +Z direction
+    public float MarginOffset;
+    public float PullbackThreshold = 5; // Distance between player and cam before pullback is applied
+
+    public Transform player1; //target1
+    public Transform player2; //target2
+
+    // Varaibles made public for debugging purposes
 
     public float midX;
     public float midY;
     public float midZ;
 
-    public float dampTime = 0.15f; //figure out what this is
-    private Vector3 velocity = Vector3.zero;
-    public Transform target;
-
-    public float MidpointOffset;
-    public float MarginOffset;
-    public float PullbackThreshold = 5; // Distance between player and cam before pullback is applied
-
-
-    public Transform player1; //target1
-    public Transform player2; //target2
-
     public Vector3 midPoint; // the middle point between players
-    public Vector3 distance; // distance between players
-    public float camDist = 9.0f; // distance of the camera from the middle point
+    public Vector3 distance; // distance between players, for tracking only, can be deleted
 
-    public float ZCamOffset; // offset applied to Z axis to camera from distance to middle point
-    public float XCamOffset = 0; // offset applied to X axis to camera from distance to middle point
-    public float bounds = 12.0f; // bounds before camera adjustment?
+    // Private variables
 
-
-    private bool allowPause = false;
-    private bool isCameraZLocked = false;
-    private bool isCameraYLocked = false;
-    private float cameraZLock;
-    private float cameraYLimit = 12f;
+    private Vector3 velocity = Vector3.zero;
 
     private bool p1PullBack = false;
     private bool p2PullBack = false;
@@ -71,12 +65,9 @@ public class CameraMover : MonoBehaviour
             Debug.Log("P1 cam diff = " + (transform.position - player1.position));
             Debug.Log("P2 viewport = " + cam.WorldToViewportPoint(player2.position));
             Debug.Log("P2 cam diff = " + (transform.position - player2.position));
-            Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + ZCamOffset)));
             Debug.Log("Player distance = " + distance);
             Debug.Log("Midpoint to Cam distance: " + (cam.transform.position - midPoint));
         }
-
-
 
         if (distance.x < 0) // invert the distance if they cross
         {
@@ -86,47 +77,6 @@ public class CameraMover : MonoBehaviour
         if (distance.z < 0) // invert the distance if they cross
         {
             distance.z = distance.z * -1;
-        }
-
-
-        //// Zoffset check for pullback
-
-        //if (distance.x > 15.0f)
-        //{
-        //    ZCamOffset = distance.x * 0.9f; // 90% of x difference
-        //    if (ZCamOffset >= 8.5f)
-        //    {
-        //        ZCamOffset = 8.5f;
-        //    }
-        //}
-        //else if (distance.x <= 13.0f)
-        //{
-        //    ZCamOffset = distance.x * 0.9f;
-        //}
-        //else if (distance.z <= 13.0f)
-        //{ // if they're too close
-        //    ZCamOffset = distance.x * 0.9f;
-        //    pullBack = Vector3.zero;
-        //}
-
-
-        // Camera Locks
-
-        // activate camera X lock if it's below threshold
-        if ((cam.transform.position - midPoint).y <= cameraYLimit)
-        {
-            isCameraYLocked = true;
-        }
-
-
-        if (distance.z >= 19.0f)
-        { // if they're too far
-            isCameraZLocked = true;
-            cameraZLock = transform.position.z;
-        }
-        else
-        {
-            isCameraZLocked = false;
         }
 
         midX = (player2.position.x + player1.position.x) / 2;
@@ -139,10 +89,27 @@ public class CameraMover : MonoBehaviour
         {
             Vector3 delta;
             delta = midPoint;
-            //Vector3 destination = transform.position + delta;
+
+
+            // Get player closest to camera
+            Transform closestPlayer;
+            if ((player1.transform.position - cam.transform.position).z < (player2.transform.position - cam.transform.position).z)
+                closestPlayer = player1.transform;
+            else
+                closestPlayer = player2.transform;
+
             Vector3 destination = transform.position;
+            
+            // Hook camera Z position to closestPlayer
             destination.z = midPoint.z - MidpointOffset;
             destination.x = midPoint.x;
+
+            // If there's a player behind the pullback threshold, base camera Z pos on player
+            if ((closestPlayer.position - transform.position).z <= PullbackThreshold)
+            {
+                destination.z = closestPlayer.position.z - PullbackThreshold;
+            }
+
 
             if (marginDirection == MarginDirection.North || marginDirection == MarginDirection.South)
                 destination.z += MarginOffset;
@@ -150,28 +117,6 @@ public class CameraMover : MonoBehaviour
                 destination.x += MarginOffset;
             if (marginDirection == MarginDirection.West)
                 destination.x -= MarginOffset;
-
-
-            // Pullback if player is far from camera (North/South)
-            p1PullBack = (transform.position - player1.position).z >= -PullbackThreshold;
-            p2PullBack = (transform.position - player2.position).z >= -PullbackThreshold;
-
-            if (p1PullBack)
-            {
-                destination.z += transform.position.z - PullbackThreshold;
-                Debug.Log("P1 Pullback");
-            }
-            else if (p2PullBack)
-            {
-                destination.z += transform.position.z - PullbackThreshold;
-                Debug.Log("P2 Pullback");
-            }
-
-            // Apply axis locks
-            if (isCameraZLocked)
-                destination.z = cameraZLock;
-            if (isCameraYLocked)
-                destination.y = midPoint.y + cameraYLimit;
 
             transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
         }

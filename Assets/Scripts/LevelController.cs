@@ -18,6 +18,8 @@ public class LevelController : MonoBehaviour
     public int StartActionOne = 3;
     public int StartActionTwo = 3;
 
+    public Canvas PauseMenu;
+
 
 
     // Use this for initialization
@@ -29,6 +31,8 @@ public class LevelController : MonoBehaviour
 //        }
 
         _levelCompletion = 0;
+
+        PauseMenu.enabled = false;
     }
 
     void Update()
@@ -36,7 +40,6 @@ public class LevelController : MonoBehaviour
         // On level complete
         if (_levelCompletion >= 100)
         {
-
             if (_gameController != null)
             {
                 _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -45,12 +48,23 @@ public class LevelController : MonoBehaviour
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
+        }
 
+        if (Input.GetButtonDown("Start"))
+        {
+            if (PauseMenu.enabled)
+            {
+                PauseMenu.enabled = false;
+            }
+            else
+            {
+                PauseMenu.enabled = true;
+            }
         }
 
         if (levelDebug)
         {
-            if (Input.GetButtonDown("Start"))
+            if (Input.GetButtonDown("Cancel"))
             {
                 if (_gameController != null)
                 {
@@ -88,8 +102,16 @@ public class LevelController : MonoBehaviour
 
     public void ResetLevel()
     {
+        Debug.Log("Reset");
         _levelCompletion = 0;
         if (_gameController != null)
             _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
+        else
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

@@ -55,10 +55,12 @@ public class LevelController : MonoBehaviour
             if (PauseMenu.enabled)
             {
                 PauseMenu.enabled = false;
+                Time.timeScale = 1.0f;
             }
             else
             {
                 PauseMenu.enabled = true;
+                Time.timeScale = 0f;
             }
         }
 

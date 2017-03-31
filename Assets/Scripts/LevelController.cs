@@ -106,6 +106,8 @@ public class LevelController : MonoBehaviour
     {
         Debug.Log("Reset");
         _levelCompletion = 0;
+        Time.timeScale = 1.0f;
+
         if (_gameController != null)
             _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
         else

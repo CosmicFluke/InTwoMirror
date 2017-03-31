@@ -33,6 +33,8 @@ public class Player : MonoBehaviour {
     void Start () {
         if (playerID == PlayerID.Both) throw new System.Exception("Invalid player name for control script");
         GetComponent<PlayerHealth>().InitializeHealth(startingHealthPoints);
+        foreach (Transform child in transform)
+            child.gameObject.layer = LayerMask.NameToLayer(playerID == PlayerID.P1 ? "Player1" : "Player2");
     }
 	
 	// Update is called once per frame

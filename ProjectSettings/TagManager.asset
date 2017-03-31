@@ -27,8 +27,8 @@ TagManager:
   - 
   - Terrain
   - Regions
-  - Players
-  - 
+  - Player1
+  - Player2
   - 
   - 
   - 
@@ -53,4 +53,3 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-

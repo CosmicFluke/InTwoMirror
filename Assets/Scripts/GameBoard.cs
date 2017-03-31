@@ -39,11 +39,6 @@ public class GameBoard : MonoBehaviour {
     public float timePressureDelay = 20f; // time before time pressure is first initiated (interval countdown starts)
     public float timePressureInterval = 10f; // intervals between time pressure increases
 
-    /// <summary>
-    /// Denotes whether actions propragate a distance of 1 or 2 regions out from the source region.
-    /// </summary>
-    [Range(1, 2)] public int StateChangePropagationDistance = 1;
-
     /// <summary>True iff the board has zero regions</summary>
     public bool IsEmpty { get { return regions.Count == 0; } }
 

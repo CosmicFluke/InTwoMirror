@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -726,6 +726,7 @@ GameObject:
   - component: {fileID: 1957579543}
   - component: {fileID: 1957579542}
   - component: {fileID: 1957579547}
+  - component: {fileID: 1957579548}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -795,7 +796,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1957579541}
   m_LocalRotation: {x: 0.21256198, y: 0.06475259, z: -0.014118343, w: 0.97489756}
-  m_LocalPosition: {x: -18, y: 26.3, z: -47.08}
+  m_LocalPosition: {x: 16, y: 585, z: 207}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -815,6 +816,14 @@ MonoBehaviour:
   maxRadiansPerSecond: 8
   rotateAround: {x: 0, y: 0, z: 14.2}
   accelerationFactor: 0.1
+--- !u!45 &1957579548
+Skybox:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1957579541}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 9103dd49bd6114cf288a982aca0d5f1d, type: 2}
 --- !u!1 &2063672668
 GameObject:
   m_ObjectHideFlags: 0

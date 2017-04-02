@@ -30,6 +30,7 @@ Assets/Scripts.meta
 Assets/Plugins.meta
 Assets/Materials.meta
 Assets/UI.meta
+Assets/UI/SplashScreens.meta
 Assets/UI/UISprites.meta
 Assets/UI/Buttons.meta
 Assets/Terrain.meta
@@ -38,6 +39,7 @@ Assets/Mixers.meta
 Assets/AnimationControllers.meta
 Assets/Scripts/TestScripts.meta
 Assets/Scripts/Editor.meta
+Assets/Skybox-NightStars.meta
 Assets/Prefabs/Board\ Templates.meta
 Assets/Prefabs/Hex\ Maps.meta
 Assets/Prefabs/Materials\.meta

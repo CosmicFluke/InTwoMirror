@@ -32,6 +32,7 @@ public class LevelController : MonoBehaviour
 
         _levelCompletion = 0;
 
+        PauseMenu = Instantiate(PauseMenu);
         PauseMenu.enabled = false;
     }
 

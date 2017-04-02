@@ -69499,6 +69499,8 @@ MonoBehaviour:
   actionPropagationDistance: 1
   StartActionOne: 3
   StartActionTwo: 3
+  PauseMenu: {fileID: 223800341055033448, guid: b56eba840999c78419389ff27171fc80,
+    type: 2}
 --- !u!114 &114344701714093046
 MonoBehaviour:
   m_ObjectHideFlags: 1

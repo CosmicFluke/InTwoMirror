@@ -11,7 +11,7 @@ public class HexMesh : MonoBehaviour {
     [Header("State/position info")]
     public float radius = 4f;
     public float height = 100f;
-    public float chamfer = 0.2f;
+    public float chamfer = 0.075f;
     public HexGridCoordinates location;
     [SerializeField]
     private GameObject[] edges = new GameObject[6];
@@ -27,6 +27,7 @@ public class HexMesh : MonoBehaviour {
 
     private List<Vector3> vertices;
     private List<int> triangles;
+    private int[][] edgeTriangles = Enumerable.Range(0, 6).Select(a => new int[6]).ToArray();
     private Mesh mesh;
     private LineRenderer lineRenderer;
     private float innerRadius, outerRadius;
@@ -45,17 +46,6 @@ public class HexMesh : MonoBehaviour {
         vertices = new List<Vector3>();
         triangles = new List<int>();
         Generate();
-    }
-
-    void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
-    {
-        int vertexIndex = vertices.Count;
-        vertices.Add(v1);
-        vertices.Add(v2);
-        vertices.Add(v3);
-        triangles.Add(vertexIndex);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 2);
     }
 
     private Vector3[] makeHexVertices(float faceInnerRadius, float faceOuterRadius)
@@ -77,9 +67,8 @@ public class HexMesh : MonoBehaviour {
         GetComponent<MeshFilter>().sharedMesh = mesh = new Mesh();
         mesh.name = "hexagon";
 
-        Vector3[] corners = makeHexVertices(innerRadius, outerRadius);
+        corners = makeHexVertices(innerRadius, outerRadius);
         Vector3[] faceCorners = makeHexVertices(innerRadius - chamfer, outerRadius - chamfer);
-        this.corners = faceCorners;
 
         Vector3 center = new Vector3();
         if (isWall) {
@@ -104,8 +93,14 @@ public class HexMesh : MonoBehaviour {
         // Chamfered edge faces
         for (int i = 0; i < 6; i++)
         {
-            triangles.AddRange(new int[] {vertexOffset + i, vertexOffset + (i + 1) % 6, 1 + i});
-            triangles.AddRange(new int[] {vertexOffset + (i + 1) % 6, 1 + (i + 1) % 6, 1 + i});
+            Vector3[] quadVertices = new Vector3[]
+            {
+                faceCorners[i],
+                corners[i] + Vector3.down * chamfer,
+                corners[(i + 1) % 6] + Vector3.down * chamfer,
+                faceCorners[(i + 1) % 6]
+            };
+            addQuadFace(quadVertices);
         }
 
         vertexOffset = vertices.Count;
@@ -118,17 +113,32 @@ public class HexMesh : MonoBehaviour {
         }
 
         // Sides
-        for (int i = 0;i < 6; i++)
+        for (int i = 0; i < 6; i++)
         {
-            triangles.AddRange(new int[] {vertexOffset + i + 1, vertexOffset + 1 + (i + 1) % 6, vertexOffset - 7 + i});
-            triangles.AddRange(new int[] {vertexOffset + 1 + (i + 1) % 6, vertexOffset - 7 + (i + 1) % 6, vertexOffset - 7 + i});
+            Vector3[] quadVertices = new Vector3[]
+            {
+                corners[i] + Vector3.down * chamfer,
+                corners[i] + Vector3.down * height,
+                corners[(i + 1) % 6] + Vector3.down * height,
+                corners[(i + 1) % 6] + Vector3.down * chamfer,
+            };
+            addQuadFace(quadVertices);
         }
 
         mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray();
+        mesh.SetTriangles(triangles, 0);
         mesh.RecalculateNormals();
         MeshCollider c = GetComponent<MeshCollider>();
         c.sharedMesh = GetComponent<MeshFilter>().sharedMesh;
+    }
+
+    private void addQuadFace(Vector3[] quadVertices)
+    {
+        if (quadVertices.Length != 4) throw new System.Exception("Face must be a quad.");
+        int start = vertices.Count;
+        vertices.AddRange(quadVertices);
+        triangles.AddRange(Enumerable.Range(start, 3));
+        triangles.AddRange(new int[] { start + 2, start + 3, start });
     }
 
     [ContextMenu("Refresh outline")]

@@ -18,6 +18,8 @@ public class LevelController : MonoBehaviour
     public int StartActionOne = 3;
     public int StartActionTwo = 3;
 
+    public Canvas PauseMenu;
+
 
 
     // Use this for initialization
@@ -29,6 +31,9 @@ public class LevelController : MonoBehaviour
 //        }
 
         _levelCompletion = 0;
+        PauseMenu = Instantiate(PauseMenu);
+        PauseMenu.enabled = false;
+
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player1"), LayerMask.NameToLayer("Player2"));
     }
 
@@ -37,7 +42,6 @@ public class LevelController : MonoBehaviour
         // On level complete
         if (_levelCompletion >= 100)
         {
-
             if (_gameController != null)
             {
                 _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -46,12 +50,25 @@ public class LevelController : MonoBehaviour
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
+        }
 
+        if (Input.GetButtonDown("Start"))
+        {
+            if (PauseMenu.enabled)
+            {
+                PauseMenu.enabled = false;
+                Time.timeScale = 1.0f;
+            }
+            else
+            {
+                PauseMenu.enabled = true;
+                Time.timeScale = 0f;
+            }
         }
 
         if (levelDebug)
         {
-            if (Input.GetButtonDown("Start"))
+            if (Input.GetButtonDown("Cancel"))
             {
                 if (_gameController != null)
                 {
@@ -89,8 +106,18 @@ public class LevelController : MonoBehaviour
 
     public void ResetLevel()
     {
+        Debug.Log("Reset");
         _levelCompletion = 0;
+        Time.timeScale = 1.0f;
+
         if (_gameController != null)
             _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex);
+        else
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

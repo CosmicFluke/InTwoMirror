@@ -39,19 +39,6 @@ public class LevelController : MonoBehaviour
 
     void Update()
     {
-        // On level complete
-        if (_levelCompletion >= 100)
-        {
-            if (_gameController != null)
-            {
-                _gameController.GotoScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
-        }
-
         if (Input.GetButtonDown("Start"))
         {
             if (PauseMenu.enabled)
@@ -102,7 +89,23 @@ public class LevelController : MonoBehaviour
         _levelCompletion += percent;
 
         Debug.Log("Level is " + _levelCompletion + "% complete.");
+
+		// On level complete
+		if (_levelCompletion >= 100)
+		{			
+			CompleteLevel ();
+		}
     }
+
+	public void CompleteLevel ()
+	{
+		if (_gameController != null) {
+			_gameController.GotoScene (SceneManager.GetActiveScene ().buildIndex + 1);
+		}
+		else {
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex + 1);
+		}
+	}
 
     public void ResetLevel()
     {

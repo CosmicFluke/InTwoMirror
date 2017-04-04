@@ -39,6 +39,10 @@ public class Region : MonoBehaviour {
     // used only when the region is occupied and the tile effect is Volatile
     float volatileTimer;
     float prevTime;
+    float originalHeight;
+    [SerializeField]
+    bool isOriginalHeight = true;
+    Transform playerColliders;
 
     public IEnumerable<GameObject> Tiles { get { return hexTiles.AsEnumerable(); } }
     public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
@@ -56,12 +60,10 @@ public class Region : MonoBehaviour {
         {
             if (currentState == value) return;
             currentState = value;
-            updateMaterials();
+            refresh();
+            updatePlayerColliders();
             if (currentPlayer == null) return;
             refreshEffect();
-            RegionOutline outline = GetComponent<RegionOutline>();
-            if (State == RegionState.C)
-                outline.EnhancePulse(outline.initialGrowRate * 3, outline.initialGrowFactor * 2);
         }
     }
 
@@ -70,7 +72,23 @@ public class Region : MonoBehaviour {
         State = initialState;
         refresh();
         isFixedState = isFixedState || IsGoal;
+        //GetComponent<RegionOutline>().enabled = false;
+        //GetComponent<LineRenderer>().enabled = false;
         ready = true;
+        if (playerColliders == null)
+        {
+            playerColliders = new GameObject().transform;
+            playerColliders.name = "PlayerColliders";
+            playerColliders.gameObject.SetActive(false);
+            playerColliders.SetParent(transform);
+            playerColliders.position = transform.position;
+            foreach (Mesh mesh in GetComponents<MeshCollider>().Select(collider => collider.sharedMesh))
+            {
+                MeshCollider mc = playerColliders.gameObject.AddComponent<MeshCollider>();
+                mc.sharedMesh = mesh;
+            }
+        }
+        updatePlayerColliders();
 	}
 
     private float DamageRate(float time) {
@@ -95,7 +113,8 @@ public class Region : MonoBehaviour {
     ///   1) The region changes state while occupied by a player
     ///   2) A player enters the region area
     /// </summary>
-    private void refreshEffect() {
+    private void refreshEffect()
+    {
         if (State == RegionState.C && !doesDamageWhenStateC)
             currentEffect = RegionEffect.Stable;
         else
@@ -114,6 +133,36 @@ public class Region : MonoBehaviour {
         {
             GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(50);
         }
+    }
+
+    private void adjustHeight()
+    {
+        Vector3 amountToMove = Vector3.zero;
+        if (isOriginalHeight && (State == RegionState.B || (State == RegionState.C && CurrentPlayer != null && CurrentPlayer.GetComponent<Player>().playerID == PlayerID.P2)))
+        {
+            amountToMove = Vector3.up * GetComponentInParent<GameBoard>().redRegionHeightOffset;
+            isOriginalHeight = false;
+        }
+        else if (!isOriginalHeight && (State == RegionState.A || (CurrentPlayer == null && State == RegionState.C)))
+        {
+            amountToMove = Vector3.down * GetComponentInParent<GameBoard>().redRegionHeightOffset;
+            isOriginalHeight = true;
+        }
+        StartCoroutine(moveToHeight(amountToMove)); 
+    }
+
+    IEnumerator moveToHeight(Vector3 changeInPosition)
+    {
+        if (changeInPosition == Vector3.zero) {
+            yield break;
+        }
+        Vector3 targetPos = transform.position + changeInPosition;
+        foreach (int t in Enumerable.Range(0, 30))
+        {
+            yield return new WaitForSeconds(1f / 60f);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, changeInPosition.magnitude / 30f);
+        }
+        GetComponent<RegionOutline>().Refresh();
     }
 
     public void SetOccupied(bool isOccupied, Transform player)
@@ -145,7 +194,6 @@ public class Region : MonoBehaviour {
                 Debug.Log(string.Format("[{0}] Leaving:", name) + "Cannot de-occupy a region that is not occupied " + string.Format("({0}, {1})", player.name, name));
             setNeighbourOutlines(false, player);
             currentPlayer = null;
-            //outline.ResetPulse();
 
             // Update level completion percent if player leaves goal
             if (IsGoal)
@@ -153,6 +201,8 @@ public class Region : MonoBehaviour {
                 GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(-50);
             }
         }
+        if (State == RegionState.C) updatePlayerColliders();
+        refresh();
     }
 
     private void setNeighbourOutlines(bool isActive, Transform player)
@@ -178,9 +228,37 @@ public class Region : MonoBehaviour {
     }
 
     protected void refresh() {
-        refreshColliders();
         updateMaterials();
+        adjustHeight();
         GetComponent<RegionOutline>().Refresh();
+    }
+
+    private void updatePlayerColliders()
+    {
+        switch (State)
+        {
+            case RegionState.A:
+                playerColliders.gameObject.layer = LayerMask.NameToLayer("Player2");
+                playerColliders.gameObject.SetActive(true);
+                break;
+            case RegionState.B:
+                playerColliders.gameObject.layer = LayerMask.NameToLayer("Player1");
+                playerColliders.gameObject.SetActive(true);
+                break;
+            case RegionState.C:
+                if (currentPlayer == null)
+                {
+                    playerColliders.gameObject.layer = LayerMask.NameToLayer("Default");
+                    playerColliders.gameObject.SetActive(false);
+                }
+                else
+                {
+                    PlayerID p = currentPlayer.GetComponent<Player>().playerID;
+                    playerColliders.gameObject.layer = LayerMask.NameToLayer(p == PlayerID.P1 ? "Player2" : "Player1");
+                    playerColliders.gameObject.SetActive(true);
+                }
+                break;
+        }
     }
 
     /// <summary>

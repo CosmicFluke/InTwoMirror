@@ -10,7 +10,7 @@ public class HexMesh : MonoBehaviour {
     public const float radiusRatio = 0.866025404f;
     [Header("State/position info")]
     public float radius = 4f;
-    public float height = 2f;
+    public float height = 100f;
     public HexGridCoordinates location;
     [SerializeField]
     private GameObject[] edges = new GameObject[6];
@@ -38,6 +38,7 @@ public class HexMesh : MonoBehaviour {
 
     private void Awake()
     {
+        height = 100f;
         outerRadius = radius;
         vertices = new List<Vector3>();
         triangles = new List<int>();

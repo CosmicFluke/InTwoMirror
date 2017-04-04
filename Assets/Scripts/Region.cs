@@ -42,6 +42,7 @@ public class Region : MonoBehaviour {
     float originalHeight;
     [SerializeField]
     bool isOriginalHeight = true;
+    Transform playerColliders;
 
     public IEnumerable<GameObject> Tiles { get { return hexTiles.AsEnumerable(); } }
     public IEnumerable<GameObject> Neighbours { get { return neighbours.AsEnumerable(); } }
@@ -60,6 +61,7 @@ public class Region : MonoBehaviour {
             if (currentState == value) return;
             currentState = value;
             refresh();
+            updatePlayerColliders();
             if (currentPlayer == null) return;
             refreshEffect();
         }
@@ -73,6 +75,20 @@ public class Region : MonoBehaviour {
         //GetComponent<RegionOutline>().enabled = false;
         //GetComponent<LineRenderer>().enabled = false;
         ready = true;
+        if (playerColliders == null)
+        {
+            playerColliders = new GameObject().transform;
+            playerColliders.name = "PlayerColliders";
+            playerColliders.gameObject.SetActive(false);
+            playerColliders.SetParent(transform);
+            playerColliders.position = transform.position;
+            foreach (Mesh mesh in GetComponents<MeshCollider>().Select(collider => collider.sharedMesh))
+            {
+                MeshCollider mc = playerColliders.gameObject.AddComponent<MeshCollider>();
+                mc.sharedMesh = mesh;
+            }
+        }
+        updatePlayerColliders();
 	}
 
     private float DamageRate(float time) {
@@ -97,7 +113,8 @@ public class Region : MonoBehaviour {
     ///   1) The region changes state while occupied by a player
     ///   2) A player enters the region area
     /// </summary>
-    private void refreshEffect() {
+    private void refreshEffect()
+    {
         if (State == RegionState.C && !doesDamageWhenStateC)
             currentEffect = RegionEffect.Stable;
         else
@@ -121,7 +138,7 @@ public class Region : MonoBehaviour {
     private void adjustHeight()
     {
         Vector3 amountToMove = Vector3.zero;
-        if (isOriginalHeight && (State == RegionState.B || (CurrentPlayer != null && CurrentPlayer.GetComponent<Player>().playerID == PlayerID.P2)))
+        if (isOriginalHeight && (State == RegionState.B || (State == RegionState.C && CurrentPlayer != null && CurrentPlayer.GetComponent<Player>().playerID == PlayerID.P2)))
         {
             amountToMove = Vector3.up * GetComponentInParent<GameBoard>().redRegionHeightOffset;
             isOriginalHeight = false;
@@ -184,7 +201,7 @@ public class Region : MonoBehaviour {
                 GameObject.FindWithTag("LevelController").GetComponent<LevelController>().ProgressLevel(-50);
             }
         }
-
+        if (State == RegionState.C) updatePlayerColliders();
         refresh();
     }
 
@@ -214,6 +231,34 @@ public class Region : MonoBehaviour {
         updateMaterials();
         adjustHeight();
         GetComponent<RegionOutline>().Refresh();
+    }
+
+    private void updatePlayerColliders()
+    {
+        switch (State)
+        {
+            case RegionState.A:
+                playerColliders.gameObject.layer = LayerMask.NameToLayer("Player2");
+                playerColliders.gameObject.SetActive(true);
+                break;
+            case RegionState.B:
+                playerColliders.gameObject.layer = LayerMask.NameToLayer("Player1");
+                playerColliders.gameObject.SetActive(true);
+                break;
+            case RegionState.C:
+                if (currentPlayer == null)
+                {
+                    playerColliders.gameObject.layer = LayerMask.NameToLayer("Default");
+                    playerColliders.gameObject.SetActive(false);
+                }
+                else
+                {
+                    PlayerID p = currentPlayer.GetComponent<Player>().playerID;
+                    playerColliders.gameObject.layer = LayerMask.NameToLayer(p == PlayerID.P1 ? "Player2" : "Player1");
+                    playerColliders.gameObject.SetActive(true);
+                }
+                break;
+        }
     }
 
     /// <summary>

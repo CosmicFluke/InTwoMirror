@@ -29,6 +29,7 @@ public class LevelController : MonoBehaviour
 //        }
 
         _levelCompletion = 0;
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player1"), LayerMask.NameToLayer("Player2"));
     }
 
     void Update()

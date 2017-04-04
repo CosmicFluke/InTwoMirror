@@ -56,3 +56,5 @@ MonoBehaviour:
   StartActionTwo: 3
   PauseMenu: {fileID: 223800341055033448, guid: b56eba840999c78419389ff27171fc80,
     type: 2}
+  levelCompletionSound: {fileID: 8300000, guid: e93f46d156586284da9c4060eff9938a,
+    type: 3}

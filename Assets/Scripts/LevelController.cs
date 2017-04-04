@@ -20,7 +20,7 @@ public class LevelController : MonoBehaviour
 
     public Canvas PauseMenu;
 
-
+	public AudioClip levelCompletionSound;
 
     // Use this for initialization
     void Start()
@@ -99,10 +99,17 @@ public class LevelController : MonoBehaviour
 
 	public void CompleteLevel ()
 	{
+		// Can stop music and play level end sound
+		AudioSource audioSource = GetComponent<AudioSource> ();
+		if (levelCompletionSound != null) {
+			audioSource.clip = levelCompletionSound;
+			audioSource.Play ();
+		}
+
+
 		if (_gameController != null) {
 			_gameController.GotoScene (SceneManager.GetActiveScene ().buildIndex + 1);
-		}
-		else {
+		} else {
 			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex + 1);
 		}
 	}

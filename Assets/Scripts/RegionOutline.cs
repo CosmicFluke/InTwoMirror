@@ -139,7 +139,7 @@ public class RegionOutline : MonoBehaviour {
             outline.endColor = lineColor;
         }
 
-        vertices = getBorderVertices(baseLineSize).ToArray();
+        vertices = getBorderVertices(baseLineSize / 2f).ToArray();
         outline.numPositions = vertices.Length;
         outline.SetPositions(vertices.Select(v => transform.rotation * v + transform.position + Vector3.up * 0.05f).ToArray());
     }

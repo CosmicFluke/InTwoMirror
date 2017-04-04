@@ -23,11 +23,11 @@ public class RegionOutline : MonoBehaviour {
 
     public Material material;
     [Range(0.05f, 1)]
-    public float baseLineSize = 0.1f;
+    public float baseLineSize = 0.25f;
     [Range(0.5f, 5)]
-    public float initialGrowRate = 1.0f; // Number of pulses per second when pulse is active
+    public float initialGrowRate = 0f; // Number of pulses per second when pulse is active
     [Range(0.5f, 5)]
-    public float initialGrowFactor = 2.0f; // Amount to grow (* lineBaseSize) when pulse is active
+    public float initialGrowFactor = 0f; // Amount to grow (* lineBaseSize) when pulse is active
 
     /// <summary> Used if no material is given.</summary>
     public Color lineColor = Color.white;
@@ -46,6 +46,8 @@ public class RegionOutline : MonoBehaviour {
     private bool isGrowing = false;
     private Material bothMaterial;
 
+    private Mesh mesh;
+
     // Use this for initialization
     void Start () {
         GameBoard board = GetComponentInParent<GameBoard>();
@@ -56,6 +58,7 @@ public class RegionOutline : MonoBehaviour {
         Color between = Color.Lerp(board.OutlineMaterials[0].color, board.OutlineMaterials[1].color, 0.5f);
         Color.RGBToHSV(between, out h, out s, out v);
         bothMaterial.color = Color.HSVToRGB(h, s * 1.1f, v * 1.1f);
+        Refresh();
     }
 	
 	// Update is called once per frame
@@ -125,6 +128,7 @@ public class RegionOutline : MonoBehaviour {
 
     public void Refresh()
     {
+        Debug.Log("Refreshing outline");
         LineRenderer outline = GetComponent<LineRenderer>();
         outline.material = Material;
         outline.startWidth = baseLineSize;
@@ -135,8 +139,9 @@ public class RegionOutline : MonoBehaviour {
             outline.endColor = lineColor;
         }
 
+        vertices = getBorderVertices(baseLineSize).ToArray();
         outline.numPositions = vertices.Length;
-        outline.SetPositions(vertices.Select(v => transform.rotation * v + transform.position + Vector3.up * baseLineSize / 2f).ToArray());
+        outline.SetPositions(vertices.Select(v => transform.rotation * v + transform.position + Vector3.up * 0.05f).ToArray());
     }
 
     public Vector3[] Vertices {
@@ -145,58 +150,71 @@ public class RegionOutline : MonoBehaviour {
             vertices = value.ToArray();
             Refresh();
         }
-    } 
-
-    [ContextMenu("Conform mesh to surface (doesn't work)")]
-    public void ConformToSurface()
-    {
-        conformToSurface(terrainObject, surfaceConformMaxDistance);
     }
 
-    [ContextMenu("Reset mesh height (uniform) (doesn't work)")]
-    public void ResetVertexHeight()
+    private List<Vector3> getBorderVertices(float insideBorder)
     {
-        LineRenderer lr = GetComponent<LineRenderer>();
-        for (int i = 0; i < lr.numPositions; i++)
+        insideBorder *= 0.95f;
+        GameObject[] tiles = GetComponent<Region>().Tiles.ToArray();
+        int tileNum = 0;
+        GameObject startingTile = null;
+        int startingEdge = -1;
+        while (startingEdge < 0)
         {
-            Vector3 vertex = lr.GetPosition(i);
-            vertex.y = transform.position.y;
-            lr.SetPosition(i, vertex);
+            if (tileNum >= tiles.Length) throw new System.Exception("Could not find a suitable outer tile for the region. Data error.");
+            startingTile = tiles[tileNum];
+            tileNum++;
+            startingEdge = findOuterEdge(startingTile.GetComponent<HexMesh>());
         }
+
+        List<Vector3> vertices = new List<Vector3>();
+        GameObject currTile = startingTile;
+        GameObject nextTile = null;
+        int currEdge = startingEdge;
+        int nextEdge = -1;
+        bool concaveVertex = false;
+        HexMesh hex = currTile.GetComponent<HexMesh>();
+        Vector3 vertex = hex.transform.position - transform.position + hex.OuterVertices[currEdge];
+        vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
+        // Advance around hex edges in a clockwise direction
+        while (currTile != startingTile || currEdge != startingEdge || vertices.Count == 1)
+        {
+            nextTile = currTile;
+            nextEdge = (currEdge + 1) % 6;
+            if (tiles.Contains(hex.Edges[nextEdge]))
+            {
+                vertex = hex.transform.position - transform.position + hex.OuterVertices[(currEdge + 1) % 6];
+                vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
+                concaveVertex = true;
+                nextTile = hex.Edges[nextEdge];
+                nextEdge = (nextEdge + 4) % 6;
+            }
+            else concaveVertex = false;
+            vertex = hex.transform.position - transform.position + hex.OuterVertices[(currEdge + 1) % 6];
+            vertices.Add(shiftPointInsideRegion(vertex, hex, currEdge, concaveVertex, insideBorder));
+            // Advance to the next edge on the hex
+            currEdge = nextEdge;
+            currTile = nextTile;
+            hex = currTile.GetComponent<HexMesh>();
+        }
+        return vertices;
     }
 
-    void conformToSurface(GameObject obj, float maxDistance)
+    private int findOuterEdge(HexMesh hex)
     {
-        LineRenderer lr = GetComponent<LineRenderer>();
-        if (obj == null)
-            throw new System.Exception("No surface object provided.");
-        Collider[] colliders = obj.GetComponentsInChildren<Collider>();
-        Collider objCollider = obj.GetComponent<Collider>();
-        if (objCollider == null && (colliders == null || colliders.Length == 0))
-            throw new System.Exception("Provided surface object does not have a collider component.");
-        if (objCollider != null)
-            colliders = new Collider[] { objCollider };
-        Vector3 vertex;
-
-        for (int i = 0; i < lr.numPositions; i++)
+        GameObject[] tiles = GetComponent<Region>().Tiles.ToArray();
+        for (int i = 0; i < 6; i++)
         {
-            vertex = lr.GetPosition(i);
-            Vector3 source = new Vector3(vertex.x, vertex.y + maxDistance / 2, vertex.z);
-            Debug.Log("Casting from: " + source.ToString());
-            RaycastHit hit;
-            Debug.DrawRay(source, Vector3.down * 10, Color.red, 20.0f);
-            Ray ray = new Ray(source, Vector3.down);
-            if (Physics.Raycast(ray, out hit, 2.0f * maxDistance, LayerMask.NameToLayer("Terrain")))
-            {
-                Debug.Log("Hit point: " + hit.point);
-                vertex.y = hit.point.y;
-                lr.SetPosition(i, vertex);
-            }
-            else
-            {
-                Debug.Log("Terrain is not within maxDistance (" + maxDistance.ToString() +
-                ") of hex grid at " + new Vector2(vertex.x, vertex.y).ToString());   
-            }
+            if (hex.Edges[i] == null) continue;
+            if (!tiles.Contains(hex.Edges[i]))
+                return i;
         }
+        return -1;
+    }
+
+    private Vector3 shiftPointInsideRegion(Vector3 vertex, HexMesh hex, int currEdge, bool concaveVertex, float amt)
+    {
+        Vector3 shiftDirection = hex.transform.position - transform.position + (concaveVertex ? hex.OuterVertices[(currEdge + 2) % 6] : Vector3.zero);
+        return Vector3.MoveTowards(vertex, shiftDirection, 0.5f * amt / Mathf.Cos(Mathf.Deg2Rad * 30));
     }
 }

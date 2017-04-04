@@ -616,7 +616,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 243583966896909118, guid: 21ec2f9cc888617439a40fe8405b5fc1,
     type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -759,7 +759,6 @@ MonoBehaviour:
   action0: 0
   action1: 2
   action2: 2
-  actions: 
   actionDelay: 1
 --- !u!114 &114720773078032284
 MonoBehaviour:
@@ -773,9 +772,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionSounds:
-  - {fileID: 8300000, guid: 9b91c55e3cc269747b9b315130140cd6, type: 3}
-  - {fileID: 8300000, guid: 20c602853b0d5654cbdd0d68dbe4a1e0, type: 3}
-  - {fileID: 8300000, guid: cb0751a18322f1b4c9cca6f6e342bcfa, type: 3}
+  - {fileID: 8300000, guid: d7cd8c78f665e6d4d9e8305ec4e53d4b, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114826662134749346
 MonoBehaviour:
   m_ObjectHideFlags: 1

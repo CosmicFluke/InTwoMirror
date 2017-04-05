@@ -68846,7 +68846,8 @@ MonoBehaviour:
     type: 2}
   levelCompletionSound: {fileID: 8300000, guid: e93f46d156586284da9c4060eff9938a,
     type: 3}
-  levelCompletionSplash: {fileID: 0}
+  levelCompletionSplash: {fileID: 1160749891221986, guid: dd6f7bcefdc735b4982aca4b25d2b64d,
+    type: 2}
 --- !u!114 &114344701714093046
 MonoBehaviour:
   m_ObjectHideFlags: 1

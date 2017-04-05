@@ -11,7 +11,7 @@ public class LevelController : MonoBehaviour
     private float _levelCompletion = 0;
 
     private bool _musicPlaying = true;
-    private const bool levelDebug = true;
+    private const bool levelDebug = false;
 
     // The amount of actions each player starts with, could be unique for each level.
     public int StartActionOne = 3;
@@ -54,7 +54,7 @@ public class LevelController : MonoBehaviour
             }
         }
 
-        if (levelDebug)
+        if (levelDebug || SceneManager.GetActiveScene().buildIndex == 0)
         {
             if (Input.GetButtonDown("Cancel"))
             {

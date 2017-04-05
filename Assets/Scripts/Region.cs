@@ -25,9 +25,9 @@ public class Region : MonoBehaviour {
 
     protected RegionState currentState;
 
-    public bool IsGoal { get; set; }
-
     public bool isFixedState = false;
+
+    public bool IsGoal {get; set;}
 
     // ax^2 + bx + c = 0
 
@@ -75,6 +75,7 @@ public class Region : MonoBehaviour {
         //GetComponent<RegionOutline>().enabled = false;
         //GetComponent<LineRenderer>().enabled = false;
         ready = true;
+        if (playerColliders == null) transform.FindChild("PlayerColliders");
         if (playerColliders == null)
         {
             playerColliders = new GameObject().transform;
@@ -89,7 +90,27 @@ public class Region : MonoBehaviour {
             }
         }
         updatePlayerColliders();
-	}
+
+        // Generate cracked faces for fixed-state tiles
+        Material tileMaterial = tileMaterials[(int)State];
+        GameObject hexPrefab = GetComponentInParent<GameBoard>().hexSurfacePrefab;
+        if (isFixedState && State != RegionState.C && hexPrefab != null)
+        {
+            tileMaterial = Instantiate(tileMaterial);
+            Texture t = GetComponentInParent<GameBoard>().fixedTexture;
+            if (t != null)
+                tileMaterial.SetTexture("_EmissionMap", t);
+            hexPrefab.GetComponent<FlatHex>().radius = hexTiles[0].GetComponent<HexMesh>().radius;
+            foreach (Transform child in transform)
+            {
+                HexMesh hex = child.GetComponent<HexMesh>();
+                if (hex == null || child.FindChild("Cracked") != null) continue;
+                GameObject hexFace = Instantiate(hexPrefab, child.position + Vector3.up * 0.01f, Quaternion.identity, child);
+                hexFace.GetComponent<MeshRenderer>().material = tileMaterial;
+                hexFace.name = "Cracked";
+            }
+        }
+    }
 
     private float DamageRate(float time) {
         return (200 / Mathf.Pow(volatileDurationUntilDeath, 2) - 2 * initialDmgRate / volatileDurationUntilDeath) * time + initialDmgRate;
@@ -161,7 +182,10 @@ public class Region : MonoBehaviour {
         {
             yield return new WaitForSeconds(1f / 60f);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, changeInPosition.magnitude / 30f);
+            GetComponent<RegionOutline>().Refresh();
         }
+        if (transform.position != targetPos)
+            transform.position = targetPos;
         GetComponent<RegionOutline>().Refresh();
     }
 
@@ -230,7 +254,6 @@ public class Region : MonoBehaviour {
     protected void refresh() {
         updateMaterials();
         adjustHeight();
-        GetComponent<RegionOutline>().Refresh();
     }
 
     private void updatePlayerColliders()
@@ -268,8 +291,11 @@ public class Region : MonoBehaviour {
     protected void updateMaterials()
     {
         if (tileMaterials != null && tileMaterials[(int)State] != null)
+        {
+            Material tileMaterial = tileMaterials[(int)State];
             foreach (GameObject tile in hexTiles)
-                tile.transform.GetComponent<MeshRenderer>().material = tileMaterials[(int)State];
+                tile.transform.GetComponent<MeshRenderer>().material = tileMaterial;
+        }
         RegionOutline outline = GetComponent<RegionOutline>();
         if (outline != null && outlineMaterials != null && outlineMaterials[(int)State] != null)
         {

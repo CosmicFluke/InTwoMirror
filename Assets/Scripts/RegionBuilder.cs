@@ -28,6 +28,7 @@ public class RegionBuilder : Region {
         currentState = initialState;
         findNeighbours();
         refreshColliders();
+        GetComponent<RegionOutline>().Refresh();
         refresh(); // base class method
     }
 

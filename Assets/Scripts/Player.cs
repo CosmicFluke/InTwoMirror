@@ -55,10 +55,12 @@ public class Player : MonoBehaviour {
 
     public void ChangeRegion(Transform other)
     {
+        Region newRegion = other.GetComponent<Region>();
+        if (currentRegion == newRegion) return;
         if (currentRegion != null)
             currentRegion.SetOccupied(false, transform);
-        currentRegion = other.GetComponent<Region>();
-        Debug.Log(playerID.ToString() + " changing region to " + currentRegion.gameObject.name);
+        currentRegion = newRegion;
+        // Debug.Log(playerID.ToString() + " changing region to " + currentRegion.gameObject.name);
         currentRegion.SetOccupied(true, transform);
     }
 

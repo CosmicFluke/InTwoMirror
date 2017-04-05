@@ -18,6 +18,10 @@ public class PlayerMovementController : MonoBehaviour
     private int actionDistance = 1;
 
     private Vector3 collisionLocation;
+    private bool regionFlag = false;
+
+    private string horizontalAxis;
+    private string verticalAxis;
 
     // Use this for initialization
     void Start()
@@ -25,6 +29,8 @@ public class PlayerMovementController : MonoBehaviour
         playerID = GetComponent<Player>().playerID;
 
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
+        horizontalAxis = playerID.ToString() + "Horizontal";
+        verticalAxis = playerID.ToString() + "Vertical";
         if (characterAnimation == null)
             throw new Exception("This player object does not have a child with AnimatedCharacter.");
     }
@@ -32,9 +38,11 @@ public class PlayerMovementController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(Input.GetAxis(playerID.ToString() + "Horizontal"), 0f,
-            Input.GetAxis(playerID.ToString() + "Vertical"));
+        Vector3 rawMovement = new Vector3(Input.GetAxis(horizontalAxis), 0f, Input.GetAxis(verticalAxis));
+        Vector3 movement = Camera.main.transform.TransformDirection(rawMovement);
+        movement.y = 0;
         Rigidbody rb = GetComponent<Rigidbody>();
+
         if (movement.magnitude > 0)
         {
             rb.velocity = movement * movementSpeed;
@@ -62,9 +70,32 @@ public class PlayerMovementController : MonoBehaviour
     // Use trigger callbacks to change the state of the character
     void OnTriggerEnter(Collider other)
     {
+        currentRegion = GetComponent<Player>().Region;
         if (gameObject.activeSelf && other.gameObject.layer == LayerMask.NameToLayer("Regions") && (currentRegion == null || other.transform != currentRegion.transform))
             GetComponent<Player>().ChangeRegion(other.transform);
         collisionLocation = transform.position;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        currentRegion = GetComponent<Player>().Region;
+        if (gameObject.activeSelf && other.gameObject.layer == LayerMask.NameToLayer("Regions"))
+        {
+            Region leavingRegion = other.GetComponent<Region>();
+            if (leavingRegion != null && leavingRegion == currentRegion)
+            {
+                regionFlag = true;
+            }
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (regionFlag && other.gameObject.layer == LayerMask.NameToLayer("Regions"))
+        {
+            regionFlag = false;
+            GetComponent<Player>().ChangeRegion(other.transform);
+        }
     }
 
     //private void OnDrawGizmos()

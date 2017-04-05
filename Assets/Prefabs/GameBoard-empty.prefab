@@ -56,6 +56,7 @@ MonoBehaviour:
     type: 2}
   player2prefab: {fileID: 1033746376312626, guid: ecc000ecd0dd2414e8bcc88cbccd0c3c,
     type: 2}
+  redRegionHeightOffset: 0.5
   TileMaterials:
   - {fileID: 2100000, guid: d203388d5671f2946a4123602bd5a520, type: 2}
   - {fileID: 2100000, guid: 1f4636a63ea27d347a157d4b8b3e054f, type: 2}
@@ -64,6 +65,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
+  hexSurfacePrefab: {fileID: 1334435948888846, guid: 3f5254912d6a6cf41b51663f26d50fd4,
+    type: 2}
+  fixedTexture: {fileID: 2800000, guid: feaa51eafd54d924e96f30a6f55bf941, type: 3}
   hexGeneratorPrefab: {fileID: 1590816459888886, guid: a8999b189d73b574ab6c92d0e2b54a81,
     type: 2}
   shape: 1
@@ -71,7 +75,9 @@ MonoBehaviour:
   length: 8
   p1StartingRegion: 27
   p2StartingRegion: 39
+  p1GoalRegion: -1
+  p2GoalRegion: -1
+  PlayerGoal: {fileID: 0}
   TimePressureEnabled: 0
   timePressureDelay: 20
   timePressureInterval: 10
-  StateChangePropagationDistance: 1

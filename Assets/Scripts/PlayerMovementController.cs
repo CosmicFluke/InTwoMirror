@@ -18,6 +18,7 @@ public class PlayerMovementController : MonoBehaviour
     private int actionDistance = 1;
 
     private Vector3 collisionLocation;
+    private bool regionFlag = false;
 
     private string horizontalAxis;
     private string verticalAxis;
@@ -69,9 +70,32 @@ public class PlayerMovementController : MonoBehaviour
     // Use trigger callbacks to change the state of the character
     void OnTriggerEnter(Collider other)
     {
+        currentRegion = GetComponent<Player>().Region;
         if (gameObject.activeSelf && other.gameObject.layer == LayerMask.NameToLayer("Regions") && (currentRegion == null || other.transform != currentRegion.transform))
             GetComponent<Player>().ChangeRegion(other.transform);
         collisionLocation = transform.position;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        currentRegion = GetComponent<Player>().Region;
+        if (gameObject.activeSelf && other.gameObject.layer == LayerMask.NameToLayer("Regions"))
+        {
+            Region leavingRegion = other.GetComponent<Region>();
+            if (leavingRegion != null && leavingRegion == currentRegion)
+            {
+                regionFlag = true;
+            }
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (regionFlag && other.gameObject.layer == LayerMask.NameToLayer("Regions"))
+        {
+            regionFlag = false;
+            GetComponent<Player>().ChangeRegion(other.transform);
+        }
     }
 
     //private void OnDrawGizmos()

@@ -168,8 +168,9 @@ public class CameraMover : MonoBehaviour
                     else
                         Debug.Log("<color=red >using pullbackP2</color>");
 
-                    destination = pullbackLengthP1 >= pullbackLengthP2 ? midPoint + (-camToMid.normalized * pullbackLengthP1)
-                        : midPoint + (-camToMid.normalized * pullbackLengthP2);
+                    if(!lockPullback)
+                        destination = pullbackLengthP1 >= pullbackLengthP2 ? midPoint + (-camToMid.normalized * pullbackLengthP1)
+                            : midPoint + (-camToMid.normalized * pullbackLengthP2);
                     //cam.transform.LookAt(midPoint);
                 } else
                 {

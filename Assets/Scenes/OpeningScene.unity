@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: f6e11654c7105884cbeeddbc407ff224, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.08454823, g: 0.05430959, b: 0.075387575, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -531,9 +531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b47c3eb84c1f248b65ecfc8e5dc662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRadiansPerSecond: 6
+  maxRadiansPerSecond: 0.1
   rotateAround: {x: 0, y: 0, z: 14.2}
-  accelerationFactor: 0.1
 --- !u!45 &1957579548
 Skybox:
   m_ObjectHideFlags: 0
@@ -541,7 +540,7 @@ Skybox:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1957579541}
   m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: 9103dd49bd6114cf288a982aca0d5f1d, type: 2}
+  m_CustomSkybox: {fileID: 2100000, guid: f6e11654c7105884cbeeddbc407ff224, type: 2}
 --- !u!1 &2063672668
 GameObject:
   m_ObjectHideFlags: 0

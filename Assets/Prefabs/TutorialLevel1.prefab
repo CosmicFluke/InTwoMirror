@@ -26544,7 +26544,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1550570527208480}
   m_LocalRotation: {x: 0.367313, y: 0, z: 0, w: 0.9300974}
-  m_LocalPosition: {x: -53.5, y: 33.5, z: -51.13}
+  m_LocalPosition: {x: -57.8, y: 27.4, z: -42.2}
   m_LocalScale: {x: 1.0000002, y: 1, z: 1.0000002}
   m_Children: []
   m_Father: {fileID: 4557566583947184}
@@ -30412,7 +30412,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1393102267574948}
   m_LocalRotation: {x: 0.36812454, y: 0, z: 0, w: 0.9297765}
-  m_LocalPosition: {x: 2.9, y: 34.1, z: -51.3}
+  m_LocalPosition: {x: 5.1, y: 27.4, z: -41.4}
   m_LocalScale: {x: 1.0000002, y: 1, z: 1.0000002}
   m_Children: []
   m_Father: {fileID: 4557566583947184}
@@ -68840,11 +68840,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c0964ebe51f1743b55320b7402f855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionPropagationDistance: 1
   StartActionOne: 3
   StartActionTwo: 3
   PauseMenu: {fileID: 223800341055033448, guid: b56eba840999c78419389ff27171fc80,
     type: 2}
+  levelCompletionSound: {fileID: 8300000, guid: e93f46d156586284da9c4060eff9938a,
+    type: 3}
+  levelCompletionSplash: {fileID: 0}
 --- !u!114 &114344701714093046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -69248,6 +69250,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
+  hexSurfacePrefab: {fileID: 1334435948888846, guid: 3f5254912d6a6cf41b51663f26d50fd4,
+    type: 2}
+  fixedTexture: {fileID: 2800000, guid: feaa51eafd54d924e96f30a6f55bf941, type: 3}
   hexGeneratorPrefab: {fileID: 1590816459888886, guid: a8999b189d73b574ab6c92d0e2b54a81,
     type: 2}
   shape: 0

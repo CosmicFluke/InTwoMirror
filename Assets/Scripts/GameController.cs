@@ -8,14 +8,18 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
 
-    static GameController Instance;
+    static GameController instance;
+
+    public static GameController Instance { get { return instance; } }
+
+    private float completionSplashDuration = 2f;
 
     void Start()
     {
-        if (Instance == null)
+        if (instance == null)
         {
             GameObject.DontDestroyOnLoad(gameObject);
-            Instance = this;
+            instance = this;
         }
         else
         {
@@ -80,5 +84,20 @@ public class GameController : MonoBehaviour
             GotoScene("OpeningScene");
         }
 
+    }
+    public void LoadingSplash(GameObject splashPrefab, float duration)
+    {
+        StartCoroutine(loadingSplash(splashPrefab, duration));
+    }
+
+    IEnumerator loadingSplash(GameObject splashPrefab, float duration)
+    {
+        if (splashPrefab != null)
+        {
+            GameObject splash = Instantiate(splashPrefab, transform);
+            yield return new WaitForSeconds(duration);
+            Destroy(splash);
+        }
+        else yield return null;
     }
 }

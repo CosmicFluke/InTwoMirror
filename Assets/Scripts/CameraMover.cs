@@ -12,6 +12,8 @@ public class CameraMover : MonoBehaviour
 
     // Public variables to adjust camera movement
 
+    public bool ProportionalDistance = false;
+
     public MarginDirection marginDirection; // The direction of the goals
 
     public float dampTime = 0.15f; // Speed of camera adjustment
@@ -20,6 +22,7 @@ public class CameraMover : MonoBehaviour
     public float MidpointOffset; // Distance of camera to midpoint in +Z direction
     public float MarginOffset; // How large margin should be in marginDirection
     public float PullbackThreshold = 5; // Distance between player and cam before pullback is applied
+    public Vector3 PullbackPadding; // How much padding to give to players on the bottom border of the screen when calculating pullback
 
     public Transform player1; //target1
     public Transform player2; //target2
@@ -37,8 +40,10 @@ public class CameraMover : MonoBehaviour
 
     private Vector3 velocity = Vector3.zero;
 
-    private bool p1PullBack = false;
-    private bool p2PullBack = false;
+    // How far camera should pull back if players exceed viewport
+    float pullbackLengthP1 = 0;
+    float pullbackLengthP2 = 0;
+    private bool lockPullback = false;
 
     Camera cam;
 
@@ -67,6 +72,12 @@ public class CameraMover : MonoBehaviour
             Debug.Log("P2 cam diff = " + (transform.position - player2.position));
             Debug.Log("Player distance = " + distance);
             Debug.Log("Midpoint to Cam distance: " + (cam.transform.position - midPoint));
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            Vector3 v1 = cam.transform.position - player1.transform.position;
+            Vector3 v2 = cam.transform.position - midPoint;
+            Debug.Log("Angle of Midpoint-Cam-P1 = " + Vector3.Angle(v1, v2));
         }
 
         if (distance.x < 0) // invert the distance if they cross
@@ -104,6 +115,8 @@ public class CameraMover : MonoBehaviour
             destination.z = midPoint.z - MidpointOffset;
             destination.x = midPoint.x;
 
+
+
             // If there's a player behind the pullback threshold, base camera Z pos on that player
             if ((closestPlayer.position - transform.position).z <= PullbackThreshold)
             {
@@ -119,6 +132,50 @@ public class CameraMover : MonoBehaviour
                 destination.x -= MarginOffset;
             if (marginDirection == MarginDirection.West)
                 destination.x += MarginOffset;
+
+
+            // Apply proportional distance
+            if (ProportionalDistance)
+            {
+                Vector3 camToMid = cam.transform.position - midPoint;
+                float camToP1 = Vector3.Angle(camToMid, cam.transform.position - player1.transform.position + PullbackPadding);
+                float camToP2 = Vector3.Angle(camToMid, cam.transform.position - player2.transform.position + PullbackPadding);
+
+
+                if (!lockPullback && camToP1 > 26)
+                {
+                    Debug.Log("<color=red>Pulling back!</color>");
+                    pullbackLengthP1 = Mathf.Tan(camToP1) * Vector3.Distance(player1.transform.position, midPoint);
+
+                    Vector3 v1 = cam.transform.position - player1.transform.position;
+                    Vector3 v2 = cam.transform.position - midPoint;
+                    Debug.Log("Angle of Midpoint-Cam-P1 = " + Vector3.Angle(v1, v2));
+                }
+                if (!lockPullback && camToP2 > 26)
+                {
+                    Debug.Log("<color=red>Pulling back!</color>");
+                    pullbackLengthP2 = Mathf.Tan(camToP2) * Vector3.Distance(player2.transform.position, midPoint);
+
+                    Vector3 v1 = cam.transform.position - player2.transform.position;
+                    Vector3 v2 = cam.transform.position - midPoint;
+                    Debug.Log("Angle of Midpoint-Cam-P2 = " + Vector3.Angle(v1, v2));
+                }
+                if (camToP1 > 26 || camToP2 > 26)
+                {
+                    lockPullback = true;
+                    if (pullbackLengthP1 >= pullbackLengthP2)
+                        Debug.Log("<color=red >using pullbackP1</color>");
+                    else
+                        Debug.Log("<color=red >using pullbackP2</color>");
+
+                    destination = pullbackLengthP1 >= pullbackLengthP2 ? midPoint + (-camToMid.normalized * pullbackLengthP1)
+                        : midPoint + (-camToMid.normalized * pullbackLengthP2);
+                    //cam.transform.LookAt(midPoint);
+                } else
+                {
+                    lockPullback = false;
+                }
+            }
 
             transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
         }

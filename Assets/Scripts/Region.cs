@@ -75,6 +75,7 @@ public class Region : MonoBehaviour {
         //GetComponent<RegionOutline>().enabled = false;
         //GetComponent<LineRenderer>().enabled = false;
         ready = true;
+        if (playerColliders == null) transform.FindChild("PlayerColliders");
         if (playerColliders == null)
         {
             playerColliders = new GameObject().transform;
@@ -162,6 +163,8 @@ public class Region : MonoBehaviour {
             yield return new WaitForSeconds(1f / 60f);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, changeInPosition.magnitude / 30f);
         }
+        if (transform.position != targetPos)
+            transform.position = targetPos;
         GetComponent<RegionOutline>().Refresh();
     }
 
@@ -230,7 +233,6 @@ public class Region : MonoBehaviour {
     protected void refresh() {
         updateMaterials();
         adjustHeight();
-        GetComponent<RegionOutline>().Refresh();
     }
 
     private void updatePlayerColliders()

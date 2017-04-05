@@ -130,6 +130,7 @@ public class HexMesh : MonoBehaviour {
         mesh.RecalculateNormals();
         MeshCollider c = GetComponent<MeshCollider>();
         c.sharedMesh = GetComponent<MeshFilter>().sharedMesh;
+        GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
     }
 
     private void addQuadFace(Vector3[] quadVertices)

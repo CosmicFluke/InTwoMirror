@@ -19,12 +19,17 @@ public class PlayerMovementController : MonoBehaviour
 
     private Vector3 collisionLocation;
 
+    private string horizontalAxis;
+    private string verticalAxis;
+
     // Use this for initialization
     void Start()
     {
         playerID = GetComponent<Player>().playerID;
 
         characterAnimation = GetComponentInChildren<AnimatedCharacter>();
+        horizontalAxis = playerID.ToString() + "Horizontal";
+        verticalAxis = playerID.ToString() + "Vertical";
         if (characterAnimation == null)
             throw new Exception("This player object does not have a child with AnimatedCharacter.");
     }
@@ -32,12 +37,13 @@ public class PlayerMovementController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(Input.GetAxis(playerID.ToString() + "Horizontal"), 0f,
-            Input.GetAxis(playerID.ToString() + "Vertical"));
+        Vector3 rawMovement = new Vector3(Input.GetAxis(horizontalAxis), 0f, Input.GetAxis(verticalAxis));
+        Vector3 movement = Camera.main.transform.TransformDirection(rawMovement);
         Rigidbody rb = GetComponent<Rigidbody>();
+
         if (movement.magnitude > 0)
         {
-            rb.velocity = movement * movementSpeed;
+            rb.velocity += movement * movementSpeed;
 
             // Rotate the character towards the direction of movement
             Quaternion newRotation = new Quaternion();

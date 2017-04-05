@@ -14064,6 +14064,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 91d668e66a7ce4f4ab598444fc822a2b, type: 2}
   - {fileID: 2100000, guid: 3082e566bb07d0245b9015ddaa0a3c58, type: 2}
   - {fileID: 2100000, guid: 2b5afa62d71329f48a116ba7e624f57a, type: 2}
+  hexSurfacePrefab: {fileID: 1334435948888846, guid: 3f5254912d6a6cf41b51663f26d50fd4,
+    type: 2}
+  fixedTexture: {fileID: 2800000, guid: feaa51eafd54d924e96f30a6f55bf941, type: 3}
   hexGeneratorPrefab: {fileID: 1590816459888886, guid: a8999b189d73b574ab6c92d0e2b54a81,
     type: 2}
   shape: 1

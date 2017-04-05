@@ -80,6 +80,7 @@ public class HexMesh : MonoBehaviour {
 
         vertices.Add(center);
         vertices.AddRange(faceCorners);
+        List<Vector2> uv = new List<Vector2> { new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0), new Vector2(1f, 0.25f), new Vector2(1f, 0.75f), new Vector2(0.5f, 1f), new Vector2(0, 0.75f), new Vector2(0, 0.25f), new Vector2(0.5f, 0) };
         // Top (face)
         for (int i = 0; i < 6; i++)
         {
@@ -88,8 +89,6 @@ public class HexMesh : MonoBehaviour {
 
         int vertexOffset = vertices.Count;
 
-        // Top outer corners (chamfered)
-        vertices.AddRange(corners.Select(v => v + Vector3.down * chamfer));
         // Chamfered edge faces
         for (int i = 0; i < 6; i++)
         {
@@ -101,12 +100,14 @@ public class HexMesh : MonoBehaviour {
                 faceCorners[(i + 1) % 6]
             };
             addQuadFace(quadVertices);
+            uv.AddRange(new Vector2[] { new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), new Vector2(0, 0) });
         }
 
         vertexOffset = vertices.Count;
         // Bottom (face)
         vertices.Add(center + Vector3.down * height);
         vertices.AddRange(corners.Select(v => v + Vector3.down * height));
+        uv.AddRange(new Vector2[] { new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0), new Vector2(1f, 0.25f), new Vector2(1f, 0.75f), new Vector2(0.5f, 1f), new Vector2(0, 0.75f), new Vector2(0, 0.25f), new Vector2(0.5f, 0) });
         for (int i = 0; i < 6; i++)
         {
             triangles.AddRange(new int[] {vertexOffset, vertexOffset + 1 + (i + 1) % 6, vertexOffset + 1 + i});
@@ -123,10 +124,12 @@ public class HexMesh : MonoBehaviour {
                 corners[(i + 1) % 6] + Vector3.down * chamfer,
             };
             addQuadFace(quadVertices);
+            uv.AddRange(new Vector2[] { new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), new Vector2(0, 0) });
         }
 
         mesh.vertices = vertices.ToArray();
         mesh.SetTriangles(triangles, 0);
+        mesh.uv = uv.ToArray();
         mesh.RecalculateNormals();
         MeshCollider c = GetComponent<MeshCollider>();
         c.sharedMesh = GetComponent<MeshFilter>().sharedMesh;

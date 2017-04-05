@@ -21,6 +21,8 @@ public class GameBoard : MonoBehaviour {
     /// Materials for the tile outlines. Each element in this arrays corresponds to one of the three region states (A, B, C).
     /// </summary>
     public Material[] OutlineMaterials = new Material[3];
+    public GameObject hexSurfacePrefab;
+    public Texture fixedTexture;
 
     [Header("Tile generator settings")]
     public GameObject hexGeneratorPrefab;

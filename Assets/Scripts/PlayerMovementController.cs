@@ -39,11 +39,12 @@ public class PlayerMovementController : MonoBehaviour
     {
         Vector3 rawMovement = new Vector3(Input.GetAxis(horizontalAxis), 0f, Input.GetAxis(verticalAxis));
         Vector3 movement = Camera.main.transform.TransformDirection(rawMovement);
+        movement.y = 0;
         Rigidbody rb = GetComponent<Rigidbody>();
 
         if (movement.magnitude > 0)
         {
-            rb.velocity += movement * movementSpeed;
+            rb.velocity = movement * movementSpeed;
 
             // Rotate the character towards the direction of movement
             Quaternion newRotation = new Quaternion();

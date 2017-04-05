@@ -7,12 +7,11 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: tempTileC
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _EMISSION _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_LightmapFlags: 1
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -127,13 +126,13 @@ Material:
       second: 1
     - first:
         name: _DstBlend
-      second: 10
+      second: 0
     - first:
         name: _Exposure
       second: 1
     - first:
         name: _GlossMapScale
-      second: 0.625
+      second: 0.79
     - first:
         name: _Glossiness
       second: 1
@@ -145,10 +144,10 @@ Material:
       second: 1
     - first:
         name: _Metallic
-      second: 0.356
+      second: 0.442
     - first:
         name: _Mode
-      second: 3
+      second: 0
     - first:
         name: _OcclusionStrength
       second: 1
@@ -193,14 +192,14 @@ Material:
       second: 0
     - first:
         name: _ZWrite
-      second: 0
+      second: 1
     m_Colors:
     - first:
         name: _BaseScale
       second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _Color
-      second: {r: 0.19852942, g: 0.14460835, b: 0.04817258, a: 1}
+      second: {r: 0.051470578, g: 0.038984004, b: 0.016652247, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0.014705896, g: 0.010887733, b: 0.0060553686, a: 1}
@@ -209,7 +208,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _SpecColor
-      second: {r: 0.36764705, g: 0.2808912, b: 0.13786764, a: 1}
+      second: {r: 0.35294116, g: 0.23830096, b: 0.04930796, a: 1}
     - first:
         name: _Tint
       second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}

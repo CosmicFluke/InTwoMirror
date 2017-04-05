@@ -7,8 +7,8 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: tempTileA
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -222,16 +222,16 @@ Material:
       second: 1
     - first:
         name: _GlossMapScale
-      second: 0.265
+      second: 0.56
     - first:
         name: _Glossiness
-      second: 0.586
+      second: 0.471
     - first:
         name: _GlossyReflections
       second: 1
     - first:
         name: _Metallic
-      second: 0
+      second: 0.11
     - first:
         name: _Metallic0
       second: 0
@@ -288,7 +288,7 @@ Material:
       second: 1
     - first:
         name: _SmoothnessTextureChannel
-      second: 1
+      second: 0
     - first:
         name: _SpecularHighlights
       second: 1
@@ -319,7 +319,7 @@ Material:
       second: {r: 0.20436853, g: 0.77205884, b: 1, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0.11732267, g: 0.25735295, b: 0.23468909, a: 1}
+      second: {r: 0.091176465, g: 0.2, b: 0.18238693, a: 1}
     - first:
         name: _HorizonColor
       second: {r: 0.172, g: 0.463, b: 0.435, a: 1}
@@ -334,7 +334,7 @@ Material:
       second: {r: 0.34, g: 0.85, b: 0.92, a: 1}
     - first:
         name: _SpecColor
-      second: {r: 0.52205884, g: 0.52205884, b: 0.52205884, a: 1}
+      second: {r: 0.28957614, g: 0.67992777, b: 0.75735295, a: 1}
     - first:
         name: _Tint
       second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}

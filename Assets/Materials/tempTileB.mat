@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: tempTileB
   m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -90,7 +90,7 @@ Material:
       second: 0
     - first:
         name: _GlossMapScale
-      second: 0.207
+      second: 0.31
     - first:
         name: _Glossiness
       second: 0.5
@@ -111,7 +111,7 @@ Material:
       second: 0.02
     - first:
         name: _SmoothnessTextureChannel
-      second: 1
+      second: 0
     - first:
         name: _SpecularHighlights
       second: 1
@@ -130,7 +130,7 @@ Material:
       second: {r: 0.728, g: 0, b: 0.015191351, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0.327, g: 0.263, b: 0.20453069, a: 1}
+      second: {r: 0.2, g: 0.16085629, b: 0.12509523, a: 1}
     - first:
         name: _SpecColor
       second: {r: 0.451, g: 0.21647924, b: 0.159, a: 1}

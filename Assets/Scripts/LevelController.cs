@@ -6,10 +6,9 @@ using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
-    static GameController _gameController;
+    static GameController _gameController; // TODO: use GameController singleton instead
 
     private float _levelCompletion = 0;
-    [Range(1, 2)] public int actionPropagationDistance = 1;
 
     private bool _musicPlaying = true;
     private const bool levelDebug = true;
@@ -21,6 +20,7 @@ public class LevelController : MonoBehaviour
     public Canvas PauseMenu;
 
 	public AudioClip levelCompletionSound;
+    public GameObject levelCompletionSplash;
 
     // Use this for initialization
     void Start()
@@ -33,6 +33,7 @@ public class LevelController : MonoBehaviour
         _levelCompletion = 0;
         PauseMenu = Instantiate(PauseMenu);
         PauseMenu.enabled = false;
+
 
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player1"), LayerMask.NameToLayer("Player2"));
     }
@@ -93,26 +94,47 @@ public class LevelController : MonoBehaviour
 		// On level complete
 		if (_levelCompletion >= 100)
 		{			
-			CompleteLevel ();
+			StartCoroutine(CompleteLevel());
 		}
     }
 
-	public void CompleteLevel ()
+	IEnumerator CompleteLevel()
 	{
 		// Can stop music and play level end sound
 		AudioSource audioSource = GetComponent<AudioSource> ();
-		if (levelCompletionSound != null) {
+		if (audioSource != null && levelCompletionSound != null) {
 			audioSource.clip = levelCompletionSound;
+            audioSource.loop = false;
 			audioSource.Play ();
 		}
+        GameObject[] goals = GameObject.FindGameObjectsWithTag("Goal");
+        foreach (GameObject goal in goals)
+        {
+            Light light = goal.GetComponentInChildren<Light>();
+            light.color = goal.GetComponentInChildren<MeshRenderer>().material.color;
+        }
+        for (int i = 0; i < 60; i++)
+        {
+            foreach (GameObject goal in goals)
+            {
+                Light light = goal.GetComponentInChildren<Light>();
+                light.range += 5;
+                light.intensity += 7f / 60;
+            }
+            yield return new WaitForSeconds(1f / 60);
+        }
+        yield return new WaitForSeconds(0.5f);
 
-
-		if (_gameController != null) {
-			_gameController.GotoScene (SceneManager.GetActiveScene ().buildIndex + 1);
+        if (GameController.Instance != null) {
+            if (levelCompletionSplash != null)
+                GameController.Instance.LoadingSplash(levelCompletionSplash, 2f);
+            GameController.Instance.GotoScene (SceneManager.GetActiveScene ().buildIndex + 1);
 		} else {
 			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex + 1);
 		}
 	}
+
+
 
     public void ResetLevel()
     {

@@ -62,7 +62,7 @@ public class PlayerActionController : MonoBehaviour
     /// <param name="action"></param>
     private void ExecuteRegionAction(ActionType action)
     {
-        Debug.Log(player.ToString() + " executing " + action.ToString());
+        // Debug.Log(player.ToString() + " executing " + action.ToString());
         currentRegion = GetComponent<Player>().Region;
         if (GetComponentInChildren<AnimatedCharacter>() == null)
             Debug.LogError("AnimatedCharacter component not found");

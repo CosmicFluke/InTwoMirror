@@ -162,6 +162,7 @@ public class Region : MonoBehaviour {
         {
             yield return new WaitForSeconds(1f / 60f);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, changeInPosition.magnitude / 30f);
+            GetComponent<RegionOutline>().Refresh();
         }
         if (transform.position != targetPos)
             transform.position = targetPos;

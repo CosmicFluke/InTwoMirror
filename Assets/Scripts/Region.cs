@@ -42,6 +42,7 @@ public class Region : MonoBehaviour {
     float originalHeight;
     [SerializeField]
     bool isOriginalHeight = true;
+    bool isChangingState = false;
     Transform playerColliders;
 
     public IEnumerable<GameObject> Tiles { get { return hexTiles.AsEnumerable(); } }
@@ -58,7 +59,8 @@ public class Region : MonoBehaviour {
         get { return currentState; }
         set
         {
-            if (currentState == value) return;
+            if (currentState == value || isChangingState) return;
+            isChangingState = true;
             currentState = value;
             refresh();
             updatePlayerColliders();
@@ -175,6 +177,7 @@ public class Region : MonoBehaviour {
     IEnumerator moveToHeight(Vector3 changeInPosition)
     {
         if (changeInPosition == Vector3.zero) {
+            isChangingState = false;
             yield break;
         }
         Vector3 targetPos = transform.position + changeInPosition;
@@ -187,6 +190,7 @@ public class Region : MonoBehaviour {
         if (transform.position != targetPos)
             transform.position = targetPos;
         GetComponent<RegionOutline>().Refresh();
+        isChangingState = false;
     }
 
     public void SetOccupied(bool isOccupied, Transform player)
@@ -370,5 +374,21 @@ public class Region : MonoBehaviour {
     public IEnumerator GetEnumerator()
     {
         return hexTiles.GetEnumerator();
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (isChangingState && other.GetComponent<Player>() != null && currentPlayer == null && State == RegionState.C)
+        {
+            StartCoroutine(fixHeight());
+        }
+    }
+
+    IEnumerator fixHeight()
+    {
+        while (isChangingState)
+            yield return new WaitForSeconds(0.1f);
+        isChangingState = true;
+        yield return moveToHeight(new Vector3(transform.position.x, transform.position.y - Vector3.zero.y, transform.position.z));
     }
 }

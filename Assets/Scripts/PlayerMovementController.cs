@@ -43,7 +43,7 @@ public class PlayerMovementController : MonoBehaviour
         movement.y = 0;
         Rigidbody rb = GetComponent<Rigidbody>();
 
-        if (movement.magnitude > 0)
+        if (movement.magnitude > 0.5)
         {
             rb.velocity = movement * movementSpeed;
 
@@ -58,7 +58,7 @@ public class PlayerMovementController : MonoBehaviour
         else
         {
             characterAnimation.SetAnimation("Idle");
-            rb.velocity = rb.velocity + (movement * movementSpeed);
+            rb.velocity = Vector3.zero;
         }
     }
 

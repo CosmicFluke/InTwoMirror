@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,53 +6,55 @@ using UnityEngine;
 // SD note: this class copied from http://answers.unity3d.com/questions/912621/make-a-camera-to-follow-two-players.html
 // it may need to be replaced to meet academic requirements
 
-public class CameraMover : MonoBehaviour{
+public class CameraMover : MonoBehaviour
+{
+    public enum MarginDirection { North,East,South,West }
 
-    // SD commented out as not required for InTwo public static CameraMover cTrack; //cFollow
-    public float dampTime = 0.15f; //figure out what this is
-    private Vector3 velocity = Vector3.zero;
+    // Public variables to adjust camera movement
+
+    public bool ProportionalDistance = false;
+
+    public MarginDirection marginDirection; // The direction of the goals
+
+    public float dampTime = 0.15f; // Speed of camera adjustment
     public Transform target;
+
+    public float MidpointOffset; // Distance of camera to midpoint in +Z direction
+    public float MarginOffset; // How large margin should be in marginDirection
+    public float PullbackThreshold = 5; // Distance between player and cam before pullback is applied
+    public Vector3 PullbackPadding; // How much padding to give to players on the bottom border of the screen when calculating pullback
+
+    public Transform player1; //target1
+    public Transform player2; //target2
+
+    // Varaibles made public for debugging purposes
 
     public float midX;
     public float midY;
     public float midZ;
 
-    public Transform player1; //target1
-    public Transform player2; //target2
+    public Vector3 midPoint; // the middle point between players
+    public Vector3 distance; // distance between players, for tracking only, can be deleted
 
-    public Vector3 midPoint;
-    public Vector3 distance;
-    public float camDist;
+    // Private variables
 
-    public float camOffset;
-    public float bounds;
+    private Vector3 velocity = Vector3.zero;
 
-    private Vector3 pullBack = Vector3.zero;
-    private bool allowPause = false;
-    private bool isCameraZLocked = false;
-    private float cameraZLock;
+    // How far camera should pull back if players exceed viewport
+    float pullbackLengthP1 = 0;
+    float pullbackLengthP2 = 0;
+    private bool lockPullback = false;
 
     Camera cam;
 
 
     void Awake()
-    { //Startup of the game
-      /*  SD commented out as unnecessary for InTwo
-          if (cTrack == null) {
-              DontDestroyOnLoad (gameObject);
-              cTrack = this;
-
-          } else if (cTrack != this) {
-              Destroy (gameObject);
-          }
-          */
+    {
     }
 
 
     void Start()
     {
-        camDist = 9.0f;
-        bounds = 12.0f;
         cam = GetComponent<Camera>();
     }
 
@@ -61,113 +63,31 @@ public class CameraMover : MonoBehaviour{
         if (player1 == null || player2 == null) return;
         distance = player1.position - player2.position;
         // TODO: Delete this debug code
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
+            Debug.Log("<color=blue>CameraMover Debug</color>");
             Debug.Log("P1 viewport = " + cam.WorldToViewportPoint(player1.position));
             Debug.Log("P1 cam diff = " + (transform.position - player1.position));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
             Debug.Log("P2 viewport = " + cam.WorldToViewportPoint(player2.position));
             Debug.Log("P2 cam diff = " + (transform.position - player2.position));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
-            allowPause = !allowPause;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
             Debug.Log("Player distance = " + distance);
+            Debug.Log("Midpoint to Cam distance: " + (cam.transform.position - midPoint));
         }
-
-        // Check P2 still in frame
-        Vector3 viewportP1 = cam.WorldToViewportPoint(player1.position);
-        Vector3 viewportP2 = cam.WorldToViewportPoint(player2.position);
-        if ((transform.position - player2.position).z >= -5)
+        if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            pullBack.z = (transform.position - player2.position).z - 5f;
-            Debug.Log("pullback = " + pullBack);
-            //Debug.Log("viewportToWorldpoint = " + cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)));
-            //Debug.Log("InverseTransformDirection = " + transform.InverseTransformDirection(pullBack));
+            Vector3 v1 = cam.transform.position - player1.transform.position;
+            Vector3 v2 = cam.transform.position - midPoint;
+            Debug.Log("Angle of Midpoint-Cam-P1 = " + Vector3.Angle(v1, v2));
         }
 
-
-
-        if (camDist >= 19.0f)
-        {
-            camDist = 19.0f;
-        }
-        if (camDist <= 6.0f)
-        {
-            camDist = 6.0f;
-        }
-        if (distance.x < 0)
+        if (distance.x < 0) // invert the distance if they cross
         {
             distance.x = distance.x * -1;
         }
-        if (distance.z < 0)
+
+        if (distance.z < 0) // invert the distance if they cross
         {
             distance.z = distance.z * -1;
-        }
-
-        if (player1.position.x < (transform.position.x - bounds))
-        {
-            Vector3 pos = player1.position;
-            pos.x = transform.position.x - bounds;
-            player1.position = pos;
-        }
-
-        if (player1.position.x > (transform.position.x + bounds))
-        {
-            Vector3 pos = player1.position;
-            pos.x = transform.position.x + bounds;
-            player1.position = pos;
-        }
-
-        if (player2.position.x < (transform.position.x - bounds))
-        {
-            Vector3 pos = player2.position;
-            pos.x = transform.position.x - bounds;
-            player2.position = pos;
-        }
-
-        if (player2.position.x > (transform.position.x + bounds))
-        {
-            Vector3 pos = player2.position;
-            pos.x = transform.position.x + bounds;
-            player2.position = pos;
-        }
-
-        if (distance.x > 15.0f)
-        {
-            camOffset = distance.x * 0.9f; // 90% of x difference
-            if (camOffset >= 8.5f)
-            {
-                camOffset = 8.5f;
-            }
-        }
-        else if (distance.x <= 13.0f)
-        {
-            camOffset = distance.x * 0.9f;
-        }
-        else if (distance.z <= 13.0f)
-        { // if they're too close
-            camOffset = distance.x * 0.9f;
-        }
-
-        if (distance.z >= 19.0f)
-        { // if they're too far
-            isCameraZLocked = true;
-            cameraZLock = transform.position.z;
-        }
-        else
-        {
-            isCameraZLocked = false;
         }
 
         midX = (player2.position.x + player1.position.x) / 2;
@@ -178,22 +98,86 @@ public class CameraMover : MonoBehaviour{
 
         if (player1)
         {
-            // Vector3 point = cam.WorldToViewportPoint(midPoint);
             Vector3 delta;
-            delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)) + transform.InverseTransformDirection(pullBack);
-            //(new Vector3(0.5, 0.5, point.z));
-            //delta = midPoint - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)); //(new Vector3(0.5, 0.5, point.z));
-            //if (allowPause && cam.ViewportToWorldPoint(new Vector3(0.5f, 0.2f, camDist + camOffset)).y != 0.9f)
-            //{
-            //    UnityEditor.EditorApplication.isPaused = true;
-            //}
-            //pullBack.z = 0;
+            delta = midPoint;
 
-            Vector3 destination = transform.position + delta;
-            if (isCameraZLocked)
+
+            // Get player closest to camera
+            Transform closestPlayer;
+            if ((player1.transform.position - cam.transform.position).z < (player2.transform.position - cam.transform.position).z)
+                closestPlayer = player1.transform;
+            else
+                closestPlayer = player2.transform;
+
+            Vector3 destination = transform.position;
+            
+            // Hook camera Z position to closestPlayer
+            destination.z = midPoint.z - MidpointOffset;
+            destination.x = midPoint.x;
+
+
+
+            // If there's a player behind the pullback threshold, base camera Z pos on that player
+            if ((closestPlayer.position - transform.position).z <= PullbackThreshold)
             {
-                destination.z = cameraZLock;
+                destination.z = closestPlayer.position.z - PullbackThreshold;
             }
+
+            // Apply Margin Offset
+            if (marginDirection == MarginDirection.North)
+                destination.z += MarginOffset;
+            if (marginDirection == MarginDirection.South)
+                destination.z -= MarginOffset;
+            if (marginDirection == MarginDirection.East)
+                destination.x -= MarginOffset;
+            if (marginDirection == MarginDirection.West)
+                destination.x += MarginOffset;
+
+
+            // Apply proportional distance
+            if (ProportionalDistance)
+            {
+                Vector3 camToMid = cam.transform.position - midPoint;
+                float camToP1 = Vector3.Angle(camToMid, cam.transform.position - player1.transform.position + PullbackPadding);
+                float camToP2 = Vector3.Angle(camToMid, cam.transform.position - player2.transform.position + PullbackPadding);
+
+
+                if (!lockPullback && camToP1 > 26)
+                {
+                    Debug.Log("<color=red>Pulling back!</color>");
+                    pullbackLengthP1 = Mathf.Tan(camToP1) * Vector3.Distance(player1.transform.position, midPoint);
+
+                    Vector3 v1 = cam.transform.position - player1.transform.position;
+                    Vector3 v2 = cam.transform.position - midPoint;
+                    Debug.Log("Angle of Midpoint-Cam-P1 = " + Vector3.Angle(v1, v2));
+                }
+                if (!lockPullback && camToP2 > 26)
+                {
+                    Debug.Log("<color=red>Pulling back!</color>");
+                    pullbackLengthP2 = Mathf.Tan(camToP2) * Vector3.Distance(player2.transform.position, midPoint);
+
+                    Vector3 v1 = cam.transform.position - player2.transform.position;
+                    Vector3 v2 = cam.transform.position - midPoint;
+                    Debug.Log("Angle of Midpoint-Cam-P2 = " + Vector3.Angle(v1, v2));
+                }
+                if (camToP1 > 26 || camToP2 > 26)
+                {
+                    lockPullback = true;
+                    if (pullbackLengthP1 >= pullbackLengthP2)
+                        Debug.Log("<color=red >using pullbackP1</color>");
+                    else
+                        Debug.Log("<color=red >using pullbackP2</color>");
+
+                    if(!lockPullback)
+                        destination = pullbackLengthP1 >= pullbackLengthP2 ? midPoint + (-camToMid.normalized * pullbackLengthP1)
+                            : midPoint + (-camToMid.normalized * pullbackLengthP2);
+                    //cam.transform.LookAt(midPoint);
+                } else
+                {
+                    lockPullback = false;
+                }
+            }
+
             transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
         }
 
